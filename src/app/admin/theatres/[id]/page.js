@@ -7,7 +7,8 @@ const EditTheatreForm = dynamic(
 );
 
 export default async function EditTheatrePage({ params }) {
-  const theatre = await getTheatreById(params.id);
+  const { id: theatreId } = params;
+  const theatre = await getTheatreById(theatreId);
 
   return (
     <div className="p-8">

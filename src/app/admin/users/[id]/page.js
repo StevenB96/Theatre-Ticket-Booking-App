@@ -1,13 +1,14 @@
+import dynamic from 'next/dynamic';
 import { getUserById } from '@/lib/db/user';
-import EditUserForm from './EditUserForm';
+
+const EditUserForm = dynamic(
+  () => import('./EditUserForm'),
+  { loading: () => <p>Loading form…</p> }
+);
 
 export default async function EditUserPage({ params }) {
-  const user = await getUserById(Number(params.id));
-
-  if (!user) {
-    // Optional: redirect to 404
-    return <div>User not found</div>;
-  }
+  const { id: userId } = params;
+  const user = await getUserById(userId)
 
   return (
     <div className="p-8">

@@ -15,9 +15,15 @@ export default function TheatreTableServer({ data, onDelete }) {
       <tbody>
         {data.map((t) => (
           <tr key={t.id} className="text-center">
-            <td className="p-2 border">{t.id}</td>
-            <td className="p-2 border">{t.name}</td>
-            <td className="p-2 border">{t.address}</td>
+            <td className="p-2 border">{
+              t.id
+            }</td>
+            <td className="p-2 border">{
+              t.name
+            }</td>
+            <td className="p-2 border">{
+              t.address
+            }</td>
             <td className="p-2 border space-x-2">
               <Link href={`/admin/theatres/${t.id}`}>
                 <button className="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>

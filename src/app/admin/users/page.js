@@ -1,6 +1,5 @@
-// src/app/admin/users/page.js
 import Link from 'next/link';
-import UserList from './UserList'; // Relative path preferred in app/
+import UserTable from './UserTable.client';
 import { getAllUsers } from '@/lib/db/user';
 
 export default async function UsersPage() {
@@ -14,7 +13,7 @@ export default async function UsersPage() {
           <button className="bg-blue-600 text-white px-4 py-2 rounded">+ New User</button>
         </Link>
       </p>
-      <UserList initialData={users} />
+      <UserTable data={users} />
     </div>
   );
-}
+};
