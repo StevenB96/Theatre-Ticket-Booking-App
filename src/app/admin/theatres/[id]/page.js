@@ -1,5 +1,10 @@
-import EditTheatreForm from './EditTheatreForm';
+import dynamic from 'next/dynamic';
 import { getTheatreById } from '@/lib/db/theatre';
+
+const EditTheatreForm = dynamic(
+  () => import('./EditTheatreForm'),
+  { loading: () => <p>Loading form…</p> }
+);
 
 export default async function EditTheatrePage({ params }) {
   const theatre = await getTheatreById(params.id);

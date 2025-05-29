@@ -63,6 +63,43 @@ npx knex seed:run
 
 function Show-Tree { param($p='.', $l=0) (Get-ChildItem $p -Force | Sort-Object @{Expression={$_.PSIsContainer};Descending=$true}, Name) | ForEach-Object { if ($_.PSIsContainer) { ('  '*$l)+'📁 '+$_.Name; Show-Tree $_.FullName ($l+1) } else { ('  '*($l+1))+ $_.Name; try { if ((Get-Content $_.FullName -Encoding Byte -TotalCount 1024 | Where-Object { $_ -gt 31 -or $_ -eq 9 -or $_ -eq 10 -or $_ -eq 13 }).Count -gt 0) { Get-Content $_.FullName -ErrorAction Stop | ForEach-Object { ('  '*($l+2)) + $_ } } else { ('  '*($l+2)) + '[Binary or non-text content skipped]' } } catch { ('  '*($l+2)) + '[Error reading file]' } } } }; Show-Tree
 
+## Theatre Admin Refactor Guide
+
+This guide outlines performance improvements for the `admin/theatres` section.
+
+1. **loading.js**  
+   - Path: `src/app/admin/theatres/loading.js`  
+   - Shows a placeholder while data loads.
+
+2. **TheatreTable.server.js**  
+   - Path: `src/app/admin/theatres/TheatreTable.server.js`  
+   - Renders the table on the server to reduce client JS.
+
+3. **TheatreTable.client.js**  
+   - Path: `src/app/admin/theatres/TheatreTable.client.js`  
+   - Handles delete actions as a small client component.
+
+4. **page.js**  
+   - Path: `src/app/admin/theatres/page.js`  
+   - Streams content for faster rendering.
+
+5. **create/page.js**  
+   - Path: `src/app/admin/theatres/create/page.js`  
+   - Lazy-loads the creation form.
+
+6. **Use just `<Link>` instead of `<Link><button>`**
+    - Restores native prefetch
+        Using <Link> alone emits a real <a> tag, letting Next.js preload the next page’s code & data on hover or when it scrolls into view.
+    - Eliminates nav hydration
+        No interactive <button> means the layout stays a pure server component—no client-side JavaScript needs to hydrate the nav.
+    - Faster first render
+        Static HTML for the nav streams immediately, shaving off Time to First Byte (TTFB) and First Contentful Paint (FCP).
+        
+**Benefits**  
+- Faster navigation  
+- Smaller JS bundle  
+- Loading states improve UX
+
 
 
 
