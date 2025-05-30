@@ -21,6 +21,9 @@ export async function POST(req) {
         Add relevant attributes.
         E.g. name,
       */
+      title,
+      start_run,
+      end_run,
     } = await req.json();
 
     /* TEMPLATE COMMENT:
@@ -30,12 +33,18 @@ export async function POST(req) {
         return NextResponse.json({ error: 'Name is required' }, { status: 400 });
       }
     */
+    if (!title) {
+      return NextResponse.json({ error: 'Title is required' }, { status: 400 });
+    }
 
     const newShow = await createShow({
       /* TEMPLATE COMMENT:
         Add relevant attributes.
         E.g. name,
       */
+      title,
+      start_run,
+      end_run,
     });
 
     return NextResponse.json(newShow, { status: 201 });

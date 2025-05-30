@@ -4,11 +4,15 @@ const db = require('../dbClient.js'); // Knex instance
 async function getAllShows() {
   return db('show')
     .select(
-    /* TEMPLATE COMMENT:
-      Add relevant attributes.
-      E.g. 'id','
-    */
-  )
+      /* TEMPLATE COMMENT:
+        Add relevant attributes.
+        E.g. 'id','
+      */
+      'id',
+      'title',
+      'start_run',
+      'end_run',
+    )
     .orderBy('id', 'asc');
 }
 
@@ -20,19 +24,26 @@ async function getShowById(id) {
 }
 
 // Create a new show
-async function createShow({ name, address }) {
+async function createShow({ title, start_run, end_run }) {
   const [newShow] = await db('show')
     .insert({
       /* TEMPLATE COMMENT:
         Add relevant attributes.
         E.g. 'username','
       */
+      title,
+      start_run,
+      end_run,
     })
     .returning([
       /* TEMPLATE COMMENT:
         Add relevant attributes.
         E.g. 'id','
       */
+      'id',
+      'title',
+      'start_run',
+      'end_run',
     ]);
   return newShow;
 }
@@ -47,6 +58,10 @@ async function updateShow(id, data) {
         Add relevant attributes.
         E.g. 'id','
       */
+      'id',
+      'title',
+      'start_run',
+      'end_run',
     ]);
   return updatedShow;
 }

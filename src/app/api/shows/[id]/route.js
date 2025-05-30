@@ -26,6 +26,9 @@ export async function PUT(req, { params }) {
         Add relevant attributes.
         E.g. name,
       */
+      title,
+      start_run,
+      end_run,
     } = await req.json();
 
     /* TEMPLATE COMMENT:
@@ -35,6 +38,9 @@ export async function PUT(req, { params }) {
         return NextResponse.json({ error: 'Name is required' }, { status: 400 });
       }
     */
+    if (!title) {
+      return NextResponse.json({ error: 'Title is required' }, { status: 400 });
+    }
 
     const { id: showId } = await params;
     const updated = await updateShow(Number(showId), {
@@ -42,6 +48,9 @@ export async function PUT(req, { params }) {
         Add relevant attributes.
         E.g. name,
       */
+      title,
+      start_run,
+      end_run,
     });
 
     return NextResponse.json(updated);

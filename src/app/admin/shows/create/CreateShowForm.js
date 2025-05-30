@@ -8,6 +8,9 @@ export default function CreateShowForm() {
     Add relevant state attributes.
     E.g. const [username, setUsername] = useState('');
   */
+  const [title, setTitle] = useState('');
+  const [startRun, setStartRun] = useState('');
+  const [endRun, setEndRun] = useState('');
 
   const router = useRouter();
 
@@ -17,7 +20,11 @@ export default function CreateShowForm() {
     const res = await fetch('/api/shows', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify({
+        title,
+        start_run: startRun,
+        end_run: endRun,
+      }),
     });
 
     if (res.ok) {
@@ -30,7 +37,6 @@ export default function CreateShowForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-
       {/* TEMPLATE COMMENT:
         Add relevant inputs. E.g.
         <div>
@@ -45,7 +51,37 @@ export default function CreateShowForm() {
           </label>
         </div>
       */}
-
+      <div>
+        <label>
+          Title:
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          Start of Run:
+          <input
+            type="date"
+            value={startRun}
+            onChange={(e) => setStartRun(e.target.value)}
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          End of Run:
+          <input
+            type="date"
+            value={endRun}
+            onChange={(e) => setEndRun(e.target.value)}
+          />
+        </label>
+      </div>
       <div>
         <button type="submit">
           Create
