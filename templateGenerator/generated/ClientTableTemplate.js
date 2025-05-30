@@ -8,7 +8,7 @@ export default function UserTable({ data }) {
 
   async function handleDelete(id) {
     if (!confirm('Delete this user?')) return;
-    await fetch(`/api/users/${id}`, { method: 'DELETE' });
+    await fetch('/api/users/' + id, { method: 'DELETE' });
     router.refresh(); // Refresh server data
   };
 

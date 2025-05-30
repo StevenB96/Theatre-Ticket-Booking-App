@@ -9,10 +9,14 @@
     "lint": "next lint",
     "migrate": "knex migrate:latest --knexfile knexfile.js",
     "rollback": "knex migrate:rollback --knexfile knexfile.js",
-    "seed": "knex seed:run --knexfile knexfile.js"
+    "seed": "knex seed:run --knexfile knexfile.js",
+    "generate": "node templateGenerator/generateAll.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
+    "commander": "^13.1.0",
+    "ejs": "^3.1.10",
+    "inquirer": "^12.6.3",
     "knex": "^3.1.0",
     "mysql2": "^3.14.1",
     "next": "15.3.2",
