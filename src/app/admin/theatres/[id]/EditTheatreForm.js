@@ -24,7 +24,7 @@ export default function EditTheatreForm({ theatre }) {
       const err = await res.json();
       alert('Error: ' + (err.error || res.statusText));
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -62,7 +62,7 @@ export default function EditTheatreForm({ theatre }) {
       </div>
     </form>
   );
-}
+};
 
 EditTheatreForm.propTypes = {
   theatre: PropTypes.shape({

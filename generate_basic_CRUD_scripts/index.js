@@ -6,7 +6,7 @@ const [, , fileName, functionName] = process.argv;
 if (!fileName || !functionName) {
   console.error("Usage: node generate.js <fileName> <functionName>");
   process.exit(1);
-}
+};
 
 const content = `
 // Auto-generated file

@@ -10,7 +10,7 @@ export default function UserTable({ data }) {
     if (!confirm('Delete this user?')) return;
     await fetch(`/api/users/${id}`, { method: 'DELETE' });
     router.refresh(); // Refresh server data
-  }
+  };
 
   return <UserTableServer data={data} onDelete={handleDelete} />;
 };

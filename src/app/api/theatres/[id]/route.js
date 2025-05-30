@@ -17,7 +17,7 @@ export async function GET(_, { params }) {
     console.error('GET theatre error:', err);
     return NextResponse.json({ error: 'Failed to fetch theatre' }, { status: 500 });
   }
-}
+};
 
 export async function PUT(req, { params }) {
   try {
@@ -35,7 +35,7 @@ export async function PUT(req, { params }) {
 
     return NextResponse.json({ error: 'Failed to update theatre' }, { status: 500 });
   }
-}
+};
 
 export async function DELETE(_, { params }) {
   try {
@@ -46,4 +46,4 @@ export async function DELETE(_, { params }) {
     console.error('DELETE theatre error:', err);
     return NextResponse.json({ error: 'Failed to delete theatre' }, { status: 500 });
   }
-}
+};

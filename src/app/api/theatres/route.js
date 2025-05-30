@@ -12,7 +12,7 @@ export async function GET() {
     console.error('GET theatres error:', err);
     return NextResponse.json({ error: 'Failed to fetch theatres' }, { status: 500 });
   }
-}
+};
 
 export async function POST(req) {
   try {
@@ -27,4 +27,4 @@ export async function POST(req) {
     console.error('POST theatre error:', err);
     return NextResponse.json({ error: 'Failed to create theatre' }, { status: 500 });
   }
-}
+};

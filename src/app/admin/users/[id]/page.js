@@ -16,4 +16,4 @@ export default async function EditUserPage({ params }) {
       <EditUserForm user={user} />
     </div>
   );
-}
+};

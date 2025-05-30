@@ -23,7 +23,7 @@ export default function CreateTheatreForm() {
       const err = await res.json();
       alert('Error: ' + (err.error || res.statusText));
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">

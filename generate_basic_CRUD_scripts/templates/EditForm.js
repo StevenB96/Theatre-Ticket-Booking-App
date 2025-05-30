@@ -28,7 +28,7 @@ export default function EditUserForm({ user }) {
       const err = await res.json();
       alert('Error: ' + (err.error || res.statusText));
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -80,7 +80,7 @@ export default function EditUserForm({ user }) {
       </div>
     </form>
   );
-}
+};
 
 EditUserForm.propTypes = {
   user: PropTypes.shape({

@@ -11,7 +11,7 @@ export async function GET() {
       error: 'Failed to fetch users'
     }, { status: 500 });
   }
-}
+};
 
 export async function POST(req) {
   try {
@@ -33,5 +33,5 @@ export async function POST(req) {
       error: 'Failed to create user'
     }, { status: 500 });
   }
-}
+};
 

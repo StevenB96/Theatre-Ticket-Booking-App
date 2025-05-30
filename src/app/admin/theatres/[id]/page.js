@@ -16,4 +16,4 @@ export default async function EditTheatrePage({ params }) {
       <EditTheatreForm theatre={theatre} />
     </div>
   );
-}
+};

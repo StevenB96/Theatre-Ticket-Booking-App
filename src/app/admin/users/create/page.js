@@ -12,4 +12,4 @@ export default function CreateUserPage() {
       <CreateUserForm />
     </div>
   );
-}
+};
