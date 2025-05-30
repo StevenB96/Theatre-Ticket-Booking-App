@@ -4,7 +4,7 @@ const editFormTemplate = `'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function Edit<%= Name %>Form({ user }) {
+export default function Edit<%= Name %>Form({ <%= name %> }) {
   /* TEMPLATE COMMENT:
     Add relevant state attributes.
     E.g. const [username, setUsername] = useState('');
@@ -15,8 +15,10 @@ export default function Edit<%= Name %>Form({ user }) {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const payload = { username, email };
-    if (password) payload.password = password;
+    /* TEMPLATE COMMENT:
+      Add relevant state attributes.
+      E.g. const payload = { username, email };
+    */
 
     const res = await fetch('/api/<%= pluralName %>/' + user.id, {
       method: 'PUT',

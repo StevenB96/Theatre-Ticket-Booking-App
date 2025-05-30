@@ -18,7 +18,12 @@ export default function Create<%= Name %>Form() {
     const res = await fetch('/api/<%= pluralName %>', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify(
+        /* TEMPLATE COMMENT:
+          Add relevant state attributes.
+          E.g. { name, email, password }
+        */
+      ),
     });
 
     if (res.ok) {
