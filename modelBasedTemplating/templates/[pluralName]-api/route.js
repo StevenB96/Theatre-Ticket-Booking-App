@@ -32,17 +32,17 @@ export async function POST(req) {
       }
     */
 
-    const newShow = await createShow({
+    const new<%= Name %> = await create<%= Name %>({
       /* TEMPLATE COMMENT:
         Add relevant attributes.
         E.g. name,
       */
     });
 
-    return NextResponse.json(newShow, { status: 201 });
+    return NextResponse.json(new<%= Name %>, { status: 201 });
   } catch (err) {
-    console.error('POST show error:', err);
-    return NextResponse.json({ error: 'Failed to create show' }, { status: 500 });
+    console.error('POST <%= name %> error:', err);
+    return NextResponse.json({ error: 'Failed to create <%= name %>' }, { status: 500 });
   }
 };`;
 

@@ -1,8 +1,8 @@
 const db = require('../dbClient.js'); // Knex instance
 
-// Get all shows
-async function getAllShows() {
-  return db('show')
+// Get all tickets
+async function getAllTickets() {
+  return db('ticket')
     .select(
       /* TEMPLATE COMMENT:
         Add relevant attributes.
@@ -12,16 +12,16 @@ async function getAllShows() {
     .orderBy('id', 'asc');
 }
 
-// Get one show by ID
-async function getShowById(id) {
-  return db('show')
+// Get one ticket by ID
+async function getTicketById(id) {
+  return db('ticket')
     .where({ id })
     .first();
 }
 
-// Create a new show
-async function createShow({ name, address }) {
-  const [newShow] = await db('show')
+// Create a new ticket
+async function createTicket({ name, address }) {
+  const [newTicket] = await db('ticket')
     .insert({
       /* TEMPLATE COMMENT:
         Add relevant attributes.
@@ -34,12 +34,12 @@ async function createShow({ name, address }) {
         E.g. 'id','
       */
     ]);
-  return newShow;
+  return newTicket;
 }
 
-// Update an existing show
-async function updateShow(id, data) {
-  const [updatedShow] = await db('show')
+// Update an existing ticket
+async function updateTicket(id, data) {
+  const [updatedTicket] = await db('ticket')
     .where({ id })
     .update(data)
     .returning([
@@ -48,20 +48,20 @@ async function updateShow(id, data) {
         E.g. 'id','
       */
     ]);
-  return updatedShow;
+  return updatedTicket;
 }
 
-// Delete a show
-async function deleteShow(id) {
-  await db('show')
+// Delete a ticket
+async function deleteTicket(id) {
+  await db('ticket')
     .where({ id })
     .del();
 }
 
 module.exports = {
-  getAllShows,
-  getShowById,
-  createShow,
-  updateShow,
-  deleteShow,
+  getAllTickets,
+  getTicketById,
+  createTicket,
+  updateTicket,
+  deleteTicket,
 };

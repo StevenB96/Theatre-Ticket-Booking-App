@@ -31,16 +31,16 @@ export async function POST(req) {
       }
     */
 
-    const newShow = await createShow({
+    const newTicket = await createTicket({
       /* TEMPLATE COMMENT:
         Add relevant attributes.
         E.g. name,
       */
     });
 
-    return NextResponse.json(newShow, { status: 201 });
+    return NextResponse.json(newTicket, { status: 201 });
   } catch (err) {
-    console.error('POST show error:', err);
-    return NextResponse.json({ error: 'Failed to create show' }, { status: 500 });
+    console.error('POST ticket error:', err);
+    return NextResponse.json({ error: 'Failed to create ticket' }, { status: 500 });
   }
 };
