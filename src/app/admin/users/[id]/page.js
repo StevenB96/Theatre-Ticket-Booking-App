@@ -7,7 +7,7 @@ const EditUserForm = dynamic(
 );
 
 export default async function EditUserPage({ params }) {
-  const { id: userId } = params;
+  const { id: userId } = await params;
   const user = await getUserById(userId)
 
   return (

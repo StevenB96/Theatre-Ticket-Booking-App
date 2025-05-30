@@ -28,9 +28,7 @@ export default function UserTableServer({ data, onDelete }) {
               {new Date(u.created_at).toISOString()}
             </td>
             <td className="p-2 border space-x-2">
-              <Link href={`/admin/users/${u.id}`}>
-                <button className="bg-yellow-500 text-white px-2 py-1 rounded">Edit</button>
-              </Link>
+              <Link href={`/admin/users/${u.id}`}>Edit</Link>
               {onDelete && (
                 <button
                   onClick={() => onDelete(u.id)}

@@ -7,7 +7,8 @@ import {
 
 export async function GET(_, { params }) {
   try {
-    const theatre = await getTheatreById(params.id);
+    const { id: theatreId } = await params;
+    const theatre = await getTheatreById(Number(theatreId));
     if (!theatre) {
       return NextResponse.json({ error: 'Theatre not found' }, { status: 404 });
     }
@@ -25,17 +26,21 @@ export async function PUT(req, { params }) {
       return NextResponse.json({ error: 'Name is required' }, { status: 400 });
     }
 
-    const updated = await updateTheatre(params.id, { name, address });
+    const { id: theatreId } = await params;
+    const updated = await updateTheatre(Number(theatreId), { name, address });
+
     return NextResponse.json(updated);
   } catch (err) {
     console.error('PUT theatre error:', err);
+
     return NextResponse.json({ error: 'Failed to update theatre' }, { status: 500 });
   }
 }
 
 export async function DELETE(_, { params }) {
   try {
-    await deleteTheatre(params.id);
+    const { id: theatreId } = await params;
+    await deleteTheatre(Number(theatreId));
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error('DELETE theatre error:', err);
