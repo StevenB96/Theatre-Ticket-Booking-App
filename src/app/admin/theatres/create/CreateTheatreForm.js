@@ -26,36 +26,34 @@ export default function CreateTheatreForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit}>
       <div>
-        <label className="block font-medium">
+        <label>
           Name:
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="mt-1 p-2 border rounded w-full"
           />
         </label>
       </div>
 
       <div>
-        <label className="block font-medium">
+        <label>
           Address:
           <textarea
             value={address}
             onChange={(e) => setAddress(e.target.value)}
-            className="mt-1 p-2 border rounded w-full"
           />
         </label>
       </div>
 
-      <div className="space-x-2">
-        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
+      <div>
+        <button type="submit">
           Create
         </button>
-        <button type="button" onClick={() => router.back()} className="bg-gray-500 text-white px-4 py-2 rounded">
+        <button type="button" onClick={() => router.back()}>
           Cancel
         </button>
       </div>

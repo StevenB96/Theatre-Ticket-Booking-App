@@ -2,37 +2,36 @@ import Link from 'next/link';
 
 export default function UserTableServer({ data, onDelete }) {
   return (
-    <table className="w-full mt-4 border border-gray-300">
-      <thead className="bg-gray-100">
+    <table>
+      <thead>
         <tr>
-          <th className="p-2 border">ID</th>
-          <th className="p-2 border">Username</th>
-          <th className="p-2 border">Email</th>
-          <th className="p-2 border">Created At</th>
-          <th className="p-2 border">Actions</th>
+          <th>ID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>Created At</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         {data.map((u) => (
-          <tr key={u.id} className="text-center">
-            <td className="p-2 border">
+          <tr key={u.id}>
+            <td>
               {u.id}
             </td>
-            <td className="p-2 border">
+            <td>
               {u.username}
             </td>
-            <td className="p-2 border">
+            <td>
               {u.email}
             </td>
-            <td className="p-2 border">
+            <td>
               {new Date(u.created_at).toISOString()}
             </td>
-            <td className="p-2 border space-x-2">
+            <td>
               <Link href={`/admin/users/${u.id}`}>Edit</Link>
               {onDelete && (
                 <button
                   onClick={() => onDelete(u.id)}
-                  className="bg-red-600 text-white px-2 py-1 rounded"
                 >
                   Delete
                 </button>

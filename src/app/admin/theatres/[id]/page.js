@@ -11,8 +11,8 @@ export default async function EditTheatrePage({ params }) {
   const theatre = await getTheatreById(theatreId);
 
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-4">Edit Theatre</h1>
+    <div>
+      <h1>Edit Theatre</h1>
       <EditTheatreForm theatre={theatre} />
     </div>
   );

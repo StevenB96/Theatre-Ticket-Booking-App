@@ -11,8 +11,8 @@ export default async function EditUserPage({ params }) {
   const user = await getUserById(userId)
 
   return (
-    <div className="p-8">
-      <h1 className="text-2xl font-bold mb-4">Edit User #{user.id}</h1>
+    <div>
+      <h1>Edit User #{user.id}</h1>
       <EditUserForm user={user} />
     </div>
   );
