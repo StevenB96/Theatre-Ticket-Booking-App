@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function EditShowForm({ user }) {
+export default function EditTicketForm({ ticket }) {
   /* TEMPLATE COMMENT:
     Add relevant state attributes.
     E.g. const [username, setUsername] = useState('');
@@ -14,17 +14,19 @@ export default function EditShowForm({ user }) {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const payload = { username, email };
-    if (password) payload.password = password;
+    /* TEMPLATE COMMENT:
+      Add relevant state attributes.
+      E.g. const payload = { username, email };
+    */
 
-    const res = await fetch('/api/shows/' + user.id, {
+    const res = await fetch('/api/tickets/' + user.id, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
 
     if (res.ok) {
-      router.push('/admin/shows');
+      router.push('/admin/tickets');
     } else {
       const err = await res.json();
       alert('Error: ' + (err.error || res.statusText));
@@ -37,11 +39,11 @@ export default function EditShowForm({ user }) {
         Add relevant inputs. E.g.    
         <div>
           <label>
-            Showname:
+            Ticketname:
             <input
               type="text"
               value={username}
-              onChange={(e) => setShowname(e.target.value)}
+              onChange={(e) => setTicketname(e.target.value)}
               required
             />
           </label>

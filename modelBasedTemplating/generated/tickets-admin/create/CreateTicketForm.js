@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function CreateShowForm() {
+export default function CreateTicketForm() {
   /* TEMPLATE COMMENT:
     Add relevant state attributes.
     E.g. const [username, setUsername] = useState('');
@@ -14,14 +14,19 @@ export default function CreateShowForm() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const res = await fetch('/api/shows', {
+    const res = await fetch('/api/tickets', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify(
+        /* TEMPLATE COMMENT:
+          Add relevant state attributes.
+          E.g. { name, email, password }
+        */
+      ),
     });
 
     if (res.ok) {
-      router.push('/admin/shows');
+      router.push('/admin/tickets');
     } else {
       const err = await res.json();
       alert('Error: ' + (err.error || res.statusText));

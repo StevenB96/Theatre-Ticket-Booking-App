@@ -1,16 +1,16 @@
 import { NextResponse } from 'next/server';
 import {
-  getAllShows,
-  createShow
-} from '@/lib/db/show';
+  getAllTickets,
+  createTicket
+} from '@/lib/db/ticket';
 
 export async function GET() {
   try {
-    const shows = await getAllShows();
-    return NextResponse.json(shows);
+    const tickets = await getAllTickets();
+    return NextResponse.json(tickets);
   } catch (err) {
-    console.error('GET shows error:', err);
-    return NextResponse.json({ error: 'Failed to fetch shows' }, { status: 500 });
+    console.error('GET tickets error:', err);
+    return NextResponse.json({ error: 'Failed to fetch tickets' }, { status: 500 });
   }
 };
 

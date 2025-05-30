@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export default function ShowTableServer({ data, onDelete }) {
+export default function TicketTableServer({ data, onDelete }) {
   return (
     <table>
       <thead>
@@ -22,7 +22,7 @@ export default function ShowTableServer({ data, onDelete }) {
               </td>
             */}
             <td>
-              <Link href={'/admin/shows/' + u.id}>Edit</Link>
+              <Link href={'/admin/tickets/' + u.id}>Edit</Link>
               {onDelete && (
                 <button
                   onClick={() => onDelete(u.id)}

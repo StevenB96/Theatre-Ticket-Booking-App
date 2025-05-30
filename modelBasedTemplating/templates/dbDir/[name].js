@@ -67,4 +67,4 @@ module.exports = {
   delete<%= Name %>,
 };`;
 
-module.exports = dbFunctionsTemplate
+module.exports = dbFunctionsTemplate;
