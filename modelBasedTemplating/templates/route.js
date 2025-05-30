@@ -17,16 +17,32 @@ export async function GET() {
 
 export async function POST(req) {
   try {
-    const { name, address } = await req.json();
-    if (!name) {
-      return NextResponse.json({ error: 'Name is required' }, { status: 400 });
-    }
+    const {
+      /* TEMPLATE COMMENT:
+        Add relevant attributes.
+        E.g. name,
+      */
+    } = await req.json();
 
-    const new<%= Name %> = await create<%= Name %>({ name, address });
-    return NextResponse.json(new<%= Name %>, { status: 201 });
+    /* TEMPLATE COMMENT:
+      Add relevant attributes.
+      E.g.
+      if (!name) {
+        return NextResponse.json({ error: 'Name is required' }, { status: 400 });
+      }
+    */
+
+    const newShow = await createShow({
+      /* TEMPLATE COMMENT:
+        Add relevant attributes.
+        E.g. name,
+      */
+    });
+
+    return NextResponse.json(newShow, { status: 201 });
   } catch (err) {
-    console.error('POST <%= name %> error:', err);
-    return NextResponse.json({ error: 'Failed to create <%= name %>' }, { status: 500 });
+    console.error('POST show error:', err);
+    return NextResponse.json({ error: 'Failed to create show' }, { status: 500 });
   }
 };`;
 

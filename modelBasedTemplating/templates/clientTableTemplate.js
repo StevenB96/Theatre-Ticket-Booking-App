@@ -2,7 +2,7 @@
 const clientTableTemplate = `'use client';
 
 import { useRouter } from 'next/navigation';
-import <%= Name %>TableServer from './Table.server';
+import <%= Name %>TableServer from './<%= Name %>Table.server';
 
 export default function <%= Name %>Table({ data }) {
   const router = useRouter();

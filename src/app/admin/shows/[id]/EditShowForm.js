@@ -8,7 +8,7 @@ export default function EditShowForm({ user }) {
     Add relevant state attributes.
     E.g. const [username, setUsername] = useState('');
   */
- 
+
   const router = useRouter();
 
   async function handleSubmit(e) {

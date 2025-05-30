@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import ShowTableServer from './Table.server';
+import ShowTableServer from './ShowTable.server';
 
 export default function ShowTable({ data }) {
   const router = useRouter();

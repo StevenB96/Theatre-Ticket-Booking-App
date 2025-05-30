@@ -22,13 +22,28 @@ export async function GET(_, { params }) {
 
 export async function PUT(req, { params }) {
   try {
-    const { name, address } = await req.json();
-    if (!name) {
-      return NextResponse.json({ error: 'Name is required' }, { status: 400 });
-    }
+    const {
+      /* TEMPLATE COMMENT:
+        Add relevant attributes.
+        E.g. name,
+      */
+    } = await req.json();
+
+    /* TEMPLATE COMMENT:
+      Add relevant attributes.
+      E.g.
+      if (!name) {
+        return NextResponse.json({ error: 'Name is required' }, { status: 400 });
+      }
+    */
 
     const { id: <%= name %>Id } = await params;
-    const updated = await update<%= Name %>(Number(<%= name %>Id), { name, address });
+    const updated = await update<%= Name %>(Number(<%= name %>Id), {
+      /* TEMPLATE COMMENT:
+        Add relevant attributes.
+        E.g. name,
+      */
+    });
 
     return NextResponse.json(updated);
   } catch (err) {
