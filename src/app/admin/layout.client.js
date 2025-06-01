@@ -5,7 +5,8 @@ import { signOut } from 'next-auth/react';
 import styles from './layout.module.css';
 
 export default function LayoutClient({ children }) {
-  const handleLogout = () => {
+  const handleLogout = (e) => {
+    e.preventDefault();  // prevent default link navigation
     signOut({ callbackUrl: '/login' });
   };
 
@@ -20,11 +21,9 @@ export default function LayoutClient({ children }) {
           <Link href="/admin/performances" className={styles.link}>Performances</Link>
           <Link href="/admin/seats" className={styles.link}>Seats</Link>
           <Link href="/admin/tickets" className={styles.link}>Tickets</Link>
-          <button
-            onClick={handleLogout}
-            className={styles.link}>
+          <Link href="#" onClick={handleLogout} className={styles.link}>
             Logout
-          </button>
+          </Link>
         </nav>
       </aside>
 
