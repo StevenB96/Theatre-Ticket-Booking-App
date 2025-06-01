@@ -3,7 +3,7 @@ const route = `import { NextResponse } from 'next/server';
 import {
   getAll<%= PluralName %>,
   create<%= Name %>
-} from '@/lib/db/<%= name %>';
+} from '@/library/db/<%= name %>';
 
 export async function GET() {
   try {

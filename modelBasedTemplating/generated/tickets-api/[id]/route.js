@@ -3,7 +3,7 @@ import {
   getTicketById,
   updateTicket,
   deleteTicket
-} from '@/lib/db/ticket';
+} from '@/library/db/ticket';
 
 export async function GET(_, { params }) {
   try {

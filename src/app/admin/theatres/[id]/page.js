@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { getTheatreById } from '@/lib/db/theatre';
+import { getTheatreById } from '@/library/db/theatre';
 
 const EditTheatreForm = dynamic(
   () => import('./EditTheatreForm'),

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import UserTable from './UserTable.client';
-import { getAllUsers } from '@/lib/db/user';
+import { getAllUsers } from '@/library/db/user';
 
 export default async function UsersPage() {
   const users = await getAllUsers();

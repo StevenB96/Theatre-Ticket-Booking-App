@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import {
   getAllTheatres,
   createTheatre
-} from '@/lib/db/theatre';
+} from '@/library/db/theatre';
 
 export async function GET() {
   try {

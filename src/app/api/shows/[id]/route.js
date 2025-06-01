@@ -3,7 +3,7 @@ import {
   getShowById,
   updateShow,
   deleteShow
-} from '@/lib/db/show';
+} from '@/library/db/show';
 
 export async function GET(_, { params }) {
   try {

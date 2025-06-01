@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import ShowTable from './ShowTable.client';
-import { getAllShows } from '@/lib/db/show';
+import { getAllShows } from '@/library/db/show';
 
 export default async function ShowsPage() {
   const shows = await getAllShows();

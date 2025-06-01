@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import {
   getAllShows,
   createShow
-} from '@/lib/db/show';
+} from '@/library/db/show';
 
 export async function GET() {
   try {

@@ -4,7 +4,7 @@ import {
   get<%= Name %>ById,
   update<%= Name %>,
   delete<%= Name %>
-} from '@/lib/db/<%= name %>';
+} from '@/library/db/<%= name %>';
 
 export async function GET(_, { params }) {
   try {

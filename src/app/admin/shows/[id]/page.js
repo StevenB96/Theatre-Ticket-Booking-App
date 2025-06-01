@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { getShowById } from '@/lib/db/show';
+import { getShowById } from '@/library/db/show';
 
 const EditShowForm = dynamic(
   () => import('./EditShowForm'),

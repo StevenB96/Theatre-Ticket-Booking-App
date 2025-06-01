@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import {
   getAllTickets,
   createTicket
-} from '@/lib/db/ticket';
+} from '@/library/db/ticket';
 
 export async function GET() {
   try {

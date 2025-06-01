@@ -3,7 +3,7 @@ import {
   getTheatreById,
   updateTheatre,
   deleteTheatre
-} from '@/lib/db/theatre';
+} from '@/library/db/theatre';
 
 export async function GET(_, { params }) {
   try {

@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import { getUserById } from '@/lib/db/user';
+import { getUserById } from '@/library/db/user';
 
 const EditUserForm = dynamic(
   () => import('./EditUserForm'),

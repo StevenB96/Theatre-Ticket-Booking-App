@@ -10,10 +10,10 @@ module.exports = {
     },
     useNullAsDefault: true,
     migrations: {
-      directory: path.resolve('./src/db/migrations'),
+      directory: path.resolve('./src/knex/migrations'),
     },
     seeds: {
-      directory: path.resolve('./src/db/seeds'),
+      directory: path.resolve('./src/knex/seeds'),
     },
   },
 
@@ -27,10 +27,10 @@ module.exports = {
       database: process.env.MYSQL_DATABASE,
     },
     migrations: {
-      directory: path.resolve('./src/db/migrations'),
+      directory: path.resolve('./src/knex/migrations'),
     },
     seeds: {
-      directory: path.resolve('./src/db/seeds'),
+      directory: path.resolve('./src/knex/seeds'),
     },
   },
 };

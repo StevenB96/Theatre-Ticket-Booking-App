@@ -1,6 +1,9 @@
 /**
  * @param { import("knex").Knex } knex
  */
+
+const { hashPassword } = require('../../library/auth');
+
 exports.seed = async function (knex) {
   // Delete existing entries in the correct order to satisfy foreign key constraints
   await knex('ticket').del();
@@ -11,23 +14,27 @@ exports.seed = async function (knex) {
   await knex('theatre').del();
   await knex('user').del();
 
+  // Hash passwords for admin and johndoe
+  const adminHashed = await hashPassword('admin');
+  const johndoeHashed = await hashPassword('john');
+
   // Insert users
   await knex('user').insert([
     {
       id: 1,
       username: 'admin',
       email: 'admin@example.com',
-      password_hash: 'hash_admin',
-      role: 1,     // 1 = admin
-      status: 1,   // 1 = active
+      password_hash: adminHashed,
+      role: 1, // 1 = admin
+      status: 1, // 1 = active
     },
     {
       id: 2,
       username: 'johndoe',
       email: 'john@example.com',
-      password_hash: 'hash_john',
-      role: 0,     // 0 = user
-      status: 1,   // 1 = active
+      password_hash: johndoeHashed,
+      role: 0, // 0 = user
+      status: 1, // 1 = active
     },
   ]);
 

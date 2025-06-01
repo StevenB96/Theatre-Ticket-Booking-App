@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import TicketTable from './TicketTable.client';
-import { getAllTickets } from '@/lib/db/ticket';
+import { getAllTickets } from '@/library/db/ticket';
 
 export default async function TicketsPage() {
   const tickets = await getAllTickets();

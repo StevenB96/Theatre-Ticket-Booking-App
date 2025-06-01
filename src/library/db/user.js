@@ -1,5 +1,5 @@
 const db = require('../dbClient.js'); // Knex instance
-import { hashPassword } from '@/lib/auth.js'
+import { hashPassword } from '@/library/auth.js'
 
 // Get all users
 async function getAllUsers() {

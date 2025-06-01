@@ -1,6 +1,6 @@
 // templates/editPageTemplate.js
 const editPageTemplate = `import dynamic from 'next/dynamic';
-import { get<%= Name %>ById } from '@/lib/db/<%= name %>';
+import { get<%= Name %>ById } from '@/library/db/<%= name %>';
 
 const Edit<%= Name %>Form = dynamic(
   () => import('./Edit<%= Name %>Form'),
