@@ -3,7 +3,13 @@ const db = require('../dbClient.js'); // Knex instance
 // Get all theatres
 async function getAllTheatres() {
   return db('theatre')
-    .select('id', 'name', 'address', 'created_at', 'updated_at')
+    .select(
+      'id',
+      'name',
+      'address',
+      'status',
+      'created_at',
+      'updated_at')
     .orderBy('id', 'asc');
 }
 
@@ -15,16 +21,18 @@ async function getTheatreById(id) {
 }
 
 // Create a new theatre
-async function createTheatre({ name, address }) {
+async function createTheatre({ name, address, status }) {
   const [newTheatre] = await db('theatre')
     .insert({
       name,
-      address
+      address,
+      status
     })
     .returning([
       'id',
       'name',
       'address',
+      'status',
       'created_at',
       'updated_at'
     ]);
@@ -40,6 +48,7 @@ async function updateTheatre(id, data) {
       'id',
       'name',
       'address',
+      'status',
       'created_at',
       'updated_at'
     ]);

@@ -15,15 +15,30 @@ export async function GET() {
 
 export async function POST(req) {
   try {
-    const { username, email, password } = await req.json();
-    if (!username || !email || !password) {
+    const {
+      username,
+      email,
+      password,
+      role,
+      status,
+    } = await req.json();
+
+    if (
+      !username ||
+      !email ||
+      !password ||
+      !role ||
+      !status
+    ) {
       return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
-    }
+    };
 
     const newUser = await createUser({
       username,
       email,
       password,
+      role,
+      status,
     });
 
     return NextResponse.json(newUser, { status: 201 });

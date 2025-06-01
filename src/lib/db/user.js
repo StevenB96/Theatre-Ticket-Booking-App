@@ -8,6 +8,8 @@ async function getAllUsers() {
       'id',
       'username',
       'email',
+      'role',
+      'status',
       'created_at',
       'updated_at'
     )
@@ -40,6 +42,8 @@ async function createUser({
       'id',
       'username',
       'email',
+      'role',
+      'status',
       'created_at',
       'updated_at'
     ]);
@@ -57,6 +61,8 @@ async function updateUser(id, data) {
       'id',
       'username',
       'email',
+      'role',
+      'status',
       'created_at',
       'updated_at'
     ]);

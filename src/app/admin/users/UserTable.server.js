@@ -8,7 +8,10 @@ export default function UserTableServer({ data, onDelete }) {
           <th>ID</th>
           <th>Username</th>
           <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
           <th>Created At</th>
+          <th>Updated At</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -25,7 +28,16 @@ export default function UserTableServer({ data, onDelete }) {
               {u.email}
             </td>
             <td>
-              {new Date(u.created_at).toISOString()}
+              {u.role}
+            </td>
+            <td>
+              {u.status}
+            </td>
+            <td>
+              {new Date(u.created_at).toLocaleDateString('en-GB')}
+            </td>
+            <td>
+              {new Date(u.updated_at).toLocaleDateString('en-GB')}
             </td>
             <td>
               <Link href={`/admin/users/${u.id}`}>Edit</Link>

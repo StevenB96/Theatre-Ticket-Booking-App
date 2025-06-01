@@ -8,9 +8,8 @@ export default function CreateShowForm() {
     Add relevant state attributes.
     E.g. const [username, setUsername] = useState('');
   */
-  const [title, setTitle] = useState('');
-  const [startRun, setStartRun] = useState('');
-  const [endRun, setEndRun] = useState('');
+  const [name, setName] = useState('');
+  const [status, setStatus] = useState('');
 
   const router = useRouter();
 
@@ -21,9 +20,8 @@ export default function CreateShowForm() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        title,
-        start_run: startRun,
-        end_run: endRun,
+        name,
+        status,
       }),
     });
 
@@ -51,37 +49,30 @@ export default function CreateShowForm() {
           </label>
         </div>
       */}
+
       <div>
         <label>
-          Title:
+          Name:
           <input
             type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             required
           />
         </label>
       </div>
+
       <div>
         <label>
-          Start of Run:
+          Status:
           <input
-            type="date"
-            value={startRun}
-            onChange={(e) => setStartRun(e.target.value)}
+            type="number"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
           />
         </label>
       </div>
-      <div>
-        <label>
-          End of Run:
-          <input
-            type="date"
-            value={endRun}
-            onChange={(e) => setEndRun(e.target.value)}
-          />
-        </label>
-      </div>
+
       <div>
         <button type="submit">
           Create

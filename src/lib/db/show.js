@@ -9,9 +9,10 @@ async function getAllShows() {
         E.g. 'id','
       */
       'id',
-      'title',
-      'start_run',
-      'end_run',
+      'name',
+      'status',
+      'created_at',
+      'updated_at'
     )
     .orderBy('id', 'asc');
 }
@@ -24,16 +25,15 @@ async function getShowById(id) {
 }
 
 // Create a new show
-async function createShow({ title, start_run, end_run }) {
+async function createShow({ name, status }) {
   const [newShow] = await db('show')
     .insert({
       /* TEMPLATE COMMENT:
         Add relevant attributes.
         E.g. 'username','
       */
-      title,
-      start_run,
-      end_run,
+      name,
+      status,
     })
     .returning([
       /* TEMPLATE COMMENT:
@@ -41,9 +41,10 @@ async function createShow({ title, start_run, end_run }) {
         E.g. 'id','
       */
       'id',
-      'title',
-      'start_run',
-      'end_run',
+      'name',
+      'status',
+      'created_at',
+      'updated_at'
     ]);
   return newShow;
 }
@@ -59,9 +60,10 @@ async function updateShow(id, data) {
         E.g. 'id','
       */
       'id',
-      'title',
-      'start_run',
-      'end_run',
+      'name',
+      'status',
+      'created_at',
+      'updated_at'
     ]);
   return updatedShow;
 }

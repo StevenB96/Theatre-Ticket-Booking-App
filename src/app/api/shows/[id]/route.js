@@ -26,9 +26,8 @@ export async function PUT(req, { params }) {
         Add relevant attributes.
         E.g. name,
       */
-      title,
-      start_run,
-      end_run,
+      name,
+      status,
     } = await req.json();
 
     /* TEMPLATE COMMENT:
@@ -38,8 +37,8 @@ export async function PUT(req, { params }) {
         return NextResponse.json({ error: 'Name is required' }, { status: 400 });
       }
     */
-    if (!title) {
-      return NextResponse.json({ error: 'Title is required' }, { status: 400 });
+    if (!name) {
+      return NextResponse.json({ error: 'Name is required' }, { status: 400 });
     }
 
     const { id: showId } = await params;
@@ -48,9 +47,8 @@ export async function PUT(req, { params }) {
         Add relevant attributes.
         E.g. name,
       */
-      title,
-      start_run,
-      end_run,
+      name,
+      status,
     });
 
     return NextResponse.json(updated);

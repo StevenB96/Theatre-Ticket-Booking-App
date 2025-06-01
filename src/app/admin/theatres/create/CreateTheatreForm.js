@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 export default function CreateTheatreForm() {
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
+  const [status, setStatus] = useState(1);
+
   const router = useRouter();
 
   async function handleSubmit(e) {
@@ -14,7 +16,11 @@ export default function CreateTheatreForm() {
     const res = await fetch('/api/theatres', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, address }),
+      body: JSON.stringify({
+        name,
+        address,
+        status
+      }),
     });
 
     if (res.ok) {
@@ -45,6 +51,18 @@ export default function CreateTheatreForm() {
           <textarea
             value={address}
             onChange={(e) => setAddress(e.target.value)}
+          />
+        </label>
+      </div>
+
+      <div>
+        <label>
+          Status:
+          <input
+            type="number"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            required
           />
         </label>
       </div>

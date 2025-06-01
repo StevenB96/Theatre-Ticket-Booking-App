@@ -5,8 +5,10 @@ import { useRouter } from 'next/navigation';
 import PropTypes from 'prop-types';
 
 export default function EditTheatreForm({ theatre }) {
-  const [name, setName] = useState(theatre.name || '');
-  const [address, setAddress] = useState(theatre.address || '');
+  const [name, setName] = useState(theatre.name);
+  const [address, setAddress] = useState(theatre.address);
+  const [status, setStatus] = useState(theatre.status);
+
   const router = useRouter();
 
   async function handleSubmit(e) {
@@ -15,7 +17,11 @@ export default function EditTheatreForm({ theatre }) {
     const res = await fetch(`/api/theatres/${theatre.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, address }),
+      body: JSON.stringify({
+        name,
+        address,
+        status
+      }),
     });
 
     if (res.ok) {
@@ -46,6 +52,18 @@ export default function EditTheatreForm({ theatre }) {
           <textarea
             value={address}
             onChange={(e) => setAddress(e.target.value)}
+          />
+        </label>
+      </div>
+
+      <div>
+        <label>
+          Status:
+          <input
+            type="number"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            required
           />
         </label>
       </div>

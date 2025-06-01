@@ -10,9 +10,10 @@ export default function ShowTableServer({ data, onDelete }) {
             <th>ID</th>
           */}
           <th>ID</th>
-          <th>Title</th>
-          <th>Start of Run</th>
-          <th>End of Run</th>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Created At</th>
+          <th>Updated At</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -29,13 +30,16 @@ export default function ShowTableServer({ data, onDelete }) {
               {u.id}
             </td>
             <td>
-              {u.title}
+              {u.name}
             </td>
             <td>
-              {u.start_run}
+              {u.status}
             </td>
             <td>
-              {u.end_run}
+              {new Date(u.created_at).toLocaleDateString('en-GB')}
+            </td>
+            <td>
+              {new Date(u.updated_at).toLocaleDateString('en-GB')}
             </td>
             <td>
               <Link href={'/admin/shows/' + u.id}>Edit</Link>

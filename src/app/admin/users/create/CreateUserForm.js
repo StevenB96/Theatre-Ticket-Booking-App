@@ -7,6 +7,9 @@ export default function CreateUserForm() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState(1);
+  const [status, setStatus] = useState(1);
+
   const router = useRouter();
 
   async function handleSubmit(e) {
@@ -15,7 +18,13 @@ export default function CreateUserForm() {
     const res = await fetch('/api/users', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, email, password }),
+      body: JSON.stringify({
+        username,
+        email,
+        password,
+        role,
+        status
+      }),
     });
 
     if (res.ok) {
@@ -59,6 +68,30 @@ export default function CreateUserForm() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </label>
+      </div>
+
+      <div>
+        <label>
+          Role:
+          <input
+            type="number"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            required
+          />
+        </label>
+      </div>
+
+      <div>
+        <label>
+          Status:
+          <input
+            type="number"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
             required
           />
         </label>

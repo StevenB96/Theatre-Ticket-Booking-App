@@ -8,9 +8,8 @@ export default function EditShowForm({ show }) {
     Add relevant state attributes.
     E.g. const [username, setUsername] = useState('');
   */
-  const [title, setTitle] = useState(show.title || '');
-  const [startRun, setStartRun] = useState(show.start_run || '');
-  const [endRun, setEndRun] = useState(show.end_run || '');
+  const [name, setName] = useState(show.name || '');
+  const [status, setStatus] = useState(show.status || 1);
 
   const router = useRouter();
 
@@ -18,9 +17,8 @@ export default function EditShowForm({ show }) {
     e.preventDefault();
 
     const payload = {
-      title,
-      start_run: startRun,
-      end_run: endRun,
+      name,
+      status
     };
 
     const res = await fetch('/api/shows/' + show.id, {
@@ -55,35 +53,27 @@ export default function EditShowForm({ show }) {
       */}
       <div>
         <label>
-          Title:
+          Name:
           <input
             type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             required
           />
         </label>
       </div>
+
       <div>
         <label>
-          Start of Run:
+          Status:
           <input
-            type="date"
-            value={startRun}
-            onChange={(e) => setStartRun(e.target.value)}
+            type="number"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
           />
         </label>
       </div>
-      <div>
-        <label>
-          End of Run:
-          <input
-            type="date"
-            value={endRun}
-            onChange={(e) => setEndRun(e.target.value)}
-          />
-        </label>
-      </div>
+
       <div>
         <button type="submit">
           Save

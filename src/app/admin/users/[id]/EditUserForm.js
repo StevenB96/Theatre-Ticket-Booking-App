@@ -2,18 +2,26 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import PropTypes from 'prop-types';
 
 export default function EditUserForm({ user }) {
   const [username, setUsername] = useState(user.username);
   const [email, setEmail] = useState(user.email);
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState(user.password);
+  const [role, setRole] = useState(user.role);
+  const [status, setStatus] = useState(user.status);
+
   const router = useRouter();
 
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const payload = { username, email };
+    const payload = {
+      username,
+      email,
+      role,
+      status
+    };
+
     if (password) payload.password = password;
 
     const res = await fetch(`/api/users/${user.id}`, {
@@ -68,6 +76,30 @@ export default function EditUserForm({ user }) {
       </div>
 
       <div>
+        <label>
+          Role:
+          <input
+            type="number"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            required
+          />
+        </label>
+      </div>
+
+      <div>
+        <label>
+          Status:
+          <input
+            type="number"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            required
+          />
+        </label>
+      </div>
+
+      <div>
         <button type="submit">
           Save
         </button>
@@ -77,12 +109,4 @@ export default function EditUserForm({ user }) {
       </div>
     </form>
   );
-};
-
-EditUserForm.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    username: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired,
-  }).isRequired,
 };
