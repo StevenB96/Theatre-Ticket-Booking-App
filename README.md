@@ -102,7 +102,23 @@ This guide outlines performance improvements for the `admin/theatres` section.
 - Smaller JS bundle  
 - Loading states improve UX
 
+## Converting to TypeScript Guide
 
+- npm install --save-dev typescript @types/react @types/node
+
+- Rename .js → .ts/.tsx
+
+- Let Next.js generate tsconfig.json (by running npm run dev)
+
+- Fix component/props types and getStaticProps/getServerSideProps typings
+
+- (Optional) Add CSS‐module type generation if you use them
+
+- (Optional) Tighten up tsconfig.json strictness
+
+- Adjust ESLint to understand TypeScript
+
+- Build and correct any leftover type errors
 
 
 

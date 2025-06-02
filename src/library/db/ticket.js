@@ -1,4 +1,4 @@
-const db = require('../dbClient.js'); // Knex instance
+const db = require('../dbClient.ts'); // Knex instance
 
 // Get all tickets
 async function getAllTickets() {

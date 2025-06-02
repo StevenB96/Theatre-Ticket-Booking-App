@@ -1,45 +1,39 @@
 import { NextResponse } from 'next/server';
 import {
   getAllPerformances,
-  createPerformance
+  createPerformance,
 } from '@/library/db/performance';
 
+// GET /api/performances
 export async function GET() {
   try {
     const performances = await getAllPerformances();
     return NextResponse.json(performances);
   } catch (err) {
     console.error('GET performances error:', err);
-    return NextResponse.json({ error: 'Failed to fetch performances' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to fetch performances' },
+      { status: 500 }
+    );
   }
-};
+}
 
-export async function POST(req) {
+// POST /api/performances
+export async function POST(req: Request) {
   try {
     const {
-      /* TEMPLATE COMMENT:
-        Add relevant attributes.
-        E.g. name,
-      */
       theatre_has_show_id,
       start_time,
       type,
       status,
+    }: {
+      theatre_has_show_id: number;
+      start_time: string;
+      type: number;
+      status: number;
     } = await req.json();
 
-    /* TEMPLATE COMMENT:
-      Add relevant attributes.
-      E.g.
-      if (!name) {
-        return NextResponse.json({ error: 'Name is required' }, { status: 400 });
-      }
-    */
-
     const newPerformance = await createPerformance({
-      /* TEMPLATE COMMENT:
-        Add relevant attributes.
-        E.g. name,
-      */
       theatre_has_show_id,
       start_time,
       type,
@@ -49,6 +43,9 @@ export async function POST(req) {
     return NextResponse.json(newPerformance, { status: 201 });
   } catch (err) {
     console.error('POST performance error:', err);
-    return NextResponse.json({ error: 'Failed to create performance' }, { status: 500 });
-  }
-};
+    return NextResponse.json(
+      { error: 'Failed to create performance' },
+      { status: 500 }
+    );
+  };
+}

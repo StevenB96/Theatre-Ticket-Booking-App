@@ -2,7 +2,7 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { verifyPassword } from '@/library/auth';
-import db from '@/library/dbClient';
+import db from '@/library/dbClient.ts';
 
 export const authOptions = {
   providers: [

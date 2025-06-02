@@ -1,5 +1,5 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route.js";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route.ts";
 import { redirect } from "next/navigation";
 import LayoutClient from "./layout.client";
 
