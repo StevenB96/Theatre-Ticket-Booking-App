@@ -33,7 +33,7 @@ async function createUser({
   role,
   status,
 }) {
-  const password_hash = hashPassword(password);
+  const password_hash = await hashPassword(password);
   const [newUser] = await db('user')
     .insert({
       username,
@@ -56,11 +56,20 @@ async function createUser({
 
 // Update an existing user
 async function updateUser(id, data) {
+  const updateData = data;
+
+  if (data.password) {
+    const password_hash = await hashPassword(data.password);
+    updateData.password_hash = password_hash;
+  };
+
+  delete updateData['password'];
+
   const [updatedUser] = await db('user')
     .where({
       id
     })
-    .update(data)
+    .update(updateData)
     .returning([
       'id',
       'username',

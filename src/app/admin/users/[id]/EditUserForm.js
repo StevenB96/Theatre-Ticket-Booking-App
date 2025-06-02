@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 export default function EditUserForm({ user }) {
   const [username, setUsername] = useState(user.username);
   const [email, setEmail] = useState(user.email);
-  const [password, setPassword] = useState(user.password);
+  const [password, setPassword] = useState('');
   const [role, setRole] = useState(user.role);
   const [status, setStatus] = useState(user.status);
 
