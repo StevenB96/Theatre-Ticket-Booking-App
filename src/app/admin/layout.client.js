@@ -1,10 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import styles from './layout.module.css';
 
 export default function LayoutClient({ children }) {
+  const { data: session } = useSession();
+  console.log(session)
+
   const handleLogout = (e) => {
     e.preventDefault();  // prevent default link navigation
     signOut({ callbackUrl: '/login' });
@@ -15,6 +18,9 @@ export default function LayoutClient({ children }) {
       {/* Sidebar */}
       <aside className={styles.sidebar}>
         <nav className={styles.nav}>
+          <div className={styles.username}>
+            {session?.user?.username ? `Hello, ${session.user.username}` : 'Loading...'}
+          </div>
           <Link
             href="/admin/users"
             className={styles.link}>

@@ -1,41 +1,47 @@
 const db = require('../dbClient.js'); // Knex instance
 
-// Get all shows
-async function getAllShows() {
-  return db('show')
+// Get all seats
+async function getAllSeats() {
+  return db('seat')
     .select(
       /* TEMPLATE COMMENT:
         Add relevant attributes.
         E.g. 'id','
       */
       'id',
-      'name',
+      'theatre_id',
+      'code',
+      'zone',
       'status',
       'created_at',
-      'updated_at'
+      'updated_at',
     )
     .orderBy('id', 'asc');
 }
 
-// Get one show by ID
-async function getShowById(id) {
-  return db('show')
+// Get one seat by ID
+async function getSeatById(id) {
+  return db('seat')
     .where({ id })
     .first();
 }
 
-// Create a new show
-async function createShow({
-  name,
-  status
+// Create a new seat
+async function createSeat({
+  theatre_id,
+  code,
+  zone,
+  status,
 }) {
-  const [newShow] = await db('show')
+  const [newSeat] = await db('seat')
     .insert({
       /* TEMPLATE COMMENT:
         Add relevant attributes.
         E.g. 'username','
       */
-      name,
+      theatre_id,
+      code,
+      zone,
       status,
     })
     .returning([
@@ -44,17 +50,19 @@ async function createShow({
         E.g. 'id','
       */
       'id',
-      'name',
+      'theatre_id',
+      'code',
+      'zone',
       'status',
       'created_at',
-      'updated_at'
+      'updated_at',
     ]);
-  return newShow;
+  return newSeat;
 }
 
-// Update an existing show
-async function updateShow(id, data) {
-  const [updatedShow] = await db('show')
+// Update an existing seat
+async function updateSeat(id, data) {
+  const [updatedSeat] = await db('seat')
     .where({ id })
     .update(data)
     .returning([
@@ -63,25 +71,27 @@ async function updateShow(id, data) {
         E.g. 'id','
       */
       'id',
-      'name',
+      'theatre_id',
+      'code',
+      'zone',
       'status',
       'created_at',
-      'updated_at'
+      'updated_at',
     ]);
-  return updatedShow;
+  return updatedSeat;
 }
 
-// Delete a show
-async function deleteShow(id) {
-  await db('show')
+// Delete a seat
+async function deleteSeat(id) {
+  await db('seat')
     .where({ id })
     .del();
 }
 
 module.exports = {
-  getAllShows,
-  getShowById,
-  createShow,
-  updateShow,
-  deleteShow,
+  getAllSeats,
+  getSeatById,
+  createSeat,
+  updateSeat,
+  deleteSeat,
 };

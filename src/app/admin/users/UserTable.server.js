@@ -16,34 +16,34 @@ export default function UserTableServer({ data, onDelete }) {
         </tr>
       </thead>
       <tbody>
-        {data.map((u) => (
-          <tr key={u.id}>
+        {data.map((user) => (
+          <tr key={user.id}>
             <td>
-              {u.id}
+              {user.id}
             </td>
             <td>
-              {u.username}
+              {user.username}
             </td>
             <td>
-              {u.email}
+              {user.email}
             </td>
             <td>
-              {u.role}
+              {user.role}
             </td>
             <td>
-              {u.status}
+              {user.status}
             </td>
             <td>
-              {new Date(u.created_at).toLocaleDateString('en-GB')}
+              {new Date(user.created_at).toLocaleDateString('en-GB')}
             </td>
             <td>
-              {new Date(u.updated_at).toLocaleDateString('en-GB')}
+              {new Date(user.updated_at).toLocaleDateString('en-GB')}
             </td>
             <td>
-              <Link href={`/admin/users/${u.id}`}>Edit</Link>
+              <Link href={`/admin/users/${user.id}`}>Edit</Link>
               {onDelete && (
                 <button
-                  onClick={() => onDelete(u.id)}
+                  onClick={() => onDelete(user.id)}
                 >
                   Delete
                 </button>

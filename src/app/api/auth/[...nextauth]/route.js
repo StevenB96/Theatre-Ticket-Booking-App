@@ -39,6 +39,7 @@ export const authOptions = {
         //   —anything you return here becomes part of the "token" on first sign‐in.
         return {
           id: user.id,
+          username: user.username,
           email: user.email,
           role: user.role,
         };
@@ -65,6 +66,7 @@ export const authOptions = {
       if (user) {
         // On initial sign‐in, `user` is the object returned from `authorize()`.
         token.role = user.role;
+        token.username = user.username;
       }
       return token;
     },
@@ -76,7 +78,10 @@ export const authOptions = {
     async session({ session, token }) {
       if (token.role !== undefined) {
         session.user.role = token.role;
-      }
+      };
+      if (token.username !== undefined) {
+        session.user.username = token.username;
+      };
       return session;
     },
   },

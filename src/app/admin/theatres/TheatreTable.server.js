@@ -16,31 +16,31 @@ export default function TheatreTableServer({ data, onDelete }) {
         </tr>
       </thead>
       <tbody>
-        {data.map((t) => (
-          <tr key={t.id}>
+        {data.map((theatre) => (
+          <tr key={theatre.id}>
             <td>{
-              t.id
+              theatre.id
             }</td>
             <td>{
-              t.name
+              theatre.name
             }</td>
             <td>{
-              t.address
+              theatre.address
             }</td>
             <td>{
-              t.status
+              theatre.status
             }</td>
             <td>
-              {new Date(t.created_at).toLocaleDateString('en-GB')}
+              {new Date(theatre.created_at).toLocaleDateString('en-GB')}
             </td>
             <td>
-              {new Date(t.updated_at).toLocaleDateString('en-GB')}
+              {new Date(theatre.updated_at).toLocaleDateString('en-GB')}
             </td>
             <td>
-              <Link href={`/admin/theatres/${t.id}`}>Edit</Link>
+              <Link href={`/admin/theatres/${theatre.id}`}>Edit</Link>
               {onDelete && (
                 <button
-                  onClick={() => onDelete(t.id)}
+                  onClick={() => onDelete(theatre.id)}
                 >
                   Delete
                 </button>

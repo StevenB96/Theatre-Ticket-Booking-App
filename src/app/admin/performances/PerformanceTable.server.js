@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export default function ShowTableServer({ data, onDelete }) {
+export default function PerformanceTableServer({ data, onDelete }) {
   return (
     <table>
       <thead>
@@ -10,7 +10,9 @@ export default function ShowTableServer({ data, onDelete }) {
             <th>ID</th>
           */}
           <th>ID</th>
-          <th>Name</th>
+          <th>Theatre Has Show ID</th>
+          <th>Start Time</th>
+          <th>Type</th>
           <th>Status</th>
           <th>Created At</th>
           <th>Updated At</th>
@@ -18,34 +20,40 @@ export default function ShowTableServer({ data, onDelete }) {
         </tr>
       </thead>
       <tbody>
-        {data.map((show) => (
-          <tr key={show.id}>
+        {data.map((performance) => (
+          <tr key={performance.id}>
             {/* TEMPLATE COMMENT:
               Add relevant attributes. E.g.    
               <td>
-                {show.id}
+                {performance.id}
               </td>
             */}
             <td>
-              {show.id}
+              {performance.id}
             </td>
             <td>
-              {show.name}
+              {performance.theatre_has_show_id}
             </td>
             <td>
-              {show.status}
+              {new Date(performance.start_time).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
             </td>
             <td>
-              {new Date(show.created_at).toLocaleDateString('en-GB')}
+              {performance.type}
             </td>
             <td>
-              {new Date(show.updated_at).toLocaleDateString('en-GB')}
+              {performance.status}
             </td>
             <td>
-              <Link href={'/admin/shows/' + show.id}>Edit</Link>
+              {new Date(performance.created_at).toLocaleDateString('en-GB')}
+            </td>
+            <td>
+              {new Date(performance.updated_at).toLocaleDateString('en-GB')}
+            </td>
+            <td>
+              <Link href={'/admin/performances/' + performance.id}>Edit</Link>
               {onDelete && (
                 <button
-                  onClick={() => onDelete(show.id)}
+                  onClick={() => onDelete(performance.id)}
                 >
                   Delete
                 </button>

@@ -16,12 +16,20 @@ export async function GET() {
 
 export async function POST(req) {
   try {
-    const { name, address } = await req.json();
+    const {
+      name,
+      address,
+      status
+    } = await req.json();
     if (!name) {
       return NextResponse.json({ error: 'Name is required' }, { status: 400 });
     }
 
-    const newTheatre = await createTheatre({ name, address });
+    const newTheatre = await createTheatre({
+      name,
+      address,
+      status
+    });
     return NextResponse.json(newTheatre, { status: 201 });
   } catch (err) {
     console.error('POST theatre error:', err);

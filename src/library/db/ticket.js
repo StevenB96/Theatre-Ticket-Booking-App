@@ -8,6 +8,14 @@ async function getAllTickets() {
         Add relevant attributes.
         E.g. 'id','
       */
+      'id',
+      'user_id',
+      'seat_id',
+      'performance_id',
+      'price',
+      'status',
+      'created_at',
+      'updated_at'
     )
     .orderBy('id', 'asc');
 }
@@ -20,19 +28,38 @@ async function getTicketById(id) {
 }
 
 // Create a new ticket
-async function createTicket({ name, address }) {
+async function createTicket({
+  user_id,
+  seat_id,
+  performance_id,
+  price,
+  status,
+}) {
   const [newTicket] = await db('ticket')
     .insert({
       /* TEMPLATE COMMENT:
         Add relevant attributes.
         E.g. 'username','
       */
+      user_id,
+      seat_id,
+      performance_id,
+      price,
+      status,
     })
     .returning([
       /* TEMPLATE COMMENT:
         Add relevant attributes.
         E.g. 'id','
       */
+      'id',
+      'user_id',
+      'seat_id',
+      'performance_id',
+      'price',
+      'status',
+      'created_at',
+      'updated_at'
     ]);
   return newTicket;
 }
@@ -47,6 +74,14 @@ async function updateTicket(id, data) {
         Add relevant attributes.
         E.g. 'id','
       */
+      'id',
+      'user_id',
+      'seat_id',
+      'performance_id',
+      'price',
+      'status',
+      'created_at',
+      'updated_at'
     ]);
   return updatedTicket;
 }

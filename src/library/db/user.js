@@ -29,14 +29,18 @@ async function getUserById(id) {
 async function createUser({
   username,
   email,
-  password
+  password,
+  role,
+  status,
 }) {
   const password_hash = hashPassword(password);
   const [newUser] = await db('user')
     .insert({
       username,
       email,
-      password_hash
+      password_hash,
+      role,
+      status,
     })
     .returning([
       'id',

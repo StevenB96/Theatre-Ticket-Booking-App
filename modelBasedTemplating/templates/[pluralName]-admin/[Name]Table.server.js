@@ -14,19 +14,19 @@ export default function <%= Name %>TableServer({ data, onDelete }) {
         </tr>
       </thead>
       <tbody>
-        {data.map((u) => (
-          <tr key={u.id}>
+        {data.map((<%= name %>) => (
+          <tr key={<%= name %>.id}>
             {/* TEMPLATE COMMENT:
               Add relevant attributes. E.g.    
               <td>
-                {u.id}
+                {<%= name %>.id}
               </td>
             */}
             <td>
-              <Link href={'/admin/<%= pluralName %>/' + u.id}>Edit</Link>
+              <Link href={'/admin/<%= pluralName %>/' + <%= name %>.id}>Edit</Link>
               {onDelete && (
                 <button
-                  onClick={() => onDelete(u.id)}
+                  onClick={() => onDelete(<%= name %>.id)}
                 >
                   Delete
                 </button>

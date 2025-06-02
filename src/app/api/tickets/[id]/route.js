@@ -26,6 +26,11 @@ export async function PUT(req, { params }) {
         Add relevant attributes.
         E.g. name,
       */
+      user_id,
+      seat_id,
+      performance_id,
+      price,
+      status,
     } = await req.json();
 
     /* TEMPLATE COMMENT:
@@ -42,6 +47,11 @@ export async function PUT(req, { params }) {
         Add relevant attributes.
         E.g. name,
       */
+      user_id,
+      seat_id,
+      performance_id,
+      price,
+      status,
     });
 
     return NextResponse.json(updated);

@@ -3,11 +3,15 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function CreateUserForm() {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState('');
+export default function CreateSeatForm() {
+  /* TEMPLATE COMMENT:
+    Add relevant state attributes.
+    E.g. const [username, setUsername] = useState('');
+  */
+
+  const [theatre_id, setTheatreId] = useState('');
+  const [code, setCode] = useState('');
+  const [zone, setZone] = useState('');
   const [status, setStatus] = useState('');
 
   const router = useRouter();
@@ -15,20 +19,19 @@ export default function CreateUserForm() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const res = await fetch('/api/users', {
+    const res = await fetch('/api/seats', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        username,
-        email,
-        password,
-        role,
+      body: JSON.stringify(
+        theatre_id,
+        code,
+        zone,
         status
-      }),
+      ),
     });
 
     if (res.ok) {
-      router.push('/admin/users');
+      router.push('/admin/seats');
     } else {
       const err = await res.json();
       alert('Error: ' + (err.error || res.statusText));
@@ -37,49 +40,53 @@ export default function CreateUserForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <label>
-          Username:
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </label>
-      </div>
+
+      {/* TEMPLATE COMMENT:
+        Add relevant inputs. E.g.
+        <div>
+          <label>
+            Username:
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+      */}
 
       <div>
         <label>
-          Email:
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-      </div>
-
-      <div>
-        <label>
-          Password:
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
-      </div>
-
-      <div>
-        <label>
-          Role:
+          Theatre ID:
           <input
             type="number"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
+            value={theatre_id}
+            onChange={(e) => setTheatreId(e.target.value)}
+            required
+          />
+        </label>
+      </div>
+
+      <div>
+        <label>
+          Code:
+          <input
+            type="text"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            required
+          />
+        </label>
+      </div>
+
+      <div>
+        <label>
+          Zone:
+          <input
+            type="text"
+            value={zone}
+            onChange={(e) => setZone(e.target.value)}
             required
           />
         </label>

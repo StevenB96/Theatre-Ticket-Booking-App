@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 export default function CreateTheatreForm() {
   const [name, setName] = useState('');
   const [address, setAddress] = useState('');
-  const [status, setStatus] = useState(1);
+  const [status, setStatus] = useState('');
 
   const router = useRouter();
 

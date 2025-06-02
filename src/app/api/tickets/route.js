@@ -21,6 +21,11 @@ export async function POST(req) {
         Add relevant attributes.
         E.g. name,
       */
+      user_id,
+      seat_id,
+      performance_id,
+      price,
+      status,
     } = await req.json();
 
     /* TEMPLATE COMMENT:
@@ -36,6 +41,11 @@ export async function POST(req) {
         Add relevant attributes.
         E.g. name,
       */
+      user_id,
+      seat_id,
+      performance_id,
+      price,
+      status,
     });
 
     return NextResponse.json(newTicket, { status: 201 });

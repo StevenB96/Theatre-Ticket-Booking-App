@@ -21,13 +21,21 @@ export async function GET(_, { params }) {
 
 export async function PUT(req, { params }) {
   try {
-    const { name, address } = await req.json();
+    const {
+      name,
+      address,
+      status
+    } = await req.json();
     if (!name) {
       return NextResponse.json({ error: 'Name is required' }, { status: 400 });
     }
 
     const { id: theatreId } = await params;
-    const updated = await updateTheatre(Number(theatreId), { name, address });
+    const updated = await updateTheatre(Number(theatreId), {
+      name,
+      address,
+      status
+    });
 
     return NextResponse.json(updated);
   } catch (err) {

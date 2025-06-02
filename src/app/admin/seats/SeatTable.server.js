@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-export default function ShowTableServer({ data, onDelete }) {
+export default function SeatTableServer({ data, onDelete }) {
   return (
     <table>
       <thead>
@@ -10,7 +10,9 @@ export default function ShowTableServer({ data, onDelete }) {
             <th>ID</th>
           */}
           <th>ID</th>
-          <th>Name</th>
+          <th>Theatre ID</th>
+          <th>Code</th>
+          <th>Zone</th>
           <th>Status</th>
           <th>Created At</th>
           <th>Updated At</th>
@@ -18,34 +20,40 @@ export default function ShowTableServer({ data, onDelete }) {
         </tr>
       </thead>
       <tbody>
-        {data.map((show) => (
-          <tr key={show.id}>
+        {data.map((seat) => (
+          <tr key={seat.id}>
             {/* TEMPLATE COMMENT:
               Add relevant attributes. E.g.    
               <td>
-                {show.id}
+                {u.id}
               </td>
             */}
             <td>
-              {show.id}
+              {seat.id}
             </td>
             <td>
-              {show.name}
+              {seat.theatre_id}
             </td>
             <td>
-              {show.status}
+              {seat.code}
             </td>
             <td>
-              {new Date(show.created_at).toLocaleDateString('en-GB')}
+              {seat.zone}
             </td>
             <td>
-              {new Date(show.updated_at).toLocaleDateString('en-GB')}
+              {seat.status}
             </td>
             <td>
-              <Link href={'/admin/shows/' + show.id}>Edit</Link>
+              {new Date(seat.created_at).toLocaleDateString('en-GB')}
+            </td>
+            <td>
+              {new Date(seat.updated_at).toLocaleDateString('en-GB')}
+            </td>
+            <td>
+              <Link href={'/admin/seats/' + seat.id}>Edit</Link>
               {onDelete && (
                 <button
-                  onClick={() => onDelete(show.id)}
+                  onClick={() => onDelete(seat.id)}
                 >
                   Delete
                 </button>
