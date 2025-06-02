@@ -61,8 +61,9 @@ npx knex seed:run
 
 ## Check Directory Structure and Contents
 
-```powershell
+```
 function Show-Tree { param($p='.', $l=0) (Get-ChildItem $p -Force | Sort-Object @{Expression={$_.PSIsContainer};Descending=$true}, Name) | ForEach-Object { if ($_.PSIsContainer) { ('  '*$l)+'📁 '+$_.Name; Show-Tree $_.FullName ($l+1) } else { ('  '*($l+1))+ $_.Name; try { if ((Get-Content $_.FullName -Encoding Byte -TotalCount 1024 | Where-Object { $_ -gt 31 -or $_ -eq 9 -or $_ -eq 10 -or $_ -eq 13 }).Count -gt 0) { Get-Content $_.FullName -ErrorAction Stop | ForEach-Object { ('  '*($l+2)) + $_ } } else { ('  '*($l+2)) + '[Binary or non-text content skipped]' } } catch { ('  '*($l+2)) + '[Error reading file]' } } } }; Show-Tree
+```
 
 ## Theatre Admin Refactor Guide
 
