@@ -1,64 +1,64 @@
 import { NextResponse } from 'next/server';
 import {
-  getVoucherById,
-  updateVoucher,
-  deleteVoucher,
-} from '@/library/db/voucher';
+  getUserById,
+  updateUser,
+  deleteUser,
+} from '@/library/db/user';
 import {
-  Voucher,
-  UpdateVoucherInput
-} from '@/types/voucher';
+  User,
+  UpdateUserInput
+} from '@/types/user';
 
-// GET /api/vouchers/:id
+// GET /api/users/:id
 export async function GET(
   _req: Request,
   { params }: { params: { id: string } }
 ) {
   try {
-    const voucherId = Number(params.id);
-    const voucher = await getVoucherById(voucherId);
+    const userId = Number(params.id);
+    const user = await getUserById(userId);
 
-    if (!voucher) {
+    if (!user) {
       return NextResponse.json(
-        { error: 'Voucher not found' },
+        { error: 'User not found' },
         { status: 404 }
       );
     }
 
-    if (!voucher) {
+    if (!user) {
       return NextResponse.json(
-        { error: 'Voucher not found' },
+        { error: 'User not found' },
         { status: 404 }
       );
     }
 
-    return NextResponse.json(voucher);
+    return NextResponse.json(user);
   } catch (err) {
-    console.error('GET voucher error:', err);
+    console.error('GET user error:', err);
     return NextResponse.json(
-      { error: 'Failed to fetch voucher' },
+      { error: 'Failed to fetch user' },
       { status: 500 }
     );
   }
 }
 
-// PUT /api/vouchers/:id
+// PUT /api/users/:id
 export async function PUT(
   req: Request,
   { params }: { params: { id: string } }
 ) {
   try {
-    const body: UpdateVoucherInput = await req.json();
+    const body: UpdateUserInput = await req.json();
 
-    const voucherIdFromUrl = Number(params.id);
-    if (body.id !== voucherIdFromUrl) {
+    const userIdFromUrl = Number(params.id);
+    if (body.id !== userIdFromUrl) {
       return NextResponse.json(
         { error: 'ID mismatch between URL and request body' },
         { status: 400 }
       );
     };
 
-    const updated: Voucher = await updateVoucher(voucherIdFromUrl, {
+    const updated: User = await updateUser(userIdFromUrl, {
       /* TEMPLATE COMMENT:
         Add relevant attributes.
         E.g. id: body.id,
@@ -67,27 +67,27 @@ export async function PUT(
 
     return NextResponse.json(updated);
   } catch (err) {
-    console.error('PUT voucher error:', err);
+    console.error('PUT user error:', err);
     return NextResponse.json(
-      { error: 'Failed to update voucher' },
+      { error: 'Failed to update user' },
       { status: 500 }
     );
   }
 }
 
-// DELETE /api/vouchers/:id
+// DELETE /api/users/:id
 export async function DELETE(
   _req: Request,
   { params }: { params: { id: string } }
 ) {
   try {
-    const voucherId = Number(params.id);
-    await deleteVoucher(voucherId);
+    const userId = Number(params.id);
+    await deleteUser(userId);
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error('DELETE voucher error:', err);
+    console.error('DELETE user error:', err);
     return NextResponse.json(
-      { error: 'Failed to delete voucher' },
+      { error: 'Failed to delete user' },
       { status: 500 }
     );
   }

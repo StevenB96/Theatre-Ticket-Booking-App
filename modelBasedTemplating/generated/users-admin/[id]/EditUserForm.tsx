@@ -1,22 +1,22 @@
-// app/admin/vouchers/[id]/edit/EditVoucherForm.tsx
+// app/admin/users/[id]/edit/EditUserForm.tsx
 'use client';
 
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import type { Voucher, UpdateVoucherInput } from '@/types/voucher';
+import type { User, UpdateUserInput } from '@/types/user';
 
-interface EditVoucherFormProps {
-  voucher: Voucher;
+interface EditUserFormProps {
+  user: User;
 }
 
-export default function EditVoucherForm({
-  voucher,
-}: EditVoucherFormProps) {
+export default function EditUserForm({
+  user,
+}: EditUserFormProps) {
   /* TEMPLATE COMMENT:
     Add relevant attributes.
     E.g.
     const [status, setStatus] = useState<string>(
-      voucher.status.toString()
+      user.status.toString()
     );
   */
 
@@ -25,21 +25,21 @@ export default function EditVoucherForm({
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const payload: UpdateVoucherInput = {
+    const payload: UpdateUserInput = {
       /* TEMPLATE COMMENT:
         Add relevant attributes.
-        E.g. id: voucher.id,
+        E.g. id: user.id,
       */
     };
 
-    const res = await fetch('/api/vouchers/' + voucher.id, {
+    const res = await fetch('/api/users/' + user.id, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
 
     if (res.ok) {
-      router.push('/admin/vouchers');
+      router.push('/admin/users');
     } else {
       const err = await res.json();
       alert('Error: ' + (err.error || res.statusText));

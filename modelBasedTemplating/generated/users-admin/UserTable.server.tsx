@@ -1,16 +1,16 @@
-// app/admin/vouchers/VoucherTable.server.tsx
+// app/admin/users/UserTable.server.tsx
 import Link from 'next/link';
-import type { Voucher } from '@/types/voucher';
+import type { User } from '@/types/user';
 
-interface VoucherTableServerProps {
-  data: Voucher[];
+interface UserTableServerProps {
+  data: User[];
   onDelete?: (id: number) => void;
 };
 
-export default function VoucherTableServer({
+export default function UserTableServer({
   data,
   onDelete,
-}: VoucherTableServerProps) {
+}: UserTableServerProps) {
   return (
     <table>
       <thead>
@@ -22,11 +22,11 @@ export default function VoucherTableServer({
         </tr>
       </thead>
       <tbody>
-        {data.map((voucher) => (
-          <tr key={voucher.id}>
+        {data.map((user) => (
+          <tr key={user.id}>
             {/* TEMPLATE COMMENT:
               Add relevant attributes.
-              E.g. <td>{voucher.id}</td>
+              E.g. <td>{user.id}</td>
             */}
           </tr>
         ))}

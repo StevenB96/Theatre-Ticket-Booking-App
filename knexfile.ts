@@ -1,8 +1,9 @@
-const path = require('path');
+import path from 'path';
+import type { Knex } from 'knex';
 
 console.log('Migration directory:', path.resolve('./src/db/migrations'));
 
-module.exports = {
+const config: { [key: string]: Knex.Config } = {
   development: {
     client: 'sqlite3',
     connection: {
@@ -34,3 +35,5 @@ module.exports = {
     },
   },
 };
+
+export default config;

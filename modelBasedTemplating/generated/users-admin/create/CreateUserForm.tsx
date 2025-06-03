@@ -1,16 +1,16 @@
-// app/admin/vouchers/create/CreateVoucherForm.tsx
+// app/admin/users/create/CreateUserForm.tsx
 'use client';
 
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import type { Voucher, UpdateVoucherInput } from '@/types/voucher';
+import type { User, UpdateUserInput } from '@/types/user';
 
-export default function CreateVoucherForm() {
+export default function CreateUserForm() {
   /* TEMPLATE COMMENT:
     Add relevant attributes.
     E.g.
     const [status, setStatus] = useState<string>(
-      voucher.status.toString()
+      user.status.toString()
     );
   */
 
@@ -22,19 +22,19 @@ export default function CreateVoucherForm() {
     const payload = {
       /* TEMPLATE COMMENT:
         Add relevant attributes.
-        E.g. status: Number(voucher.status),
+        E.g. status: Number(user.status),
       */
     };
 
     try {
-      const res = await fetch('/api/vouchers', {
+      const res = await fetch('/api/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
 
       if (res.ok) {
-        router.push('/admin/vouchers');
+        router.push('/admin/users');
       } else {
         const err = await res.json();
         alert('Error: ' + (err.error || res.statusText));

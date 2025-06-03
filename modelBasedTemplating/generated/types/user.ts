@@ -1,18 +1,18 @@
-// src/types/voucher.ts
-export interface Voucher {
+// src/types/user.ts
+export interface User {
   /* TEMPLATE COMMENT:
     Add relevant attributes.
     E.g. id: number;
   */
 }
 
-export interface CreateVoucherInput {
+export interface CreateUserInput {
   /* TEMPLATE COMMENT:
     Add relevant attributes.
     E.g. status: number;
   */
 }
 
-export interface UpdateVoucherInput extends CreateVoucherInput {
+export interface UpdateUserInput extends CreateUserInput {
   id: number;
 }

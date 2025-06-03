@@ -1,16 +1,11 @@
-const bcryptjs = require('bcryptjs');
+import bcryptjs from 'bcryptjs';
 
 const saltRounds = 10;
 
-async function hashPassword(password) {
+export async function hashPassword(password: string): Promise<string> {
   return await bcryptjs.hash(password, saltRounds);
 }
 
-async function verifyPassword(password, hash) {
+export async function verifyPassword(password: string, hash: string): Promise<boolean> {
   return await bcryptjs.compare(password, hash);
 }
-
-module.exports = {
-  hashPassword,
-  verifyPassword,
-};
