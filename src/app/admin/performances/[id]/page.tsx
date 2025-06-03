@@ -1,20 +1,31 @@
 // app/admin/performances/[id]/edit/page.tsx
+import React, { ReactNode } from 'react';
 import dynamic from 'next/dynamic';
 import { getPerformanceById } from '@/library/db/performance';
-import type { ReactNode } from 'react';
 
-const EditPerformanceForm = dynamic<{
-  performance: Performance;
-}>(
-  () => import('./EditPerformanceForm'),
-  { loading: () => <p>Loading form…</p> }
-);
+interface EditPerformancePageProps {
+  params: { id: string };
+}
+
+const EditPerformanceForm = dynamic(() => import('./EditPerformanceForm'), {
+  loading: () => <p>Loading form…</p>,
+  ssr: false,
+});
 
 export default async function EditPerformancePage({
   params,
-}): Promise<ReactNode> {
-  const performanceId = await params.id;
-  const performance: any = await getPerformanceById(performanceId);
+}: EditPerformancePageProps): Promise<ReactNode> {
+  const performanceId = Number(params.id);
+  const performance = await getPerformanceById(performanceId);
+
+  if (!performance) {
+    return (
+      <div>
+        <h1>Performance not found</h1>
+        <p>No performance exists with ID #{performanceId}.</p>
+      </div>
+    );
+  }
 
   return (
     <div>

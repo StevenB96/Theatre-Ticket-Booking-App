@@ -3,10 +3,15 @@
 
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import type { Performance, UpdatePerformanceInput } from '@/types/performance';
+
+interface EditPerformanceFormProps {
+  performance: Performance;
+}
 
 export default function EditPerformanceForm({
   performance,
-}) {
+}: EditPerformanceFormProps) {
   const [theatreHasShowId, setTheatreHasShowId] = useState<string>(
     performance.theatre_has_show_id.toString()
   );
@@ -25,7 +30,8 @@ export default function EditPerformanceForm({
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const payload = {
+    const payload: UpdatePerformanceInput = {
+      id: performance.id,
       theatre_has_show_id: Number(theatreHasShowId),
       start_time: startTime,
       type: Number(typeValue),

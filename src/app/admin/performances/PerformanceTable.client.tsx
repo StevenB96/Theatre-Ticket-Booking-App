@@ -2,9 +2,14 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import type { Performance } from '@/types/performance';
 import PerformanceTableServer from './PerformanceTable.server';
 
-export default function PerformanceTable({ data }) {
+interface PerformanceTableProps {
+  data: Performance[];
+};
+
+export default function PerformanceTable({ data }: PerformanceTableProps) {
   const router = useRouter();
 
   async function handleDelete(id: number) {
@@ -14,4 +19,4 @@ export default function PerformanceTable({ data }) {
   }
 
   return <PerformanceTableServer data={data} onDelete={handleDelete} />;
-}
+};

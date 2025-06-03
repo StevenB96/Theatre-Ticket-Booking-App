@@ -14,4 +14,4 @@ export default function CreatePerformancePage(): ReactNode {
       <CreatePerformanceForm />
     </div>
   );
-}
+};

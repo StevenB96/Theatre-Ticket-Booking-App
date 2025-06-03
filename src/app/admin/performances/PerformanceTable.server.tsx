@@ -1,10 +1,11 @@
 // app/admin/performances/PerformanceTable.server.tsx
 import Link from 'next/link';
+import type { Performance } from '@/types/performance';
 
 interface PerformanceTableServerProps {
-  data: any[];
+  data: Performance[];
   onDelete?: (id: number) => void;
-}
+};
 
 export default function PerformanceTableServer({
   data,
@@ -56,4 +57,4 @@ export default function PerformanceTableServer({
       </tbody>
     </table>
   );
-}
+};

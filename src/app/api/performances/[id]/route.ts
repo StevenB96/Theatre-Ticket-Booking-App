@@ -4,6 +4,10 @@ import {
   updatePerformance,
   deletePerformance,
 } from '@/library/db/performance';
+import {
+  Performance,
+  UpdatePerformanceInput
+} from '@/types/performance';
 
 // GET /api/performances/:id
 export async function GET(
@@ -13,6 +17,13 @@ export async function GET(
   try {
     const performanceId = Number(params.id);
     const performance = await getPerformanceById(performanceId);
+
+    if (!performance) {
+      return NextResponse.json(
+        { error: 'Performance not found' },
+        { status: 404 }
+      );
+    }
 
     if (!performance) {
       return NextResponse.json(
@@ -37,24 +48,21 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const {
-      theatre_has_show_id,
-      start_time,
-      type,
-      status,
-    }: {
-      theatre_has_show_id: number;
-      start_time: string;
-      type: number;
-      status: number;
-    } = await req.json();
+    const body: UpdatePerformanceInput = await req.json();
 
-    const performanceId = Number(params.id);
-    const updated = await updatePerformance(performanceId, {
-      theatre_has_show_id,
-      start_time,
-      type,
-      status,
+    const performanceIdFromUrl = Number(params.id);
+    if (body.id !== performanceIdFromUrl) {
+      return NextResponse.json(
+        { error: 'ID mismatch between URL and request body' },
+        { status: 400 }
+      );
+    }
+
+    const updated: Performance = await updatePerformance(performanceIdFromUrl, {
+      theatre_has_show_id: body.theatre_has_show_id,
+      start_time: body.start_time,
+      type: body.type,
+      status: body.status,
     });
 
     return NextResponse.json(updated);
@@ -75,7 +83,6 @@ export async function DELETE(
   try {
     const performanceId = Number(params.id);
     await deletePerformance(performanceId);
-
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error('DELETE performance error:', err);

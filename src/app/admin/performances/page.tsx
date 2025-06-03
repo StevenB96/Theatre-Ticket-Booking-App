@@ -16,4 +16,4 @@ export default async function PerformancesPage(): Promise<ReactNode> {
       <PerformanceTable data={performances} />
     </div>
   );
-}
+};
