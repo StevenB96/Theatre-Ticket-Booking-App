@@ -1,18 +1,15 @@
+// src/library/db/performance.ts
 const db = require('../dbClient');
+import type {
+  Performance,
+  CreatePerformanceInput,
+  UpdatePerformanceInput,
+} from '@/types/performance';
 
 // Get all performances
-export async function getAllPerformances(): Promise<
-  {
-    id: number;
-    theatre_has_show_id: number;
-    start_time: string;
-    type: number;
-    status: number;
-    created_at: string;
-    updated_at: string;
-  }[]
-> {
-  return db('performance')
+export async function getAllPerformances(): Promise<Performance[]> {
+  // @ts-ignore: untyped function call may not accept type arguments
+  return db<Performance>('performance')
     .select(
       'id',
       'theatre_has_show_id',
@@ -23,45 +20,28 @@ export async function getAllPerformances(): Promise<
       'updated_at'
     )
     .orderBy('id', 'asc');
-};
+}
 
 // Get one performance by ID
 export async function getPerformanceById(
   id: number
-): Promise<
-  | {
-    id: number;
-    theatre_has_show_id: number;
-    start_time: string;
-    type: number;
-    status: number;
-    created_at: string;
-    updated_at: string;
-  }
-  | undefined
-> {
-  return db('performance')
-    .where({ id })
-    .first();
-};
+): Promise<Performance | undefined> {
+  // @ts-ignore: untyped function call may not accept type arguments
+  return db<Performance>('performance').where({ id }).first();
+}
 
 // Create a new performance
-export async function createPerformance(input: {
-  theatre_has_show_id: number;
-  start_time: string;
-  type: number;
-  status: number;
-}): Promise<{
-  id: number;
-  theatre_has_show_id: number;
-  start_time: string;
-  type: number;
-  status: number;
-  created_at: string;
-  updated_at: string;
-}> {
-  const [newPerformance] = await db('performance')
-    .insert(input)
+export async function createPerformance(
+  input: CreatePerformanceInput
+): Promise<Performance> {
+  // @ts-ignore: untyped function call may not accept type arguments
+  const [newPerformance] = await db<Performance>('performance')
+    .insert({
+      theatre_has_show_id: input.theatre_has_show_id,
+      start_time: input.start_time,
+      type: input.type,
+      status: input.status,
+    })
     .returning([
       'id',
       'theatre_has_show_id',
@@ -72,27 +52,15 @@ export async function createPerformance(input: {
       'updated_at',
     ]);
   return newPerformance;
-};
+}
 
 // Update an existing performance
 export async function updatePerformance(
   id: number,
-  data: Partial<{
-    theatre_has_show_id: number;
-    start_time: string;
-    type: number;
-    status: number;
-  }>
-): Promise<{
-  id: number;
-  theatre_has_show_id: number;
-  start_time: string;
-  type: number;
-  status: number;
-  created_at: string;
-  updated_at: string;
-}> {
-  const [updatedPerformance] = await db('performance')
+  data: UpdatePerformanceInput
+): Promise<Performance> {
+  // @ts-ignore: untyped function call may not accept type arguments
+  const [updatedPerformance] = await db<Performance>('performance')
     .where({ id })
     .update(data)
     .returning([
@@ -105,11 +73,9 @@ export async function updatePerformance(
       'updated_at',
     ]);
   return updatedPerformance;
-};
+}
 
 // Delete an existing performance
-export async function deletePerformance(id: number) {
-  await db('performance')
-    .where({ id })
-    .del();
-};
+export async function deletePerformance(id: number): Promise<void> {
+  await db('performance').where({ id }).del();
+}

@@ -45,7 +45,7 @@ export default function PerformanceTableServer({
               {new Date(performance.updated_at).toLocaleDateString('en-GB')}
             </td>
             <td>
-              <Link href={`/admin/performances/${performance.id}`}>Edit</Link>
+              <Link href={'/admin/performances/' + performance.id}>Edit</Link>
               {onDelete && (
                 <button onClick={() => onDelete(performance.id)}>
                   Delete

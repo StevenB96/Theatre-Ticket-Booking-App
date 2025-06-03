@@ -4,10 +4,10 @@ const path = require('path');
 const ejs = require('ejs');
 const inquirer = require('inquirer').default;
 
-const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
+const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
 /**
- * Recursively walk a directory and return all .js template file paths.
+ * Recursively walk a directory and return all .js, .ts, and .tsx template file paths.
  * @param {string} dir - Directory to traverse
  * @returns {string[]} Array of absolute file paths
  */
@@ -19,7 +19,7 @@ function walkTemplates(dir) {
     const fullPath = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       results = results.concat(walkTemplates(fullPath));
-    } else if (entry.isFile() && entry.name.endsWith('.js')) {
+    } else if (entry.isFile() && /\.(js|ts|tsx)$/.test(entry.name)) {
       results.push(fullPath);
     }
   }
@@ -38,13 +38,24 @@ function renderSegment(segment, context) {
     .replace(/\[PluralName\]/g, context.PluralName);
 }
 
+/**
+ * Given the raw contents of a .js/.ts/.tsx file that exports a template string,
+ * strip away the surrounding `const … = \` … \`;` and `module.exports = …;`
+ * so we only return the inner template literal text.
+ */
+function extractTemplateLiteral(raw) {
+  // Match text between the first backtick after `=` and the final backtick before `;`
+  const match = raw.match(/=\s*`([\s\S]*?)`;/);
+  return match ? match[1] : raw;
+}
+
 async function main() {
   // Prompt user for config
   const answers = await inquirer.prompt([
-    { name: 'name', message: 'Singular name (e.g. user):', validate: v => v ? true : 'Required' },
-    { name: 'pluralName', message: 'Plural name (e.g. users):', validate: v => v ? true : 'Required' },
+    { name: 'name', message: 'Singular name (e.g. user):', validate: (v) => (v ? true : 'Required') },
+    { name: 'pluralName', message: 'Plural name (e.g. users):', validate: (v) => (v ? true : 'Required') },
     { name: 'templates', message: 'Templates directory:', default: path.resolve(__dirname, 'templates') },
-    { name: 'outDir', message: 'Output directory:', default: path.resolve(__dirname, 'generated') }
+    { name: 'outDir', message: 'Output directory:', default: path.resolve(__dirname, 'generated') },
   ]);
 
   const { name, pluralName, templates, outDir } = answers;
@@ -55,7 +66,7 @@ async function main() {
   // Ensure output directory exists
   fs.mkdirSync(outDir, { recursive: true });
 
-  // Get template files recursively
+  // Get all template files recursively
   const templateFiles = walkTemplates(templates);
 
   for (const filePath of templateFiles) {
@@ -64,7 +75,7 @@ async function main() {
     const parts = relPath.split(path.sep);
 
     // Render each directory segment
-    const renderedDirs = parts.slice(0, -1).map(seg =>
+    const renderedDirs = parts.slice(0, -1).map((seg) =>
       /\[.*\]/.test(seg) ? renderSegment(seg, context) : seg
     );
 
@@ -72,19 +83,23 @@ async function main() {
     const targetDir = path.join(outDir, ...renderedDirs);
     fs.mkdirSync(targetDir, { recursive: true });
 
-    // Load and render template content
-    const tplModule = require(filePath);
-    const templateContent = typeof tplModule === 'string'
-      ? tplModule
-      : tplModule.default || tplModule.template || '';
+    // Read raw file contents
+    const raw = fs.readFileSync(filePath, 'utf8');
+
+    // If the file exports a template literal, extract just the interior text.
+    // Otherwise, use the raw content directly.
+    const templateContent = extractTemplateLiteral(raw);
+
+    // Render template with EJS
     const renderedContent = ejs.render(templateContent, context);
 
-    // Compute output file name by replacing placeholders in basename
-    const baseName = parts[parts.length - 1].replace(/\.js$/, '');
-    const outFileBase = /\[.*\]/.test(baseName)
-      ? renderSegment(baseName, context)
-      : baseName;
-    const outFileName = outFileBase + '.js';
+    // Compute output file name by replacing placeholders in basename, preserving extension
+    const ext = path.extname(parts[parts.length - 1]); // .js, .ts, or .tsx
+    const baseNameWithoutExt = path.basename(parts[parts.length - 1], ext);
+    const outFileBase = /\[.*\]/.test(baseNameWithoutExt)
+      ? renderSegment(baseNameWithoutExt, context)
+      : baseNameWithoutExt;
+    const outFileName = outFileBase + ext;
 
     // Write the rendered file
     const outPath = path.join(targetDir, outFileName);
@@ -93,4 +108,7 @@ async function main() {
   }
 }
 
-main().catch(err => { console.error(err); process.exit(1); });
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

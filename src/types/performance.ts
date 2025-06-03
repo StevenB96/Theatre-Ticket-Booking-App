@@ -14,8 +14,6 @@ export interface CreatePerformanceInput {
   start_time: string;
   type: number;
   status: number;
-  created_at: string;
-  updated_at: string;
 }
 
 export interface UpdatePerformanceInput extends CreatePerformanceInput {

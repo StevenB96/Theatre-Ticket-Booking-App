@@ -1,5 +1,6 @@
 // templates/listPageTemplate.js
-const listPageTemplate = `import Link from 'next/link';
+const listPageTemplate = `// app/admin/<%= pluralName %>/page.tsx
+// import Link from 'next/link';
 import <%= Name %>Table from './<%= Name %>Table.client';
 import { getAll<%= PluralName %> } from '@/library/db/<%= name %>';
 

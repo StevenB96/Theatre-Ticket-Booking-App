@@ -9,7 +9,6 @@ interface EditPerformancePageProps {
 
 const EditPerformanceForm = dynamic(() => import('./EditPerformanceForm'), {
   loading: () => <p>Loading form…</p>,
-  ssr: false,
 });
 
 export default async function EditPerformancePage({

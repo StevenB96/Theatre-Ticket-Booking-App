@@ -56,9 +56,10 @@ export async function PUT(
         { error: 'ID mismatch between URL and request body' },
         { status: 400 }
       );
-    }
+    };
 
     const updated: Performance = await updatePerformance(performanceIdFromUrl, {
+      id: body.id,
       theatre_has_show_id: body.theatre_has_show_id,
       start_time: body.start_time,
       type: body.type,
