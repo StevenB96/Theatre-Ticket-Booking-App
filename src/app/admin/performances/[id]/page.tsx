@@ -14,7 +14,7 @@ const EditPerformanceForm = dynamic(() => import('./EditPerformanceForm'), {
 export default async function EditPerformancePage({
   params,
 }: EditPerformancePageProps): Promise<ReactNode> {
-  const performanceId = Number(params.id);
+  const performanceId = await Number(params.id);
   const performance = await getPerformanceById(performanceId);
 
   if (!performance) {

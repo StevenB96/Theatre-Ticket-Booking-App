@@ -2,15 +2,23 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { verifyPassword } from '@/library/auth';
-import db from '@/library/dbClient.ts';
+import db from '@/library/dbClient';
+import type { Session, NextAuthOptions } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        email: { label: 'Email', type: 'email' },
-        password: { label: 'Password', type: 'password' },
+        email: {
+          label: 'Email',
+          type: 'email'
+        },
+        password: {
+          label: 'Password',
+          type: 'password'
+        },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
@@ -62,11 +70,18 @@ export const authOptions = {
      * into `token.role` (only on first sign‐in). On subsequent requests, `user` is
      * undefined, so we simply leave `token.role` as is.
      */
-    async jwt({ token, user }) {
+    async jwt({
+      token,
+      user
+    }: {
+      user: { role?: string; username?: string }
+      token: JWT;
+    }) {
       if (user) {
-        // On initial sign‐in, `user` is the object returned from `authorize()`.
-        token.role = user.role;
+        token.id = user.id;
+        token.email = user.email;
         token.username = user.username;
+        token.role = user.role;
       }
       return token;
     },
@@ -75,13 +90,17 @@ export const authOptions = {
      * The `session` callback is called whenever `getSession()` or `useSession()` is invoked.
      * We copy `token.role` into `session.user.role` so the client can read it.
      */
-    async session({ session, token }) {
-      if (token.role !== undefined) {
-        session.user.role = token.role;
-      };
-      if (token.username !== undefined) {
-        session.user.username = token.username;
-      };
+    async session({
+      session,
+      token,
+    }: {
+      session: Session;
+      token: JWT;
+    }) {
+      session.user.id = token.id!;
+      session.user.email = token.email!;
+      if (token.username) session.user.username = token.username;
+      if (token.role) session.user.role = token.role;
       return session;
     },
   },

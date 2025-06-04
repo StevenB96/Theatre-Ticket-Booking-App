@@ -1,5 +1,6 @@
 // templates/route.js
-const route = `import { NextResponse } from 'next/server';
+const route = `// app/api/<%= pluralName %>/route.ts
+import { NextResponse } from 'next/server';
 import {
   getAll<%= PluralName %>,
   create<%= Name %>,

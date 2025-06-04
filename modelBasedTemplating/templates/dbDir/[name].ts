@@ -1,6 +1,6 @@
 // templates/dbFunctionsTemplate.js
 const dbFunctionsTemplate = `// src/library/db/<%= name %>.ts
-const db = require('../dbClient');
+import db from '../dbClient';
 import type {
   <%= Name %>,
   Create<%= Name %>Input,

@@ -20,10 +20,10 @@ export interface CreateUserInput {
 
 export interface UpdateUserInput {
   id: number;
-  username?: string;
-  email?: string;
+  username: string;
+  email: string;
   password?: string;
   password_hash?: string;
-  role?: number;
-  status?: number;
+  role: number;
+  status: number;
 }

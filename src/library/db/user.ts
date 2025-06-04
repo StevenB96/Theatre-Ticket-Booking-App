@@ -1,5 +1,5 @@
 // src/library/db/user.ts
-const db = require('../dbClient.ts'); // Knex instance
+import db from '../dbClient';
 import { hashPassword } from '@/library/auth';
 import type {
   User,

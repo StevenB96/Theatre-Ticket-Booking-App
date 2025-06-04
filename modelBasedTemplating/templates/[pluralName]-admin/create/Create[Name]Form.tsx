@@ -4,7 +4,6 @@ const createFormTemplate = `// app/admin/<%= pluralName %>/create/Create<%= Name
 
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import type { <%= Name %>, Update<%= Name %>Input } from '@/types/<%= name %>';
 
 export default function Create<%= Name %>Form() {
   /* TEMPLATE COMMENT:

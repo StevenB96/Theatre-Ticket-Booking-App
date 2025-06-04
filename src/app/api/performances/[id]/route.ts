@@ -15,7 +15,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const performanceId = Number(params.id);
+    const performanceId = await Number(params.id);
     const performance = await getPerformanceById(performanceId);
 
     if (!performance) {
@@ -50,7 +50,7 @@ export async function PUT(
   try {
     const body: UpdatePerformanceInput = await req.json();
 
-    const performanceIdFromUrl = Number(params.id);
+    const performanceIdFromUrl = await Number(params.id);
     if (body.id !== performanceIdFromUrl) {
       return NextResponse.json(
         { error: 'ID mismatch between URL and request body' },
@@ -58,13 +58,7 @@ export async function PUT(
       );
     };
 
-    const updated: Performance = await updatePerformance(performanceIdFromUrl, {
-      id: body.id,
-      theatre_has_show_id: body.theatre_has_show_id,
-      start_time: body.start_time,
-      type: body.type,
-      status: body.status,
-    });
+    const updated: Performance = await updatePerformance(performanceIdFromUrl, body);
 
     return NextResponse.json(updated);
   } catch (err) {
@@ -82,7 +76,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const performanceId = Number(params.id);
+    const performanceId = await Number(params.id);
     await deletePerformance(performanceId);
     return NextResponse.json({ success: true });
   } catch (err) {

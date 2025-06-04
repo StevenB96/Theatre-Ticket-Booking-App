@@ -1,5 +1,5 @@
 // src/library/db/performance.ts
-const db = require('../dbClient');
+import db from '../dbClient';
 import type {
   Performance,
   CreatePerformanceInput,

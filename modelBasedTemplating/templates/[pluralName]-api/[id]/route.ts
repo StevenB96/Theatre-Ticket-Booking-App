@@ -1,5 +1,6 @@
 // templates/idRouteTemplate.js
-const idRouteTemplate = `import { NextResponse } from 'next/server';
+const idRouteTemplate = `// app/api/<%= pluralName %>/[id]/route.ts
+import { NextResponse } from 'next/server';
 import {
   get<%= Name %>ById,
   update<%= Name %>,
@@ -16,7 +17,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const <%= name %>Id = Number(params.id);
+    const <%= name %>Id = await Number(params.id);
     const <%= name %> = await get<%= Name %>ById(<%= name %>Id);
 
     if (!<%= name %>) {
@@ -51,7 +52,7 @@ export async function PUT(
   try {
     const body: Update<%= Name %>Input = await req.json();
 
-    const <%= name %>IdFromUrl = Number(params.id);
+    const <%= name %>IdFromUrl = await Number(params.id);
     if (body.id !== <%= name %>IdFromUrl) {
       return NextResponse.json(
         { error: 'ID mismatch between URL and request body' },
@@ -59,12 +60,7 @@ export async function PUT(
       );
     };
 
-    const updated: <%= Name %> = await update<%= Name %>(<%= name %>IdFromUrl, {
-      /* TEMPLATE COMMENT:
-        Add relevant attributes.
-        E.g. id: body.id,
-      */
-    });
+    const updated: <%= Name %> = await update<%= Name %>(<%= name %>IdFromUrl, body);
 
     return NextResponse.json(updated);
   } catch (err) {
@@ -82,7 +78,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const <%= name %>Id = Number(params.id);
+    const <%= name %>Id = await Number(params.id);
     await delete<%= Name %>(<%= name %>Id);
     return NextResponse.json({ success: true });
   } catch (err) {

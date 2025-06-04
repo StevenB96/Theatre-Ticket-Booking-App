@@ -15,7 +15,7 @@ const Edit<%= Name %>Form = dynamic(() => import('./Edit<%= Name %>Form'), {
 export default async function Edit<%= Name %>Page({
   params,
 }: Edit<%= Name %>PageProps): Promise<ReactNode> {
-  const <%= name %>Id = Number(params.id);
+  const <%= name %>Id = await Number(params.id);
   const <%= name %> = await get<%= Name %>ById(<%= name %>Id);
 
   if (!<%= name %>) {
