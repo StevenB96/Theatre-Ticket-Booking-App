@@ -1,14 +1,20 @@
+// app/admin/tickets/TicketTable.server.tsx
 import Link from 'next/link';
+import type { Ticket } from '@/types/ticket';
 
-export default function TicketTableServer({ data, onDelete }) {
+interface TicketTableServerProps {
+  data: Ticket[];
+  onDelete?: (id: number) => void;
+};
+
+export default function TicketTableServer({
+  data,
+  onDelete,
+}: TicketTableServerProps) {
   return (
     <table>
       <thead>
         <tr>
-          {/* TEMPLATE COMMENT:
-            Add relevant attributes. E.g.    
-            <th>ID</th>
-          */}
           <th>ID</th>
           <th>User ID</th>
           <th>Seat ID</th>
@@ -23,12 +29,6 @@ export default function TicketTableServer({ data, onDelete }) {
       <tbody>
         {data.map((ticket) => (
           <tr key={ticket.id}>
-            {/* TEMPLATE COMMENT:
-              Add relevant attributes. E.g.    
-              <td>
-                {u.id}
-              </td>
-            */}
             <td>
               {ticket.id}
             </td>

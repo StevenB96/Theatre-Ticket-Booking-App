@@ -51,6 +51,7 @@ export async function createPerformance(
       'created_at',
       'updated_at',
     ]);
+
   return newPerformance;
 }
 
@@ -72,6 +73,7 @@ export async function updatePerformance(
       'created_at',
       'updated_at',
     ]);
+
   return updatedPerformance;
 }
 

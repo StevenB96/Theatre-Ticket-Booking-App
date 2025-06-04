@@ -1,3 +1,4 @@
+// app/admin/tickets/page.tsx
 import Link from 'next/link';
 import TicketTable from './TicketTable.client';
 import { getAllTickets } from '@/library/db/ticket';

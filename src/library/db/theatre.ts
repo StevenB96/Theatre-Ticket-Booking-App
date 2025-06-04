@@ -48,6 +48,7 @@ export async function createTheatre(
       'created_at',
       'updated_at'
     ]);
+
   return newTheatre;
 }
 

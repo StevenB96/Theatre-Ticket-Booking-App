@@ -51,6 +51,7 @@ export async function createSeat(
       'created_at',
       'updated_at',
     ]);
+
   return newSeat;
 }
 
@@ -72,6 +73,7 @@ export async function updateSeat(
       'created_at',
       'updated_at',
     ]);
+
   return updatedSeat;
 }
 

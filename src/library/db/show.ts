@@ -45,6 +45,7 @@ export async function createShow(
       'created_at',
       'updated_at'
     ]);
+
   return newShow;
 }
 
@@ -64,6 +65,7 @@ export async function updateShow(
       'created_at',
       'updated_at'
     ]);
+
   return updatedShow;
 }
 

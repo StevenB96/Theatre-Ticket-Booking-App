@@ -1,16 +1,22 @@
+// app/admin/tickets/TicketTable.client.tsx
 'use client';
 
 import { useRouter } from 'next/navigation';
+import type { Ticket } from '@/types/ticket';
 import TicketTableServer from './TicketTable.server';
 
-export default function TicketTable({ data }) {
+interface TicketTableProps {
+  data: Ticket[];
+};
+
+export default function TicketTable({ data }: TicketTableProps) {
   const router = useRouter();
 
-  async function handleDelete(id) {
+  async function handleDelete(id: number) {
     if (!confirm('Delete this ticket?')) return;
     await fetch('/api/tickets/' + id, { method: 'DELETE' });
-    router.refresh(); // Refresh server data
-  };
+    router.refresh();
+  }
 
   return <TicketTableServer data={data} onDelete={handleDelete} />;
 };

@@ -1,5 +1,6 @@
 // src/types/ticket.ts
 export interface Ticket {
+  id: number;
   user_id: number;
   seat_id: number;
   performance_id: number;

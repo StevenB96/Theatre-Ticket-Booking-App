@@ -55,6 +55,7 @@ export async function createUser(
       'created_at',
       'updated_at'
     ]);
+
   return newUser;
 }
 
@@ -84,8 +85,7 @@ export async function updateUser(
       'status',
       'created_at',
       'updated_at'
-    ]
-    );
+    ]);
 
   return updatedUser;
 };

@@ -3,7 +3,8 @@ export interface User {
   id: number;
   username: string;
   email: string;
-  password: string;
+  password?: string;
+  password_hash?: string;
   role: number;
   status: number;
   created_at: string;
