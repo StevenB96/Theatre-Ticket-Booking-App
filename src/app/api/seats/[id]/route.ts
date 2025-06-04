@@ -25,7 +25,7 @@ export async function GET(
         { error: 'Seat not found' },
         { status: 404 }
       );
-    };
+    }
 
     return NextResponse.json(seat);
   } catch (err) {
@@ -75,6 +75,7 @@ export async function DELETE(
     const { id } = await context.params;
     const seatIdFromUrl = parseInt(id, 10);
     await deleteSeat(seatIdFromUrl);
+
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error('DELETE seat error:', err);

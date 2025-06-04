@@ -9,7 +9,7 @@ import {
   UpdatePerformanceInput
 } from '@/types/performance';
 
-// GET /api/<%= pluralName %>/:id
+// GET /api/performances/:id
 export async function GET(
   req: Request,
   context: { params: Promise<{ id: string }> }
@@ -43,7 +43,7 @@ export async function GET(
   }
 }
 
-// PUT /api/<%= pluralName %>/:id
+// PUT /api/performances/:id
 export async function PUT(
   req: Request,
   context: { params: Promise<{ id: string }> }
@@ -72,7 +72,7 @@ export async function PUT(
   }
 }
 
-// DELETE /api/<%= pluralName %>/:id
+// DELETE /api/performances/:id
 export async function DELETE(
   req: Request,
   context: { params: Promise<{ id: string }> }
