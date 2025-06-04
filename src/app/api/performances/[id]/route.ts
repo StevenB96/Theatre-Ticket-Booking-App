@@ -9,14 +9,15 @@ import {
   UpdatePerformanceInput
 } from '@/types/performance';
 
-// GET /api/performances/:id
+// GET /api/<%= pluralName %>/:id
 export async function GET(
-  _req: Request,
-  { params }: { params: { id: string } }
+  req: Request,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const performanceId = await Number(params.id);
-    const performance = await getPerformanceById(performanceId);
+    const { id } = await context.params;
+    const performanceIdFromUrl = parseInt(id, 10);
+    const performance = await getPerformanceById(performanceIdFromUrl);
 
     if (!performance) {
       return NextResponse.json(
@@ -42,15 +43,16 @@ export async function GET(
   }
 }
 
-// PUT /api/performances/:id
+// PUT /api/<%= pluralName %>/:id
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const body: UpdatePerformanceInput = await req.json();
+    const { id } = await context.params;
+    const performanceIdFromUrl = parseInt(id, 10);
 
-    const performanceIdFromUrl = await Number(params.id);
     if (body.id !== performanceIdFromUrl) {
       return NextResponse.json(
         { error: 'ID mismatch between URL and request body' },
@@ -70,14 +72,16 @@ export async function PUT(
   }
 }
 
-// DELETE /api/performances/:id
+// DELETE /api/<%= pluralName %>/:id
 export async function DELETE(
-  _req: Request,
-  { params }: { params: { id: string } }
+  req: Request,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const performanceId = await Number(params.id);
-    await deletePerformance(performanceId);
+    const { id } = await context.params;
+    const performanceIdFromUrl = parseInt(id, 10);
+    await deletePerformance(performanceIdFromUrl);
+
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error('DELETE performance error:', err);

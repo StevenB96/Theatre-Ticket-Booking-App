@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import { get<%= Name %>ById } from '@/library/db/<%= name %>';
 
 interface Edit<%= Name %>PageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const Edit<%= Name %>Form = dynamic(() => import('./Edit<%= Name %>Form'), {
@@ -15,8 +15,9 @@ const Edit<%= Name %>Form = dynamic(() => import('./Edit<%= Name %>Form'), {
 export default async function Edit<%= Name %>Page({
   params,
 }: Edit<%= Name %>PageProps): Promise<ReactNode> {
-  const <%= name %>Id = await Number(params.id);
-  const <%= name %> = await get<%= Name %>ById(<%= name %>Id);
+  const { id } = await params;
+  const <%= name %>IdFromUrl = parseInt(id, 10);
+  const <%= name %> = await get<%= Name %>ById(<%= name %>IdFromUrl);
 
   if (!<%= name %>) {
     return (

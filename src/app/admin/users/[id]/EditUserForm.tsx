@@ -80,7 +80,6 @@ export default function EditUserForm({
             type="password"
             value={passwordValue}
             onChange={(e) => setPasswordValue(e.target.value)}
-            required
           />
         </label>
       </div>

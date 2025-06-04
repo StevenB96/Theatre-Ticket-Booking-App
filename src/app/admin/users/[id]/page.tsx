@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { getUserById } from '@/library/db/user';
 
 interface EditUserPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const EditUserForm = dynamic(() => import('./EditUserForm'), {
@@ -14,14 +14,15 @@ const EditUserForm = dynamic(() => import('./EditUserForm'), {
 export default async function EditUserPage({
   params,
 }: EditUserPageProps): Promise<ReactNode> {
-  const userId = await Number(params.id);
-  const user = await getUserById(userId);
+  const { id } = await params;
+  const userIdFromUrl = parseInt(id, 10);
+  const user = await getUserById(userIdFromUrl);
 
   if (!user) {
     return (
       <div>
         <h1>User not found</h1>
-        <p>No user exists with ID #{userId}.</p>
+        <p>No user exists with ID #{userIdFromUrl}.</p>
       </div>
     );
   }

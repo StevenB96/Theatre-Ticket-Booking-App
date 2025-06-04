@@ -12,14 +12,14 @@ async function seed(knex) {
   await knex('theatre_has_show').truncate();
   await knex('show').truncate();
   await knex('theatre').truncate();
-  await knex('users').truncate();
+  await knex('user').truncate();
 
   // Hash passwords
   const adminHashed = await hashPassword('admin');
   const johndoeHashed = await hashPassword('john');
 
   // Insert users
-  await knex('users').insert([
+  await knex('user').insert([
     {
       id: 1,
       username: 'admin',

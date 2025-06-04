@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { getSeatById } from '@/library/db/seat';
 
 interface EditSeatPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const EditSeatForm = dynamic(() => import('./EditSeatForm'), {
@@ -14,14 +14,15 @@ const EditSeatForm = dynamic(() => import('./EditSeatForm'), {
 export default async function EditSeatPage({
   params,
 }: EditSeatPageProps): Promise<ReactNode> {
-  const seatId = await Number(params.id);
-  const seat = await getSeatById(seatId);
+  const { id } = await params;
+  const seatIdFromUrl = parseInt(id, 10);
+  const seat = await getSeatById(seatIdFromUrl);
 
   if (!seat) {
     return (
       <div>
         <h1>Seat not found</h1>
-        <p>No seat exists with ID #{seatId}.</p>
+        <p>No seat exists with ID #{seatIdFromUrl}.</p>
       </div>
     );
   }

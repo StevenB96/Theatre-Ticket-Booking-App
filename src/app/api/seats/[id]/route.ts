@@ -12,12 +12,13 @@ import {
 
 // GET /api/seats/:id
 export async function GET(
-  _req: Request,
-  { params }: { params: { id: string } }
+  req: Request,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const seatId = await Number(params.id);
-    const seat = await getSeatById(seatId);
+    const { id } = await context.params;
+    const seatIdFromUrl = parseInt(id, 10);
+    const seat = await getSeatById(seatIdFromUrl);
 
     if (!seat) {
       return NextResponse.json(
@@ -39,12 +40,13 @@ export async function GET(
 // PUT /api/seats/:id
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const body: UpdateSeatInput = await req.json();
+    const { id } = await context.params;
+    const seatIdFromUrl = parseInt(id, 10);
 
-    const seatIdFromUrl = await Number(params.id);
     if (body.id !== seatIdFromUrl) {
       return NextResponse.json(
         { error: 'ID mismatch between URL and request body' },
@@ -66,12 +68,13 @@ export async function PUT(
 
 // DELETE /api/seats/:id
 export async function DELETE(
-  _req: Request,
-  { params }: { params: { id: string } }
+  req: Request,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const seatId = await Number(params.id);
-    await deleteSeat(seatId);
+    const { id } = await context.params;
+    const seatIdFromUrl = parseInt(id, 10);
+    await deleteSeat(seatIdFromUrl);
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error('DELETE seat error:', err);

@@ -2,7 +2,7 @@
  * @param {import('knex').Knex} knex
  */
 exports.up = async function (knex) {
-  await knex.schema.createTable("users", (table) => {
+  await knex.schema.createTable("user", (table) => {
     table.increments("id").primary();
     table.string("username", 50).notNullable().unique();
     table.string("email", 100).notNullable().unique();

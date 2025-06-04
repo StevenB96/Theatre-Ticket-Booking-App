@@ -16,7 +16,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const userId = await Number(params.id);
+    const userId = Number(params.id);
     const user = await getUserById(userId);
 
     if (!user) {
@@ -46,12 +46,13 @@ export async function GET(
 // PUT /api/users/:id
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const body: UpdateUserInput = await req.json();
+    const { id } = await context.params;
+    const userIdFromUrl = parseInt(id, 10);
 
-    const userIdFromUrl = await Number(params.id);
     if (body.id !== userIdFromUrl) {
       return NextResponse.json(
         { error: 'ID mismatch between URL and request body' },
@@ -77,7 +78,7 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const userId = await Number(params.id);
+    const userId = Number(params.id);
     await deleteUser(userId);
     return NextResponse.json({ success: true });
   } catch (err) {

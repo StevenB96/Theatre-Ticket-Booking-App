@@ -13,12 +13,13 @@ import {
 
 // GET /api/<%= pluralName %>/:id
 export async function GET(
-  _req: Request,
-  { params }: { params: { id: string } }
+  req: Request,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const <%= name %>Id = await Number(params.id);
-    const <%= name %> = await get<%= Name %>ById(<%= name %>Id);
+    const { id } = await context.params;
+    const <%= name %>IdFromUrl = parseInt(id, 10);
+    const <%= name %> = await get<%= Name %>ById(<%= name %>IdFromUrl);
 
     if (!<%= name %>) {
       return NextResponse.json(
@@ -47,12 +48,13 @@ export async function GET(
 // PUT /api/<%= pluralName %>/:id
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const body: Update<%= Name %>Input = await req.json();
+    const { id } = await context.params;
+    const <%= name %>IdFromUrl = parseInt(id, 10);
 
-    const <%= name %>IdFromUrl = await Number(params.id);
     if (body.id !== <%= name %>IdFromUrl) {
       return NextResponse.json(
         { error: 'ID mismatch between URL and request body' },
@@ -74,15 +76,18 @@ export async function PUT(
 
 // DELETE /api/<%= pluralName %>/:id
 export async function DELETE(
-  _req: Request,
-  { params }: { params: { id: string } }
+  req: Request,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const <%= name %>Id = await Number(params.id);
-    await delete<%= Name %>(<%= name %>Id);
+    const { id } = await context.params;
+    const <%= name %>IdFromUrl = parseInt(id, 10);
+    await delete<%= Name %>(<%= name %>IdFromUrl);
+
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error('DELETE <%= name %> error:', err);
+    
     return NextResponse.json(
       { error: 'Failed to delete <%= name %>' },
       { status: 500 }

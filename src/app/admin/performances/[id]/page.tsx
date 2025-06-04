@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import { getPerformanceById } from '@/library/db/performance';
 
 interface EditPerformancePageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const EditPerformanceForm = dynamic(() => import('./EditPerformanceForm'), {
@@ -14,14 +14,15 @@ const EditPerformanceForm = dynamic(() => import('./EditPerformanceForm'), {
 export default async function EditPerformancePage({
   params,
 }: EditPerformancePageProps): Promise<ReactNode> {
-  const performanceId = await Number(params.id);
-  const performance = await getPerformanceById(performanceId);
+  const { id } = await params;
+  const performanceIdFromUrl = parseInt(id, 10);
+  const performance = await getPerformanceById(performanceIdFromUrl);
 
   if (!performance) {
     return (
       <div>
         <h1>Performance not found</h1>
-        <p>No performance exists with ID #{performanceId}.</p>
+        <p>No performance exists with ID #{performanceIdFromUrl}.</p>
       </div>
     );
   }
