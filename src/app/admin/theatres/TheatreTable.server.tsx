@@ -1,7 +1,16 @@
-// src/app/admin/theatres/TheatreTable.server.js
+// app/admin/theatres/TheatreTable.server.tsx
 import Link from 'next/link';
+import type { Theatre } from '@/types/theatre';
 
-export default function TheatreTableServer({ data, onDelete }) {
+interface TheatreTableServerProps {
+  data: Theatre[];
+  onDelete?: (id: number) => void;
+};
+
+export default function TheatreTableServer({
+  data,
+  onDelete,
+}: TheatreTableServerProps) {
   return (
     <table>
       <thead>

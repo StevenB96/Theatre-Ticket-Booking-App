@@ -1,3 +1,4 @@
+// app/admin/shows/page.tsx
 import Link from 'next/link';
 import ShowTable from './ShowTable.client';
 import { getAllShows } from '@/library/db/show';

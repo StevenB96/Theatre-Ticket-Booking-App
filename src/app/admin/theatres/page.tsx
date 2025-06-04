@@ -1,10 +1,11 @@
-// src/app/admin/theatres/page.js
+// app/admin/theatres/page.tsx
 import Link from 'next/link';
 import TheatreTable from './TheatreTable.client';
 import { getAllTheatres } from '@/library/db/theatre';
 
 export default async function TheatresPage() {
   const theatres = await getAllTheatres();
+
   return (
     <div>
       <h1>Theatres</h1>

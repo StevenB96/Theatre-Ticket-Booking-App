@@ -1,14 +1,20 @@
+// app/admin/shows/ShowTable.server.tsx
 import Link from 'next/link';
+import type { Show } from '@/types/show';
 
-export default function ShowTableServer({ data, onDelete }) {
+interface ShowTableServerProps {
+  data: Show[];
+  onDelete?: (id: number) => void;
+};
+
+export default function ShowTableServer({
+  data,
+  onDelete,
+}: ShowTableServerProps) {
   return (
     <table>
       <thead>
         <tr>
-          {/* TEMPLATE COMMENT:
-            Add relevant attributes. E.g.    
-            <th>ID</th>
-          */}
           <th>ID</th>
           <th>Name</th>
           <th>Status</th>
@@ -20,12 +26,6 @@ export default function ShowTableServer({ data, onDelete }) {
       <tbody>
         {data.map((show) => (
           <tr key={show.id}>
-            {/* TEMPLATE COMMENT:
-              Add relevant attributes. E.g.    
-              <td>
-                {show.id}
-              </td>
-            */}
             <td>
               {show.id}
             </td>
