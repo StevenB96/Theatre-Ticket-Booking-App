@@ -34,7 +34,13 @@
         "**/*.tsx",
         "next-env.d.ts",
         ".next/types/**/*.ts",
-        "src/app/api/tickets/[id]/route.js"
+        "src/app/api/tickets/[id]/route.js",
+        "knexfile.js",
+        "src/knex/migrations/20250529135701_create_theater_and_show_table.js",
+        "src/knex/migrations/20250529135859_create_user_table.js",
+        "src/knex/migrations/20250529135917_create_seat_and_performance_table.js",
+        "src/knex/seeds/initial_seed.js",
+        "src/library/auth.js"
     ],
     "exclude": [
         "node_modules"
