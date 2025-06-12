@@ -50,7 +50,7 @@ export async function createShow(
 }
 
 // Update an existing show
-export async function updateShow(
+export async function updateShowById(
   id: number,
   data: UpdateShowInput
 ): Promise<Show> {
@@ -70,6 +70,6 @@ export async function updateShow(
 }
 
 // Delete an existing show
-export async function deleteShow(id: number): Promise<void> {
+export async function deleteShowById(id: number): Promise<void> {
   await db('show').where({ id }).del();
 }

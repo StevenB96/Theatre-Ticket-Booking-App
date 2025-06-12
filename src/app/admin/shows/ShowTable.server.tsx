@@ -1,7 +1,7 @@
 // app/admin/shows/ShowTable.server.tsx
 import Link from 'next/link';
 import type { Show } from '@/types/show';
-import { deleteShowAction } from './actions';
+import { deleteShowByIdAction } from './actions';
 
 interface ShowTableServerProps {
   data: Show[];
@@ -13,7 +13,7 @@ export default function ShowTableServer({
   onDelete,
 }: ShowTableServerProps) {
   return (
-    <form action={deleteShowAction}>
+    <form action={deleteShowByIdAction}>
       <table>
         <thead>
           <tr>

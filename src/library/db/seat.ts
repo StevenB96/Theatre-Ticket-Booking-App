@@ -56,7 +56,7 @@ export async function createSeat(
 }
 
 // Update an existing seat
-export async function updateSeat(
+export async function updateSeatById(
   id: number,
   data: UpdateSeatInput
 ): Promise<Seat> {
@@ -78,6 +78,6 @@ export async function updateSeat(
 }
 
 // Delete an existing seat
-export async function deleteSeat(id: number): Promise<void> {
+export async function deleteSeatById(id: number): Promise<void> {
   await db('seat').where({ id }).del();
 }

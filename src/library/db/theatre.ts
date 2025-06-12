@@ -53,7 +53,7 @@ export async function createTheatre(
 }
 
 // Update an existing theatre
-export async function updateTheatre(
+export async function updateTheatreById(
   id: number,
   data: UpdateTheatreInput
 ): Promise<Theatre> {
@@ -73,6 +73,6 @@ export async function updateTheatre(
 }
 
 // Delete an existing theatre
-export async function deleteTheatre(id: number): Promise<void> {
+export async function deleteTheatreById(id: number): Promise<void> {
   await db('theatre').where({ id }).del();
 }

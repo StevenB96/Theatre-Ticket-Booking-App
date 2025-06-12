@@ -2,8 +2,8 @@
 import { NextResponse } from 'next/server';
 import {
   getSeatById,
-  updateSeat,
-  deleteSeat,
+  updateSeatById,
+  deleteSeatById,
 } from '@/library/db/seat';
 import {
   Seat,
@@ -54,7 +54,7 @@ export async function PUT(
       );
     };
 
-    const updated: Seat = await updateSeat(seatIdFromUrl, body);
+    const updated: Seat = await updateSeatById(seatIdFromUrl, body);
 
     return NextResponse.json(updated);
   } catch (err) {
@@ -74,7 +74,7 @@ export async function DELETE(
   try {
     const { id } = await context.params;
     const seatIdFromUrl = parseInt(id, 10);
-    await deleteSeat(seatIdFromUrl);
+    await deleteSeatById(seatIdFromUrl);
 
     return NextResponse.json({ success: true });
   } catch (err) {

@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import {
   getPerformanceById,
-  updatePerformance,
-  deletePerformance,
+  updatePerformanceById,
+  deletePerformanceById,
 } from '@/library/db/performance';
 import {
   Performance,
@@ -18,13 +18,6 @@ export async function GET(
     const { id } = await context.params;
     const performanceIdFromUrl = parseInt(id, 10);
     const performance = await getPerformanceById(performanceIdFromUrl);
-
-    if (!performance) {
-      return NextResponse.json(
-        { error: 'Performance not found' },
-        { status: 404 }
-      );
-    }
 
     if (!performance) {
       return NextResponse.json(
@@ -60,7 +53,7 @@ export async function PUT(
       );
     };
 
-    const updated: Performance = await updatePerformance(performanceIdFromUrl, body);
+    const updated: Performance = await updatePerformanceById(performanceIdFromUrl, body);
 
     return NextResponse.json(updated);
   } catch (err) {
@@ -80,7 +73,7 @@ export async function DELETE(
   try {
     const { id } = await context.params;
     const performanceIdFromUrl = parseInt(id, 10);
-    await deletePerformance(performanceIdFromUrl);
+    await deletePerformanceById(performanceIdFromUrl);
 
     return NextResponse.json({ success: true });
   } catch (err) {

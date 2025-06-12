@@ -60,7 +60,7 @@ export async function createUser(
 }
 
 // Update an existing user
-export async function updateUser(
+export async function updateUserById(
   id: number,
   data: UpdateUserInput
 ): Promise<User> {
@@ -91,6 +91,6 @@ export async function updateUser(
 };
 
 // Delete an existing user
-export async function deleteUser(id: number): Promise<void> {
+export async function deleteUserById(id: number): Promise<void> {
   await db('user').where({ id }).del();
 }

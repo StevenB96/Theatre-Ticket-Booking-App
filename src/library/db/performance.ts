@@ -56,7 +56,7 @@ export async function createPerformance(
 }
 
 // Update an existing performance
-export async function updatePerformance(
+export async function updatePerformanceById(
   id: number,
   data: UpdatePerformanceInput
 ): Promise<Performance> {
@@ -78,6 +78,6 @@ export async function updatePerformance(
 }
 
 // Delete an existing performance
-export async function deletePerformance(id: number): Promise<void> {
+export async function deletePerformanceById(id: number): Promise<void> {
   await db('performance').where({ id }).del();
 }

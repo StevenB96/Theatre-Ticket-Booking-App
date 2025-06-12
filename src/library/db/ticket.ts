@@ -59,7 +59,7 @@ export async function createTicket(
 }
 
 // Update an existing ticket
-export async function updateTicket(
+export async function updateTicketById(
   id: number,
   data: UpdateTicketInput
 ): Promise<Ticket> {
@@ -82,6 +82,6 @@ export async function updateTicket(
 }
 
 // Delete an existing ticket
-export async function deleteTicket(id: number): Promise<void> {
+export async function deleteTicketById(id: number): Promise<void> {
   await db('ticket').where({ id }).del();
 }

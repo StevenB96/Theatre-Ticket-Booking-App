@@ -2,8 +2,8 @@
 import { NextResponse } from 'next/server';
 import {
   getTicketById,
-  updateTicket,
-  deleteTicket,
+  updateTicketById,
+  deleteTicketById,
 } from '@/library/db/ticket';
 import {
   Ticket,
@@ -19,13 +19,6 @@ export async function GET(
     const { id } = await context.params;
     const ticketIdFromUrl = parseInt(id, 10);
     const ticket = await getTicketById(ticketIdFromUrl);
-
-    if (!ticket) {
-      return NextResponse.json(
-        { error: 'Ticket not found' },
-        { status: 404 }
-      );
-    }
 
     if (!ticket) {
       return NextResponse.json(
@@ -61,7 +54,7 @@ export async function PUT(
       );
     };
 
-    const updated: Ticket = await updateTicket(ticketIdFromUrl, body);
+    const updated: Ticket = await updateTicketById(ticketIdFromUrl, body);
 
     return NextResponse.json(updated);
   } catch (err) {
@@ -81,12 +74,12 @@ export async function DELETE(
   try {
     const { id } = await context.params;
     const ticketIdFromUrl = parseInt(id, 10);
-    await deleteTicket(ticketIdFromUrl);
+    await deleteTicketById(ticketIdFromUrl);
 
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error('DELETE ticket error:', err);
-    
+
     return NextResponse.json(
       { error: 'Failed to delete ticket' },
       { status: 500 }

@@ -2,8 +2,8 @@
 import { NextResponse } from 'next/server';
 import {
   getUserById,
-  updateUser,
-  deleteUser,
+  updateUserById,
+  deleteUserById,
 } from '@/library/db/user';
 import {
   User,
@@ -18,13 +18,6 @@ export async function GET(
   try {
     const userId = Number(params.id);
     const user = await getUserById(userId);
-
-    if (!user) {
-      return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      );
-    }
 
     if (!user) {
       return NextResponse.json(
@@ -60,7 +53,7 @@ export async function PUT(
       );
     };
 
-    const updated: User = await updateUser(userIdFromUrl, body);
+    const updated: User = await updateUserById(userIdFromUrl, body);
 
     return NextResponse.json(updated);
   } catch (err) {
@@ -79,7 +72,7 @@ export async function DELETE(
 ) {
   try {
     const userId = Number(params.id);
-    await deleteUser(userId);
+    await deleteUserById(userId);
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error('DELETE user error:', err);

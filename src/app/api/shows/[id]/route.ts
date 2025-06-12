@@ -2,8 +2,8 @@
 import { NextResponse } from 'next/server';
 import {
   getShowById,
-  updateShow,
-  deleteShow,
+  updateShowById,
+  deleteShowById,
 } from '@/library/db/show';
 import {
   Show,
@@ -54,7 +54,7 @@ export async function PUT(
       );
     };
 
-    const updated: Show = await updateShow(showIdFromUrl, body);
+    const updated: Show = await updateShowById(showIdFromUrl, body);
 
     return NextResponse.json(updated);
   } catch (err) {
@@ -74,7 +74,7 @@ export async function DELETE(
   try {
     const { id } = await context.params;
     const showIdFromUrl = parseInt(id, 10);
-    await deleteShow(showIdFromUrl);
+    await deleteShowById(showIdFromUrl);
 
     return NextResponse.json({ success: true });
   } catch (err) {

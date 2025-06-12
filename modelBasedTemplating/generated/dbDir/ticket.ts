@@ -11,11 +11,11 @@ export async function getAllTickets(): Promise<Ticket[]> {
   // @ts-ignore: untyped function call may not accept type arguments
   return db<Ticket>('ticket')
     .select(
-      /* TEMPLATE COMMENT:
-        Add relevant attributes.
-        E.g. 'id',
-      */
-    )
+    /* TEMPLATE COMMENT:
+      Add relevant attributes.
+      E.g. 'id',
+    */
+  )
     .orderBy('id', 'asc');
 }
 
@@ -49,7 +49,7 @@ export async function createTicket(
 }
 
 // Update an existing ticket
-export async function updateTicket(
+export async function updateTicketById(
   id: number,
   data: UpdateTicketInput
 ): Promise<Ticket> {
@@ -67,6 +67,6 @@ export async function updateTicket(
 }
 
 // Delete an existing ticket
-export async function deleteTicket(id: number): Promise<void> {
+export async function deleteTicketById(id: number): Promise<void> {
   await db('ticket').where({ id }).del();
 }
