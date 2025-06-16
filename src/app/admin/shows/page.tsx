@@ -1,6 +1,6 @@
 // app/admin/shows/page.tsx
 import Link from 'next/link';
-import ShowTable from './ShowTable.client';
+import ShowTable from './ShowTable';
 import { getAllShows } from '@/library/db/show';
 
 export default async function ShowsPage() {

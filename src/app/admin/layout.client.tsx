@@ -15,8 +15,7 @@ export default function LayoutClient({ children }: LayoutClientProps): JSX.Eleme
   // `data` can be Session or null
   const { data: session } = useSession() as { data: Session | null };
 
-  const handleLogout = (e: MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
+  const handleLogout = () => {
     signOut({ callbackUrl: "/login" });
   };
 
@@ -46,9 +45,7 @@ export default function LayoutClient({ children }: LayoutClientProps): JSX.Eleme
           <Link href="/admin/tickets" className={styles.link}>
             Tickets
           </Link>
-          <Link href="#" onClick={handleLogout} className={styles.link}>
-            Logout
-          </Link>
+          <button onClick={handleLogout}>Log Out</button>
         </nav>
       </aside>
 

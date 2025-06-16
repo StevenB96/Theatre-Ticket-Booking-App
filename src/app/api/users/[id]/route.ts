@@ -12,12 +12,13 @@ import {
 
 // GET /api/users/:id
 export async function GET(
-  _req: Request,
-  { params }: { params: { id: string } }
+  req: Request,
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const userId = Number(params.id);
-    const user = await getUserById(userId);
+    const { id } = await context.params;
+    const userIdFromUrl = parseInt(id, 10);
+    const user = await getUserById(userIdFromUrl);
 
     if (!user) {
       return NextResponse.json(

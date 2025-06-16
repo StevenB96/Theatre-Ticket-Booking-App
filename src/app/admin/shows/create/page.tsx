@@ -1,17 +1,12 @@
 // app/admin/shows/create/page.tsx
-import dynamic from 'next/dynamic';
-import type { ReactNode } from 'react';
+import React from 'react';
+import CreateShowForm from './CreateShowForm';
 
-const CreateShowForm = dynamic(
-  () => import('./CreateShowForm'),
-  { loading: () => <p>Loading form…</p> }
-);
-
-export default function CreateShowPage(): ReactNode {
+export default function CreateShowPage() {
   return (
     <div>
       <h1>Create Show</h1>
       <CreateShowForm />
     </div>
   );
-};
+}

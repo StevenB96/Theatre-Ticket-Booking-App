@@ -1,28 +1,21 @@
 // app/admin/shows/[id]/edit/page.tsx
 import React, { ReactNode } from 'react';
-import dynamic from 'next/dynamic';
+import EditShowForm from './EditShowForm';
 import { getShowById } from '@/library/db/show';
 
 interface EditShowPageProps {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }
 
-const EditShowForm = dynamic(() => import('./EditShowForm'), {
-  loading: () => <p>Loading form…</p>,
-});
-
-export default async function EditShowPage({
-  params,
-}: EditShowPageProps): Promise<ReactNode> {
-  const { id } = await params;
-  const showIdFromUrl = parseInt(id, 10);
+export default async function EditShowPage({ params }: EditShowPageProps): Promise<ReactNode> {
+  const showIdFromUrl = parseInt(params.id, 10);
   const show = await getShowById(showIdFromUrl);
 
   if (!show) {
     return (
       <div>
         <h1>Show not found</h1>
-        <p>No show exists with ID #{showId}.</p>
+        <p>No show exists with ID #{showIdFromUrl}.</p>
       </div>
     );
   }
@@ -33,4 +26,4 @@ export default async function EditShowPage({
       <EditShowForm show={show} />
     </div>
   );
-};
+}

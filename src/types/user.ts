@@ -7,8 +7,8 @@ export interface User {
   password_hash?: string;
   role: number;
   status: number;
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface CreateUserInput {
