@@ -11,7 +11,7 @@ interface LayoutClientProps {
   children: ReactNode;
 }
 
-export default function LayoutClient({ children }: LayoutClientProps): JSX.Element {
+export default function LayoutClient({ children }: LayoutClientProps) {
   // `data` can be Session or null
   const { data: session } = useSession() as { data: Session | null };
 

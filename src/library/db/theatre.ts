@@ -1,5 +1,5 @@
 // src/library/db/theatre.ts
-import db from '../dbClient';
+import db from '@/library/dbClient';
 import type {
   Theatre,
   CreateTheatreInput,

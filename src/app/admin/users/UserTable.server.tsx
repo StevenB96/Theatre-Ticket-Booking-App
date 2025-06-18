@@ -44,10 +44,14 @@ export default function UserTableServer({
               {user.status}
             </td>
             <td>
-              {new Date(user.created_at).toLocaleDateString('en-GB')}
+              {user.created_at
+                ? new Date(user.created_at).toLocaleDateString('en-GB')
+                : 'N/A'}
             </td>
             <td>
-              {new Date(user.updated_at).toLocaleDateString('en-GB')}
+              {user.updated_at
+                ? new Date(user.updated_at).toLocaleDateString('en-GB')
+                : 'N/A'}
             </td>
             <td>
               <Link href={`/admin/users/${user.id}`}>Edit</Link>

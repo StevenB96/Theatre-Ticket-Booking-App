@@ -1,5 +1,5 @@
 // src/library/db/ticket.ts
-import db from '../dbClient';
+import db from '@/library/dbClient';
 import type {
   Ticket,
   CreateTicketInput,

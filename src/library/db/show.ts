@@ -1,5 +1,5 @@
 // src/library/db/show.ts
-import db from '../dbClient';
+import db from '@/library/dbClient';
 import type {
   Show,
   CreateShowInput,

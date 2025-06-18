@@ -20,10 +20,10 @@ import { redirect } from 'next/navigation';
  */
 export async function createSeatAction(formData: FormData) {
   const input: CreateSeatInput = {
-    theatre_id: Number(formData.get('theatreId')),
-    zone: String(formData.get('zone')),
-    code: String(formData.get('code')),
-    status: Number(formData.get('status'))
+    theatre_id: Number(formData.get('theatreId') ?? 0),
+    zone: String(formData.get('zone') ?? ''),
+    code: String(formData.get('code') ?? ''),
+    status: Number(formData.get('status') ?? 0),
   };
 
   const seat = await createSeat(input);

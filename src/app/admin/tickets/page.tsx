@@ -1,6 +1,6 @@
 // app/admin/tickets/page.tsx
 import Link from 'next/link';
-import TicketTable from './TicketTable.client';
+import TicketTable from './TicketTable';
 import { getAllTickets } from '@/library/db/ticket';
 
 export default async function TicketsPage() {

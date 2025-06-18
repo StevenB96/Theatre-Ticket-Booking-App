@@ -3,8 +3,8 @@ const idRouteTemplate = `// app/api/<%= pluralName %>/[id]/route.ts
 import { NextResponse } from 'next/server';
 import {
   get<%= Name %>ById,
-  update<%= Name %>,
-  delete<%= Name %>,
+  update<%= Name %>ById,
+  delete<%= Name %>ById,
 } from '@/library/db/<%= name %>';
 import {
   <%= Name %>,
@@ -62,7 +62,7 @@ export async function PUT(
       );
     };
 
-    const updated: <%= Name %> = await update<%= Name %>(<%= name %>IdFromUrl, body);
+    const updated: <%= Name %> = await update<%= Name %>ById(<%= name %>IdFromUrl, body);
 
     return NextResponse.json(updated);
   } catch (err) {
@@ -82,7 +82,7 @@ export async function DELETE(
   try {
     const { id } = await context.params;
     const <%= name %>IdFromUrl = parseInt(id, 10);
-    await delete<%= Name %>(<%= name %>IdFromUrl);
+    await delete<%= Name %>ById(<%= name %>IdFromUrl);
 
     return NextResponse.json({ success: true });
   } catch (err) {

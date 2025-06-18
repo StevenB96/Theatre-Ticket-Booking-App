@@ -1,6 +1,6 @@
 // templates/dbFunctionsTemplate.js
 const dbFunctionsTemplate = `// src/library/db/<%= name %>.ts
-import db from '../dbClient';
+import db from '@/library/dbClient';
 import type {
   <%= Name %>,
   Create<%= Name %>Input,
@@ -50,7 +50,7 @@ export async function create<%= Name %>(
 }
 
 // Update an existing <%= name %>
-export async function update<%= Name %>(
+export async function update<%= Name %>ById(
   id: number,
   data: Update<%= Name %>Input
 ): Promise<<%= Name %>> {
@@ -68,7 +68,7 @@ export async function update<%= Name %>(
 }
 
 // Delete an existing <%= name %>
-export async function delete<%= Name %>(id: number): Promise<void> {
+export async function delete<%= Name %>ById(id: number): Promise<void> {
   await db('<%= name %>').where({ id }).del();
 }`;
 

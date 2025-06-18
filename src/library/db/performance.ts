@@ -1,5 +1,5 @@
 // src/library/db/performance.ts
-import db from '../dbClient';
+import db from '@/library/dbClient';
 import type {
   Performance,
   CreatePerformanceInput,

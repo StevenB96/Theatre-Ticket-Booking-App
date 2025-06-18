@@ -39,10 +39,14 @@ export default function PerformanceTableServer({
             <td>{performance.type}</td>
             <td>{performance.status}</td>
             <td>
-              {new Date(performance.created_at).toLocaleDateString('en-GB')}
+              {performance.created_at
+                ? new Date(performance.created_at).toLocaleDateString('en-GB')
+                : 'N/A'}
             </td>
             <td>
-              {new Date(performance.updated_at).toLocaleDateString('en-GB')}
+              {performance.updated_at
+                ? new Date(performance.updated_at).toLocaleDateString('en-GB')
+                : 'N/A'}
             </td>
             <td>
               <Link href={'/admin/performances/' + performance.id}>Edit</Link>

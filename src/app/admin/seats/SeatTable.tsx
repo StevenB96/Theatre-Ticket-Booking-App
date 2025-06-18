@@ -44,10 +44,14 @@ export default function SeatTable({ data }: Props) {
                 {seat.status}
               </td>
               <td>
-                {new Date(seat.created_at).toLocaleDateString('en-GB')}
+                {seat.created_at
+                  ? new Date(seat.created_at).toLocaleDateString('en-GB')
+                  : 'N/A'}
               </td>
               <td>
-                {new Date(seat.updated_at).toLocaleDateString('en-GB')}
+                {seat.updated_at
+                  ? new Date(seat.updated_at).toLocaleDateString('en-GB')
+                  : 'N/A'}
               </td>
               <td>
                 <Link href={'/admin/seats/' + seat.id}>Edit</Link>{' '}

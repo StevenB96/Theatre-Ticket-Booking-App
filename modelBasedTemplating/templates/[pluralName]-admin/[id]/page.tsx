@@ -1,17 +1,16 @@
 // templates/editPageTemplate.js
 const editPageTemplate = `// app/admin/<%= pluralName %>/[id]/edit/page.tsx
 
-import React, { ReactNode } from 'react';
-import Edit<%= Name %>Form from './Edit<%= Name %>Form';
 import { get<%= Name %>ById } from '@/library/db/<%= name %>';
+import Edit<%= Name %>Form from './Edit<%= Name %>Form';
 
-interface Edit<%= Name %>PageProps {
-  params: { id: string };
+interface PageProps {
+  params: Promise<{ id: string }>;
 }
 
-export default async function Edit<%= Name %>Page({ params }: Edit<%= Name %>PageProps): Promise<ReactNode> {
-  const id = parseInt(params.id, 10);
-  const <%= name %> = await get<%= Name %>ById(id);
+export default async function Edit<%= Name %>Page({ params }: PageProps) {
+  const { id } = await params;
+  const <%= name %> = await get<%= Name %>ById(parseInt(id, 10));
 
   if (!<%= name %>) {
     return (
@@ -25,7 +24,7 @@ export default async function Edit<%= Name %>Page({ params }: Edit<%= Name %>Pag
   return (
     <div>
       <h1>Edit <%= Name %> #{<%= name %>.id}</h1>
-      <Edit<%= Name %>Form <%= name %>={<%= name %>}  />
+      <Edit<%= Name %>Form <%= name %>={<%= name %>} />
     </div>
   );
 }

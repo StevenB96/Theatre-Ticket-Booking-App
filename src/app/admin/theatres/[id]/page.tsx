@@ -22,7 +22,7 @@ export default async function EditTheatrePage({
     return (
       <div>
         <h1>Theatre not found</h1>
-        <p>No theatre exists with ID #{theatreId}.</p>
+        <p>No theatre exists with ID #{theatreIdFromUrl}.</p>
       </div>
     );
   }

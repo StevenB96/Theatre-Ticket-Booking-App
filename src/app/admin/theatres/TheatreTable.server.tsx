@@ -40,10 +40,14 @@ export default function TheatreTableServer({
               theatre.status
             }</td>
             <td>
-              {new Date(theatre.created_at).toLocaleDateString('en-GB')}
+              {theatre.created_at
+                ? new Date(theatre.created_at).toLocaleDateString('en-GB')
+                : 'N/A'}
             </td>
             <td>
-              {new Date(theatre.updated_at).toLocaleDateString('en-GB')}
+              {theatre.updated_at
+                ? new Date(theatre.updated_at).toLocaleDateString('en-GB')
+                : 'N/A'}
             </td>
             <td>
               <Link href={`/admin/theatres/${theatre.id}`}>Edit</Link>

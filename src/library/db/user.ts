@@ -1,5 +1,5 @@
 // src/library/db/user.ts
-import db from '../dbClient';
+import db from '@/library/dbClient';
 import { hashPassword } from '@/library/auth';
 import type {
   User,

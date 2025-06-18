@@ -24,7 +24,7 @@ export default function EditUserForm({
     e.preventDefault();
 
     const payload: UpdateUserInput = {
-      id: user.id,
+      id: Number(user.id),
       username: usernameValue,
       email: emailValue,
       role: Number(roleValue),

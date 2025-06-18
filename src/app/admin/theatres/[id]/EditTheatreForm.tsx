@@ -28,7 +28,7 @@ export default function EditTheatreForm({
     e.preventDefault();
 
     const payload: UpdateTheatreInput = {
-      id: theatre.id,
+      id: Number(theatre.id),
       name: nameValue,
       address: addressValue,
       status: Number(statusValue),

@@ -31,7 +31,7 @@ export default function EditPerformanceForm({
     e.preventDefault();
 
     const payload: UpdatePerformanceInput = {
-      id: performance.id,
+      id: Number(performance.id),
       theatre_has_show_id: Number(theatreHasShowId),
       start_time: startTime,
       type: Number(typeValue),

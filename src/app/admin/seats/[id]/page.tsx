@@ -1,15 +1,15 @@
 // app/admin/seats/[id]/edit/page.tsx
-import React, { ReactNode } from 'react';
-import EditSeatForm from './EditSeatForm';
-import { getSeatById } from '@/library/db/seat';
 
-interface EditSeatPageProps {
-  params: { id: string };
+import { getSeatById } from '@/library/db/seat';
+import EditSeatForm from './EditSeatForm';
+
+interface PageProps {
+  params: Promise<{ id: string }>;
 }
 
-export default async function EditSeatPage({ params }: EditSeatPageProps): Promise<ReactNode> {
-  const seatIdFromUrl = parseInt(params.id, 10);
-  const seat = await getSeatById(seatIdFromUrl);
+export default async function EditSeatPage({ params }: PageProps) {
+  const { id } = await params;
+  const seat = await getSeatById(parseInt(id, 10));
 
   if (!seat) {
     return (

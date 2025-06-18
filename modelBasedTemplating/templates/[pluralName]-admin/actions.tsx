@@ -23,8 +23,8 @@ export async function create<%= Name %>Action(formData: FormData) {
   const input: Create<%= Name %>Input = {
     /* TEMPLATE COMMENT:
       Map formData fields to input properties, e.g.
-      name: String(formData.get('name')),
-      status: Number(formData.get('status'))
+      name: String(formData.get('name') ?? ''),
+      status: Number(formData.get('status') ?? '')
     */
   };
 
@@ -46,8 +46,8 @@ export async function update<%= Name %>ByIdAction(formData: FormData) {
     id,
     /* TEMPLATE COMMENT:
       Map other formData fields, e.g.
-      name: String(formData.get('name')),
-      status: Number(formData.get('status'))
+      name: String(formData.get('name') ?? ''),
+      status: Number(formData.get('status') ?? '')
     */
   };
 

@@ -1,4 +1,5 @@
-// src/db.ts
+// src/library/dbClient.ts
+
 import knex, { Knex } from 'knex';
 import knexConfig from '../../knexfile';
 

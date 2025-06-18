@@ -25,7 +25,7 @@ export default function EditTicketForm({
     e.preventDefault();
 
     const payload = {
-      id: ticket.id,
+      id: Number(ticket.id),
       user_id: Number(userIdValue),
       seat_id: Number(seatIdValue),
       performance_id: Number(performanceIdValue),

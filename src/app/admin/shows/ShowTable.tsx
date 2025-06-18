@@ -29,8 +29,16 @@ export default function ShowTable({ data }: Props) {
               <td>{show.id}</td>
               <td>{show.name}</td>
               <td>{show.status}</td>
-              <td>{new Date(show.created_at).toLocaleDateString('en-GB')}</td>
-              <td>{new Date(show.updated_at).toLocaleDateString('en-GB')}</td>
+              <td>
+                {show.created_at
+                  ? new Date(show.created_at).toLocaleDateString('en-GB')
+                  : 'N/A'}
+              </td>
+              <td>
+                {show.updated_at
+                  ? new Date(show.updated_at).toLocaleDateString('en-GB')
+                  : 'N/A'}
+              </td>
               <td>
                 <Link href={`/admin/shows/${show.id}`}>Edit</Link>{' '}
                 <button

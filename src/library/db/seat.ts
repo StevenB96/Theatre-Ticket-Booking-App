@@ -1,5 +1,5 @@
 // src/library/db/seat.ts
-import db from '../dbClient';
+import db from '@/library/dbClient';
 import type {
   Seat,
   CreateSeatInput,

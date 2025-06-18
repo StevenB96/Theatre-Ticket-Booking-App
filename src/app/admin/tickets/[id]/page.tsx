@@ -1,28 +1,21 @@
 // app/admin/tickets/[id]/edit/page.tsx
-import React, { ReactNode } from 'react';
-import dynamic from 'next/dynamic';
+
+import EditTicketForm from './EditTicketForm';
 import { getTicketById } from '@/library/db/ticket';
 
-interface EditTicketPageProps {
+interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-const EditTicketForm = dynamic(() => import('./EditTicketForm'), {
-  loading: () => <p>Loading form…</p>,
-});
-
-export default async function EditTicketPage({
-  params,
-}: EditTicketPageProps): Promise<ReactNode> {
+export default async function EditTicketPage({ params }: PageProps) {
   const { id } = await params;
-  const ticketIdFromUrl = parseInt(id, 10);
-  const ticket = await getTicketById(ticketIdFromUrl);
+  const ticket = await getTicketById(parseInt(id, 10));
 
   if (!ticket) {
     return (
       <div>
         <h1>Ticket not found</h1>
-        <p>No ticket exists with ID #{ticketId}.</p>
+        <p>No ticket exists with ID #{id}.</p>
       </div>
     );
   }

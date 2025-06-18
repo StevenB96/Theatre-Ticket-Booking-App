@@ -26,20 +26,20 @@ export default function <%= Name %>Table({ data }: Props) {
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
-            <tr key={item.id}>
+          {data.map((<%= name %>) => (
+            <tr key={<%= name %>.id}>
               {/* TEMPLATE COMMENT:
-                  Map fields from item for display.
+                  Map fields from <%= name %> for display.
                   Example:
-                    <td>{item.name}</td>
-                    <td>{item.status}</td>
+                    <td>{<%= name %>.name}</td>
+                    <td>{<%= name %>.status}</td>
               */}
               <td>
-                <Link href={'/admin/<%= pluralName %>/' + item.id}>Edit</Link>{' '}
+                <Link href={'/admin/<%= pluralName %>/' + <%= name %>.id}>Edit</Link>{' '}
                 <button
                   type="submit"
                   name="<%= name %>Id"
-                  value={item.id}
+                  value={<%= name %>.id}
                   onClick={(e) => {
                     if (!confirm('Delete this <%= name %>?')) {
                       e.preventDefault();
