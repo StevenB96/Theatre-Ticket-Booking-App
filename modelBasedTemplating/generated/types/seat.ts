@@ -1,18 +1,18 @@
-// src/types/ticket.ts
-export interface Ticket {
+// src/types/seat.ts
+export interface Seat {
   /* TEMPLATE COMMENT:
     Add relevant attributes.
     E.g. id: number;
   */
 }
 
-export interface CreateTicketInput {
+export interface CreateSeatInput {
   /* TEMPLATE COMMENT:
     Add relevant attributes.
     E.g. status: number;
   */
 }
 
-export interface UpdateTicketInput extends CreateTicketInput {
+export interface UpdateSeatInput extends CreateSeatInput {
   id: number;
 }

@@ -1,20 +1,17 @@
 // templates/createPageTemplate.js
 const createPageTemplate = `// app/admin/<%= pluralName %>/create/page.tsx
-import dynamic from 'next/dynamic';
-import type { ReactNode } from 'react';
 
-const Create<%= Name %>Form = dynamic(
-  () => import('./Create<%= Name %>Form'),
-  { loading: () => <p>Loading form…</p> }
-);
+import React from 'react';
+import Create<%= Name %>Form from './Create<%= Name %>Form';
 
-export default function Create<%= Name %>Page(): ReactNode {
+export default function Create<%= Name %>Page() {
   return (
     <div>
       <h1>Create <%= Name %></h1>
       <Create<%= Name %>Form />
     </div>
   );
-};`;
+}
+`;
 
 module.exports = createPageTemplate;

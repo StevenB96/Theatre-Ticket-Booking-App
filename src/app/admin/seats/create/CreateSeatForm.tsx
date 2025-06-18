@@ -1,8 +1,8 @@
 // app/admin/seats/create/CreateSeatForm.tsx
 'use client';
 
-import { useState, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { createSeatAction } from '../actions';
 
 export default function CreateSeatForm() {
   const [theatreIdValue, setTheatreIdValue] = useState<string>('');
@@ -10,42 +10,14 @@ export default function CreateSeatForm() {
   const [zoneValue, setZoneValue] = useState<string>('');
   const [statusValue, setStatusValue] = useState<string>('');
 
-  const router = useRouter();
-
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    const payload = {
-      theatre_id: theatreIdValue,
-      code: codeValue,
-      zone: zoneValue,
-      status: statusValue,
-    };
-
-    try {
-      const res = await fetch('/api/seats', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (res.ok) {
-        router.push('/admin/seats');
-      } else {
-        const err = await res.json();
-        alert('Error: ' + (err.error || res.statusText));
-      }
-    } catch (error) {
-      alert('Unexpected error: ' + (error as Error).message);
-    }
-  }
-
   return (
-    <form onSubmit={handleSubmit}>
+    <form action={createSeatAction}>
       <div>
         <label>
           Theatre ID:
           <input
+            id="theatreId"
+            name="theatreId"
             type="number"
             value={theatreIdValue}
             onChange={(e) => setTheatreIdValue(e.target.value)}
@@ -58,6 +30,8 @@ export default function CreateSeatForm() {
         <label>
           Code:
           <input
+            id="code"
+            name="code"
             type="text"
             value={codeValue}
             onChange={(e) => setCodeValue(e.target.value)}
@@ -70,6 +44,8 @@ export default function CreateSeatForm() {
         <label>
           Zone:
           <input
+            id="zone"
+            name="zone"
             type="text"
             value={zoneValue}
             onChange={(e) => setZoneValue(e.target.value)}
@@ -82,6 +58,8 @@ export default function CreateSeatForm() {
         <label>
           Status:
           <input
+            id="status"
+            name="status"
             type="number"
             value={statusValue}
             onChange={(e) => setStatusValue(e.target.value)}
@@ -92,7 +70,7 @@ export default function CreateSeatForm() {
 
       <div>
         <button type="submit">Create</button>
-        <button type="button" onClick={() => router.back()}>
+        <button type="button" onClick={() => history.back()}>
           Cancel
         </button>
       </div>

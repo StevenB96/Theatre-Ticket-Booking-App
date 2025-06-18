@@ -27,7 +27,9 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body: CreateSeatInput = await req.json();
+
     const newSeat: Seat = await createSeat(body);
+
     return NextResponse.json(newSeat, { status: 201 });
   } catch (err) {
     console.error('POST seat error:', err);
@@ -35,5 +37,5 @@ export async function POST(req: Request) {
       { error: 'Failed to create seat' },
       { status: 500 }
     );
-  }
-}
+  };
+};

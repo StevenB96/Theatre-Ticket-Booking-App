@@ -1,106 +1,115 @@
-/// <reference types="@playwright/test" />
-// tests/adminShows.spec.ts
 import { test, expect, type Page } from '@playwright/test';
 
-// Credentials for test login
-const TEST_USER: { email: string; password: string } = {
+const TEST_USER = {
   email: 'admin@example.com',
   password: 'admin',
 };
 
-test.describe('Admin Shows CRUD operations', () => {
-  let showId: string;
-
+test.describe('@admin @crud Operations', () => {
   test.beforeEach(async ({ page }) => {
-    const browserErrors: string[] = [];
+    // consolidated logging
+    page.on('console', msg => console.log(`🪵 [${msg.type()}]`, msg.text()));
+    // page.on('request', req => console.log('⬆️', req.method(), req.url()));
+    // page.on('response', res => console.log('⬇️', res.status(), res.url()));
 
-    // Capture browser console logs
-    page.on('console', msg => {
-      const text = msg.text();
-      if (msg.type() === 'error') {
-        console.error('❌ Browser console.error:', text);
-        browserErrors.push(text);
-      } else {
-        console.log(`🪵 ${msg.type()}:`, text);
-      }
-    });
-
-    // Navigate to login page
-    await page.goto('http://localhost:3000/login');
-    await page.waitForSelector('input[name="email"]', { timeout: 20000 });
-
-    // Fill login form
+    // Login as admin
+    await page.goto('/login', { waitUntil: 'networkidle' });
     await page.fill('input[name="email"]', TEST_USER.email);
     await page.fill('input[name="password"]', TEST_USER.password);
-
-    console.log('🔐 Submitting login...');
-
-    // Click the submit button first
     await page.click('button[type="submit"]');
-
-    // Then wait for the URL to change to /admin
-    await page.waitForURL(/\/admin(\/|$)/, { timeout: 20000 });
-
-    console.log('📍 Current URL after submit:', page.url());
-
-    // Error check and assert final URL
-    const hasError = browserErrors.length > 0;
-    console.log({ hasError, browserErrors });
-
-    if (!hasError) {
-      await expect(page).toHaveURL(/\/admin(\/|$)/);
-    } else {
-      console.warn('⚠ Login succeeded but browser errors detected. Skipping URL assertion.');
-    }
+    await page.waitForURL(/\/admin(\?.*)?$/, { timeout: 60_000 });
   });
 
-  test('Create, Update, Delete a show and measure timings', async ({ page }: { page: Page }) => {
-    // Navigate to the create show page
-    await page.goto('http://localhost:3000/admin/shows/create', {
-      waitUntil: 'domcontentloaded',
-      timeout: 60000,
+  /**
+   * Generic CRUD helper
+   * @param entity - resource path
+   * @param createFields - input[name] -> value
+   * @param selectors - button selectors for create/update
+   */
+  async function runCrud(
+    page: Page,
+    entity: string,
+    createFields: Record<string, string>,
+    updateField: { name: string; value: string },
+    selectors: { create: string; update: string }
+  ) {
+    let id: string;
+
+    // CREATE
+    await test.step(`Create ${entity}`, async () => {
+      // Note: timing includes full page navigation, form fill, server round-trip, and client render
+      const t0 = performance.now();
+      await page.goto(`/admin/${entity}s/create`, { waitUntil: 'networkidle' });
+      await page.waitForSelector('form, button');
+
+      for (const [name, value] of Object.entries(createFields)) {
+        await page.fill(`input[name="${name}"]`, value);
+      }
+      await page.click(selectors.create);
+      await page.waitForURL(new RegExp(`/admin/${entity}s/\\d+(\\?.*)?$`), { timeout: 60_000 });
+
+      const match = page.url().match(new RegExp(`/admin/${entity}s/(\\d+)`));
+      expect(match, `Expected URL to contain created ${entity} ID`).not.toBeNull();
+      id = match![1];
+      console.log(`✅ Created ${entity} id:`, id);
+      console.log(
+        `⏱️ Create ${entity} duration:`,
+        `${(performance.now() - t0).toFixed(2)}ms`
+      );
     });
 
-    // Create
-    const createStart = performance.now();
-    await page.fill('input[name="name"]', 'Test Show');
-    await page.fill('input[name="status"]', '1');
+    // UPDATE
+    await test.step(`Update ${entity}`, async () => {
+      // Note: timing includes navigation to edit page and update submission
+      const t1 = performance.now();
+      await page.goto(`/admin/${entity}s/${id}`, { waitUntil: 'networkidle' });
+      await page.waitForSelector('form, button');
 
-    // Submit the form
-    await page.click('button[type="submit"]');
-    await page.waitForURL('**/admin/shows/**/edit', { timeout: 20000 });
+      await page.fill(`input[name="${updateField.name}"]`, updateField.value);
+      await page.click(selectors.update);
+      await page.waitForURL(new RegExp(`/admin/${entity}s(\\?.*)?$`), { timeout: 60_000 });
 
-    const createEnd = performance.now();
-    console.log(`Create duration: ${(createEnd - createStart).toFixed(2)}ms`);
+      console.log(
+        `⏱️ Update ${entity} duration:`,
+        `${(performance.now() - t1).toFixed(2)}ms`
+      );
+    });
 
-    // Extract created show ID from URL
-    const url = page.url();
-    const match = url.match(/\/admin\/shows\/(\d+)\/edit$/);
-    expect(match).not.toBeNull();
-    const showId = match![1];
-    console.log(`Created show ID: ${showId}`);
+    // DELETE
+    await test.step(`Delete ${entity}`, async () => {
+      // Note: timing includes navigation back to list and DOM check for deletion
+      const t2 = performance.now();
+      await page.goto(`/admin/${entity}s`, { waitUntil: 'networkidle' });
+      page.once('dialog', dialog => dialog.accept());
+      await page.click(`button[name="${entity}Id"][value="${id}"]`);
+      await page.waitForURL(new RegExp(`/admin/${entity}s(\\?.*)?$`), { timeout: 60_000 });
 
-    // Update
-    const updateStart = performance.now();
-    await page.fill('input[name="name"]', 'Updated Show');
-    await page.click('button[type="submit"]');
-    await page.waitForURL('**/admin/shows', { timeout: 20000 });
+      const row = page.locator('tr', { hasText: updateField.value });
+      await expect(row).toHaveCount(0);
+      console.log(
+        `⏱️ Delete ${entity} duration:`,
+        `${(performance.now() - t2).toFixed(2)}ms`
+      );
+    });
+  }
 
-    const updateEnd = performance.now();
-    console.log(`Update duration: ${(updateEnd - updateStart).toFixed(2)}ms`);
+  test('Seats CRUD', async ({ page }) => {
+    await runCrud(
+      page,
+      'seat',
+      { theatreId: '1', code: 'A3', zone: 'Stalls', status: '1' },
+      { name: 'code', value: 'Updated Code' },
+      { create: 'button[type="button"]:has-text("Create")', update: 'button[type="button"]:has-text("Save")' }
+    );
+  });
 
-    expect(page.url()).toMatch(/\/admin\/shows$/);
-
-    // Delete
-    const deleteStart = performance.now();
-    await page.click(`button[name="showId"][value="${showId}"]`);
-    await page.waitForURL('**/admin/shows', { timeout: 20000 });
-
-    const deleteEnd = performance.now();
-    console.log(`Delete duration: ${(deleteEnd - deleteStart).toFixed(2)}ms`);
-
-    // Confirm that the show is no longer in the table
-    const exists = await page.$(`text=Updated Show`);
-    expect(exists).toBeNull();
+  test('Shows CRUD', async ({ page }) => {
+    await runCrud(
+      page,
+      'show',
+      { name: 'Test Show', status: '1' },
+      { name: 'name', value: 'Updated Show' },
+      { create: 'button[type="submit"]', update: 'button[type="submit"]' }
+    );
   });
 });

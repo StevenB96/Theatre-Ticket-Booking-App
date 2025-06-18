@@ -1,4 +1,6 @@
 // app/admin/seats/create/page.tsx
+'use client';
+
 import React from 'react';
 import CreateSeatForm from './CreateSeatForm';
 

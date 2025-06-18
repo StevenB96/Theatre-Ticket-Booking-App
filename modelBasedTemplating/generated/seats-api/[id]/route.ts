@@ -1,94 +1,94 @@
-// app/api/tickets/[id]/route.ts
+// app/api/seats/[id]/route.ts
 import { NextResponse } from 'next/server';
 import {
-  getTicketById,
-  updateTicketById,
-  deleteTicketById,
-} from '@/library/db/ticket';
+  getSeatById,
+  updateSeat,
+  deleteSeat,
+} from '@/library/db/seat';
 import {
-  Ticket,
-  UpdateTicketInput
-} from '@/types/ticket';
+  Seat,
+  UpdateSeatInput
+} from '@/types/seat';
 
-// GET /api/tickets/:id
+// GET /api/seats/:id
 export async function GET(
   req: Request,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await context.params;
-    const ticketIdFromUrl = parseInt(id, 10);
-    const ticket = await getTicketById(ticketIdFromUrl);
+    const seatIdFromUrl = parseInt(id, 10);
+    const seat = await getSeatById(seatIdFromUrl);
 
-    if (!ticket) {
+    if (!seat) {
       return NextResponse.json(
-        { error: 'Ticket not found' },
+        { error: 'Seat not found' },
         { status: 404 }
       );
     }
 
-    if (!ticket) {
+    if (!seat) {
       return NextResponse.json(
-        { error: 'Ticket not found' },
+        { error: 'Seat not found' },
         { status: 404 }
       );
     }
 
-    return NextResponse.json(ticket);
+    return NextResponse.json(seat);
   } catch (err) {
-    console.error('GET ticket error:', err);
+    console.error('GET seat error:', err);
     return NextResponse.json(
-      { error: 'Failed to fetch ticket' },
+      { error: 'Failed to fetch seat' },
       { status: 500 }
     );
   }
 }
 
-// PUT /api/tickets/:id
+// PUT /api/seats/:id
 export async function PUT(
   req: Request,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const body: UpdateTicketInput = await req.json();
+    const body: UpdateSeatInput = await req.json();
     const { id } = await context.params;
-    const ticketIdFromUrl = parseInt(id, 10);
+    const seatIdFromUrl = parseInt(id, 10);
 
-    if (body.id !== ticketIdFromUrl) {
+    if (body.id !== seatIdFromUrl) {
       return NextResponse.json(
         { error: 'ID mismatch between URL and request body' },
         { status: 400 }
       );
     };
 
-    const updated: Ticket = await updateTicketById(ticketIdFromUrl, body);
+    const updated: Seat = await updateSeat(seatIdFromUrl, body);
 
     return NextResponse.json(updated);
   } catch (err) {
-    console.error('PUT ticket error:', err);
+    console.error('PUT seat error:', err);
     return NextResponse.json(
-      { error: 'Failed to update ticket' },
+      { error: 'Failed to update seat' },
       { status: 500 }
     );
   }
 }
 
-// DELETE /api/tickets/:id
+// DELETE /api/seats/:id
 export async function DELETE(
   req: Request,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await context.params;
-    const ticketIdFromUrl = parseInt(id, 10);
-    await deleteTicketById(ticketIdFromUrl);
+    const seatIdFromUrl = parseInt(id, 10);
+    await deleteSeat(seatIdFromUrl);
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error('DELETE ticket error:', err);
-
+    console.error('DELETE seat error:', err);
+    
     return NextResponse.json(
-      { error: 'Failed to delete ticket' },
+      { error: 'Failed to delete seat' },
       { status: 500 }
     );
   }

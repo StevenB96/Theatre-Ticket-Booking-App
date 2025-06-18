@@ -1,7 +1,9 @@
 // app/admin/shows/[id]/edit/EditShowForm.tsx
+
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import type { Show } from '@/types/show';
 import { updateShowByIdAction } from '../actions';
 
@@ -10,6 +12,8 @@ interface EditShowFormProps {
 }
 
 export default function EditShowForm({ show }: EditShowFormProps) {
+  const router = useRouter();
+
   const [name, setName] = useState(show.name);
   const [status, setStatus] = useState(String(show.status));
 
@@ -42,7 +46,7 @@ export default function EditShowForm({ show }: EditShowFormProps) {
 
       <div>
         <button type="submit">Save</button>
-        <button type="button" onClick={() => history.back()}>
+        <button type="button" onClick={() => router.push('/admin/shows')}>
           Cancel
         </button>
       </div>

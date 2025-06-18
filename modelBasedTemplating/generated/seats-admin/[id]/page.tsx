@@ -1,4 +1,6 @@
 // app/admin/seats/[id]/edit/page.tsx
+'use client';
+
 import React, { ReactNode } from 'react';
 import EditSeatForm from './EditSeatForm';
 import { getSeatById } from '@/library/db/seat';
@@ -8,8 +10,8 @@ interface EditSeatPageProps {
 }
 
 export default async function EditSeatPage({ params }: EditSeatPageProps): Promise<ReactNode> {
-  const seatIdFromUrl = parseInt(params.id, 10);
-  const seat = await getSeatById(seatIdFromUrl);
+  const id = parseInt(params.id, 10);
+  const seat = await getSeatById(id);
 
   if (!seat) {
     return (
@@ -23,7 +25,7 @@ export default async function EditSeatPage({ params }: EditSeatPageProps): Promi
   return (
     <div>
       <h1>Edit Seat #{seat.id}</h1>
-      <EditSeatForm seat={seat} />
+      <EditSeatForm seat={seat}  />
     </div>
   );
 }

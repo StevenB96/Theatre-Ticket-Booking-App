@@ -1,55 +1,34 @@
 // app/admin/seats/[id]/edit/EditSeatForm.tsx
+
 'use client';
 
-import { useState, FormEvent } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { Seat, UpdateSeatInput } from '@/types/seat';
+import type { Seat } from '@/types/seat';
+import { updateSeatByIdAction } from '../actions';
 
 interface EditSeatFormProps {
   seat: Seat;
 }
 
-export default function EditSeatForm({
-  seat,
-}: EditSeatFormProps) {
+export default function EditSeatForm({ seat }: EditSeatFormProps) {
+  const router = useRouter();
+
   const [theatreIdValue, setTheatreIdValue] = useState<string>(seat.theatre_id.toString());
   const [codeValue, setCodeValue] = useState<string>(seat.code);
   const [zoneValue, setZoneValue] = useState<string>(seat.zone);
   const [statusValue, setStatusValue] = useState<string>(seat.status.toString());
 
-  const router = useRouter();
-
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    const payload: UpdateSeatInput = {
-      id: seat.id,
-      theatre_id: Number(theatreIdValue),
-      code: codeValue,
-      zone: zoneValue,
-      status: Number(statusValue),
-    };
-
-    const res = await fetch('/api/seats/' + seat.id, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-
-    if (res.ok) {
-      router.push('/admin/seats');
-    } else {
-      const err = await res.json();
-      alert('Error: ' + (err.error || res.statusText));
-    }
-  }
-
   return (
-    <form onSubmit={handleSubmit}>
+    <form action={updateSeatByIdAction}>
+      <input type="hidden" name="id" value={seat.id} />
+
       <div>
         <label>
           Theatre ID:
           <input
+            id="theatreId"
+            name="theatreId"
             type="number"
             value={theatreIdValue}
             onChange={(e) => setTheatreIdValue(e.target.value)}
@@ -62,6 +41,8 @@ export default function EditSeatForm({
         <label>
           Code:
           <input
+            id="code"
+            name="code"
             type="text"
             value={codeValue}
             onChange={(e) => setCodeValue(e.target.value)}
@@ -74,6 +55,8 @@ export default function EditSeatForm({
         <label>
           Zone:
           <input
+            id="zone"
+            name="zone"
             type="text"
             value={zoneValue}
             onChange={(e) => setZoneValue(e.target.value)}
@@ -86,6 +69,8 @@ export default function EditSeatForm({
         <label>
           Status:
           <input
+            id="status"
+            name="status"
             type="number"
             value={statusValue}
             onChange={(e) => setStatusValue(e.target.value)}
@@ -96,10 +81,10 @@ export default function EditSeatForm({
 
       <div>
         <button type="submit">Save</button>
-        <button type="button" onClick={() => router.back()}>
+        <button type="button" onClick={() => router.push('/admin/seats')}>
           Cancel
         </button>
       </div>
     </form>
   );
-};
+}

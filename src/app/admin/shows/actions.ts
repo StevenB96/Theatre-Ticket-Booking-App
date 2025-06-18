@@ -29,8 +29,8 @@ export async function createShowAction(formData: FormData) {
   const input: CreateShowInput = { name, status };
   const show = await createShow(input);
 
-  revalidatePath('/admin/shows');
-  redirect('/admin/shows');
+  revalidatePath(`/admin/shows/${show.id}`);
+  redirect(`/admin/shows/${show.id}`);
 }
 
 /**
