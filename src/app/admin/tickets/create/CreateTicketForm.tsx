@@ -1,56 +1,23 @@
 // app/admin/tickets/create/CreateTicketForm.tsx
+
 'use client';
 
-import { useState, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import React from 'react';
+import { useRouter } from 'next/navigation'
+import { createTicketAction } from '../actions';
 
 export default function CreateTicketForm() {
-  const [userIdValue, setUserIdValue] = useState<string>('');
-  const [seatIdValue, setSeatIdValue] = useState<string>('');
-  const [performanceIdValue, setPerformanceIdValue] = useState<string>('');
-  const [priceValue, setPriceValue] = useState<string>('');
-  const [statusValue, setStatusValue] = useState<string>('');
-
   const router = useRouter();
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    const payload = {
-      user_id: Number(userIdValue),
-      seat_id: Number(seatIdValue),
-      performance_id: Number(performanceIdValue),
-      price: Number(priceValue),
-      status: Number(statusValue),
-    };
-
-    try {
-      const res = await fetch('/api/tickets', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (res.ok) {
-        router.push('/admin/tickets');
-      } else {
-        const err = await res.json();
-        alert('Error: ' + (err.error || res.statusText));
-      }
-    } catch (error) {
-      alert('Unexpected error: ' + (error as Error).message);
-    }
-  }
-
   return (
-    <form onSubmit={handleSubmit}>
+    <form action={createTicketAction}>
       <div>
         <label>
           User ID:
           <input
+            id="user_id"
+            name="user_id"
             type="number"
-            value={userIdValue}
-            onChange={(e) => setUserIdValue(e.target.value)}
             required
           />
         </label>
@@ -60,9 +27,9 @@ export default function CreateTicketForm() {
         <label>
           Seat ID:
           <input
+            id="seat_id"
+            name="seat_id"
             type="number"
-            value={seatIdValue}
-            onChange={(e) => setSeatIdValue(e.target.value)}
             required
           />
         </label>
@@ -72,9 +39,9 @@ export default function CreateTicketForm() {
         <label>
           Performance ID:
           <input
+            id="performance_id"
+            name="performance_id"
             type="number"
-            value={performanceIdValue}
-            onChange={(e) => setPerformanceIdValue(e.target.value)}
             required
           />
         </label>
@@ -84,9 +51,9 @@ export default function CreateTicketForm() {
         <label>
           Price:
           <input
+            id="price"
+            name="price"
             type="number"
-            value={priceValue}
-            onChange={(e) => setPriceValue(e.target.value)}
             required
           />
         </label>
@@ -96,9 +63,9 @@ export default function CreateTicketForm() {
         <label>
           Status:
           <input
+            id="status"
+            name="status"
             type="number"
-            value={statusValue}
-            onChange={(e) => setStatusValue(e.target.value)}
             required
           />
         </label>

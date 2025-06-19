@@ -19,7 +19,7 @@ import { redirect } from 'next/navigation';
  * - Revalidates the "/admin/seats" path.
  */
 export async function createSeatAction(formData: FormData) {
-  const theatre_id = Number(formData.get('theatreId'));
+  const theatre_id = Number(formData.get('theatre_id'));
   if (theatre_id == null) {
     throw new Error('Theatre ID is required');
   }
@@ -62,7 +62,7 @@ export async function updateSeatByIdAction(formData: FormData) {
     throw new Error('ID is required');
   }
 
-  const theatre_id = Number(formData.get('theatreId'));
+  const theatre_id = Number(formData.get('theatre_id'));
   if (theatre_id == null) {
     throw new Error('Theatre ID is required');
   }

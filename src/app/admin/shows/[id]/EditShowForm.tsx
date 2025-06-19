@@ -14,8 +14,8 @@ interface EditShowFormProps {
 export default function EditShowForm({ show }: EditShowFormProps) {
   const router = useRouter();
 
-  const [name, setName] = useState(show.name);
-  const [status, setStatus] = useState(String(show.status));
+  const [name, setName] = useState(show.name.toString());
+  const [status, setStatus] = useState(show.status.toString());
 
   return (
     <form action={updateShowByIdAction}>

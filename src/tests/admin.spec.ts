@@ -97,8 +97,13 @@ test.describe('@admin @crud Operations', () => {
     await runCrud(
       page,
       'seat',
-      { theatreId: '1', code: 'A3', zone: 'Stalls', status: '1' },
-      { name: 'code', value: 'Updated Code' },
+      {
+        theatreId: '1',
+        code: 'A3',
+        zone: 'Stalls',
+        status: '1',
+      },
+      { name: 'zone', value: 'Balcony' },
       { create: 'button[type="button"]:has-text("Create")', update: 'button[type="button"]:has-text("Save")' }
     );
   });
@@ -107,9 +112,50 @@ test.describe('@admin @crud Operations', () => {
     await runCrud(
       page,
       'show',
-      { name: 'Test Show', status: '1' },
+      {
+        name: 'Test Show',
+        status: '1'
+      },
       { name: 'name', value: 'Updated Show' },
       { create: 'button[type="submit"]', update: 'button[type="submit"]' }
+    );
+  });
+
+  test('Tickets CRUD', async ({ page }) => {
+    await runCrud(
+      page,
+      'ticket',
+      {
+        user_id: '1',
+        seat_id: '1',
+        performance_id: '2',
+        price: '50',
+        status: '1',
+      },
+      { name: 'price', value: '75' },
+      {
+        create: 'button[type="submit"]',
+        update: 'button[type="submit"]',
+      }
+    );
+  });
+
+  test('Users CRUD', async ({ page }) => {
+    await runCrud(
+      page,
+      'user',
+      {
+        username: 'Test User',
+        email: 'test@example.com',
+        password: 'password123',
+        role: '1',
+        status: '1',
+      },
+      { name: 'username', value: 'Updated User' },
+      {
+        create: 'button[type="submit"]',
+        update: 'button[type="submit"]',
+      }
     );
   });
 });

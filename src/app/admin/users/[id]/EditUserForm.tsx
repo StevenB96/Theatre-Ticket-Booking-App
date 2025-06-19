@@ -14,8 +14,8 @@ interface EditUserFormProps {
 export default function EditUserForm({ user }: EditUserFormProps) {
   const router = useRouter();
 
-  const [usernameValue, setUsernameValue] = useState<string>(String(user.username));
-  const [emailValue, setEmailValue] = useState<string>(String(user.email));
+  const [usernameValue, setUsernameValue] = useState<string>(user.username.toString());
+  const [emailValue, setEmailValue] = useState<string>(String(user.email.toString()));
   const [passwordValue, setPasswordValue] = useState<string>('');
   const [roleValue, setRoleValue] = useState<string>(String(user.role.toString()));
   const [statusValue, setStatusValue] = useState<string>(String(user.status.toString()));

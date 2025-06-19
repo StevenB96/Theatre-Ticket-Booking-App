@@ -1,17 +1,13 @@
 // app/admin/tickets/create/page.tsx
-import dynamic from 'next/dynamic';
-import type { ReactNode } from 'react';
 
-const CreateTicketForm = dynamic(
-  () => import('./CreateTicketForm'),
-  { loading: () => <p>Loading form…</p> }
-);
+import React from 'react';
+import CreateTicketForm from './CreateTicketForm';
 
-export default function CreateTicketPage(): ReactNode {
+export default function CreateTicketPage() {
   return (
     <div>
       <h1>Create Ticket</h1>
       <CreateTicketForm />
     </div>
   );
-};
+}

@@ -1,7 +1,7 @@
 // app/admin/tickets/[id]/edit/page.tsx
 
-import EditTicketForm from './EditTicketForm';
 import { getTicketById } from '@/library/db/ticket';
+import EditTicketForm from './EditTicketForm';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -26,4 +26,4 @@ export default async function EditTicketPage({ params }: PageProps) {
       <EditTicketForm ticket={ticket} />
     </div>
   );
-};
+}

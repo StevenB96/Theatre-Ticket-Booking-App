@@ -1,17 +1,19 @@
 // app/admin/tickets/[id]/edit/EditTicketForm.tsx
+
 'use client';
 
-import { useState, FormEvent } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { Ticket, UpdateTicketInput } from '@/types/ticket';
+import type { Ticket } from '@/types/ticket';
+import { updateTicketByIdAction } from '../actions';
 
 interface EditTicketFormProps {
   ticket: Ticket;
 }
 
-export default function EditTicketForm({
-  ticket,
-}: EditTicketFormProps) {
+export default function EditTicketForm({ ticket }: EditTicketFormProps) {
+  const router = useRouter();
+
   const [userIdValue, setUserIdValue] = useState<string>(ticket.user_id.toString(),
   );
   const [seatIdValue, setSeatIdValue] = useState<string>(ticket.seat_id.toString());
@@ -19,40 +21,16 @@ export default function EditTicketForm({
   const [priceValue, setPriceValue] = useState<string>(ticket.price.toString());
   const [statusValue, setStatusValue] = useState<string>(ticket.status.toString());
 
-  const router = useRouter();
-
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    const payload = {
-      id: Number(ticket.id),
-      user_id: Number(userIdValue),
-      seat_id: Number(seatIdValue),
-      performance_id: Number(performanceIdValue),
-      price: Number(priceValue),
-      status: Number(statusValue),
-    };
-
-    const res = await fetch('/api/tickets/' + ticket.id, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-
-    if (res.ok) {
-      router.push('/admin/tickets');
-    } else {
-      const err = await res.json();
-      alert('Error: ' + (err.error || res.statusText));
-    }
-  }
-
   return (
-    <form onSubmit={handleSubmit}>
+    <form action={updateTicketByIdAction}>
+      <input type="hidden" name="id" value={ticket.id} />
+
       <div>
         <label>
           User ID:
           <input
+            id="user_id"
+            name="user_id"
             type="number"
             value={userIdValue}
             onChange={(e) => setUserIdValue(e.target.value)}
@@ -65,6 +43,8 @@ export default function EditTicketForm({
         <label>
           Seat ID:
           <input
+            id="seat_id"
+            name="seat_id"
             type="number"
             value={seatIdValue}
             onChange={(e) => setSeatIdValue(e.target.value)}
@@ -77,6 +57,8 @@ export default function EditTicketForm({
         <label>
           Performance ID:
           <input
+            id="performance_id"
+            name="performance_id"
             type="number"
             value={performanceIdValue}
             onChange={(e) => setPerformanceIdValue(e.target.value)}
@@ -89,6 +71,8 @@ export default function EditTicketForm({
         <label>
           Price:
           <input
+            id="price"
+            name="price"
             type="number"
             value={priceValue}
             onChange={(e) => setPriceValue(e.target.value)}
@@ -101,6 +85,8 @@ export default function EditTicketForm({
         <label>
           Status:
           <input
+            id="status"
+            name="status"
             type="number"
             value={statusValue}
             onChange={(e) => setStatusValue(e.target.value)}
@@ -111,10 +97,10 @@ export default function EditTicketForm({
 
       <div>
         <button type="submit">Save</button>
-        <button type="button" onClick={() => router.back()}>
+        <button type="button" onClick={() => router.push('/admin/tickets')}>
           Cancel
         </button>
       </div>
     </form>
   );
-};
+}

@@ -24,7 +24,6 @@ export default function TicketTable({ data }: Props) {
             <th>Created At</th>
             <th>Updated At</th>
             <th>Actions</th>
-            <th>Actions</th>
           </tr>
         </thead>
         <tbody>

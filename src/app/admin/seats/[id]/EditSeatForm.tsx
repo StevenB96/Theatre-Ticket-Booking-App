@@ -15,8 +15,8 @@ export default function EditSeatForm({ seat }: EditSeatFormProps) {
   const router = useRouter();
 
   const [theatreIdValue, setTheatreIdValue] = useState<string>(seat.theatre_id.toString());
-  const [codeValue, setCodeValue] = useState<string>(seat.code);
-  const [zoneValue, setZoneValue] = useState<string>(seat.zone);
+  const [codeValue, setCodeValue] = useState<string>(seat.code.toString());
+  const [zoneValue, setZoneValue] = useState<string>(seat.zone.toString());
   const [statusValue, setStatusValue] = useState<string>(seat.status.toString());
 
   return (
@@ -27,8 +27,8 @@ export default function EditSeatForm({ seat }: EditSeatFormProps) {
         <label>
           Theatre ID:
           <input
-            id="theatreId"
-            name="theatreId"
+            id="theatre_id"
+            name="theatre_id"
             type="number"
             value={theatreIdValue}
             onChange={(e) => setTheatreIdValue(e.target.value)}
