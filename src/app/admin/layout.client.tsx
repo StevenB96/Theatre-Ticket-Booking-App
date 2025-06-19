@@ -14,7 +14,7 @@ interface LayoutClientProps {
 export default function LayoutClient({ children }: LayoutClientProps) {
   // `data` can be Session or null
   const { data: session } = useSession() as { data: Session | null };
-  console.log(session);
+
   const handleLogout = () => {
     signOut({ callbackUrl: "/login" });
   };
