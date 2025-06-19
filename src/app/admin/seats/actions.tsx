@@ -19,16 +19,36 @@ import { redirect } from 'next/navigation';
  * - Revalidates the "/admin/seats" path.
  */
 export async function createSeatAction(formData: FormData) {
+  const theatre_id = Number(formData.get('theatreId'));
+  if (theatre_id == null) {
+    throw new Error('Theatre ID is required');
+  }
+
+  const zone = String(formData.get('zone'));
+  if (!zone) {
+    throw new Error('Zone is required');
+  }
+
+  const code = String(formData.get('code'));
+  if (!code) {
+    throw new Error('Code is required');
+  }
+
+  const status = Number(formData.get('status'));
+  if (status == null) {
+    throw new Error('Status is required');
+  }
+
   const input: CreateSeatInput = {
-    theatre_id: Number(formData.get('theatreId') ?? 0),
-    zone: String(formData.get('zone') ?? ''),
-    code: String(formData.get('code') ?? ''),
-    status: Number(formData.get('status') ?? 0),
+    theatre_id,
+    zone,
+    code,
+    status,
   };
 
   const seat = await createSeat(input);
-  revalidatePath('/admin/seats/' + seat.id);
-  redirect('/admin/seats/' + seat.id);
+  revalidatePath(`/admin/seats/${seat.id}`);
+  redirect(`/admin/seats/${seat.id}`);
 }
 
 /**
@@ -38,14 +58,36 @@ export async function createSeatAction(formData: FormData) {
  */
 export async function updateSeatByIdAction(formData: FormData) {
   const id = Number(formData.get('id'));
-  if (!id) throw new Error('ID is required');
+  if (id == null) {
+    throw new Error('ID is required');
+  }
+
+  const theatre_id = Number(formData.get('theatreId'));
+  if (theatre_id == null) {
+    throw new Error('Theatre ID is required');
+  }
+
+  const zone = String(formData.get('zone'));
+  if (!zone) {
+    throw new Error('Zone is required');
+  }
+
+  const code = String(formData.get('code'));
+  if (!code) {
+    throw new Error('Code is required');
+  }
+
+  const status = Number(formData.get('status'));
+  if (status == null) {
+    throw new Error('Status is required');
+  }
 
   const input: UpdateSeatInput = {
     id,
-    theatre_id: Number(formData.get('theatreId')),
-    zone: String(formData.get('zone')),
-    code: String(formData.get('code')),
-    status: Number(formData.get('status'))
+    theatre_id,
+    zone,
+    code,
+    status,
   };
 
   await updateSeatById(id, input);

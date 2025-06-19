@@ -2,6 +2,8 @@
 
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { verifyPassword } from '@/library/auth';
+import db from '@/library/dbClient';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -12,21 +14,36 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials) return null;
-
-        const { email, password } = credentials;
-
-        // TODO: Replace with real validation
-        if (email === "admin@example.com" && password === "password123") {
-          return {
-            id: 1,
-            name: "Admin User",
-            email: "admin@example.com",
-            role: 1, // Custom role property
-          };
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error('Missing credentials');
         }
-        return null;
-      },
+
+        // 1) Fetch user row via Knex
+        const user = await db('user')
+          .where({ email: credentials.email })
+          .first();
+
+        if (!user) {
+          throw new Error('No user found');
+        }
+
+        // 2) Verify password
+        const isValid = await verifyPassword(
+          credentials.password,
+          user.password_hash
+        );
+
+        if (!isValid) {
+          throw new Error('Invalid password');
+        }
+
+        return {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          role: user.role,
+        };
+      }
     }),
   ],
 
@@ -38,15 +55,19 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.role = user.role;
+        token.username = user.username;
       }
       return token;
     },
     async session({ session, token }) {
-      if (token && session.user) {
+      if (session.user && typeof token?.role === 'number') {
         session.user.role = token.role;
       }
+      if (session.user && typeof token?.username === 'string') {
+        session.user.username = token.username;
+      }
       return session;
-    },
+    }
   },
 
   pages: {

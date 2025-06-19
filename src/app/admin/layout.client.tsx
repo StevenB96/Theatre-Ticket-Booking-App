@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import type { ReactNode, MouseEvent } from "react";
+import type { ReactNode } from "react";
 import type { Session } from "next-auth";
 import styles from "./layout.module.css";
 
@@ -14,7 +14,7 @@ interface LayoutClientProps {
 export default function LayoutClient({ children }: LayoutClientProps) {
   // `data` can be Session or null
   const { data: session } = useSession() as { data: Session | null };
-
+  console.log(session);
   const handleLogout = () => {
     signOut({ callbackUrl: "/login" });
   };

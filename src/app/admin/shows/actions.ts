@@ -20,13 +20,21 @@ import { redirect } from 'next/navigation';
  */
 export async function createShowAction(formData: FormData) {
   const name = String(formData.get('name'));
-  const status = Number(formData.get('status'));
-
-  if (!name) {
+  if (name == null) {
     throw new Error('Name is required');
   }
 
-  const input: CreateShowInput = { name, status };
+  const status = Number(formData.get('status'));
+
+  if (status == null) {
+    throw new Error('Status is required');
+  }
+
+  const input: CreateShowInput = {
+    name,
+    status
+  };
+
   const show = await createShow(input);
 
   revalidatePath(`/admin/shows/${show.id}`);
@@ -40,17 +48,25 @@ export async function createShowAction(formData: FormData) {
  */
 export async function updateShowByIdAction(formData: FormData) {
   const id = Number(formData.get('id'));
+  if (id == null) {
+    throw new Error('ID is required');
+  }
+
   const name = String(formData.get('name'));
+  if (name == null) {
+    throw new Error('Name is required');
+  }
+
   const status = Number(formData.get('status'));
 
-  if (!id || !name || !status) {
-    throw new Error('Missing fields');
+  if (status == null) {
+    throw new Error('Status is required');
   }
 
   const input: UpdateShowInput = {
     id,
     name,
-    status
+    status,
   };
 
   await updateShowById(id, input);

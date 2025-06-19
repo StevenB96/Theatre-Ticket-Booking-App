@@ -17,7 +17,7 @@ export default async function Layout({ children }: LayoutProps) {
     !session ||
     !session.user ||
     !session.user.role ||
-    session.user.role !== "1"
+    session.user.role !== 1
   ) {
     redirect("/login");
   }

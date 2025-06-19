@@ -9,10 +9,10 @@ declare module "next-auth" {
    * `user.id`, `user.email`, `user.username`, and `user.role` exist.
    */
   interface User extends DefaultUser {
-    id: string;
+    id: number;
     email: string;
     username: string;
-    role: string;
+    role: number;
   }
 
   /**
@@ -21,10 +21,10 @@ declare module "next-auth" {
    */
   interface Session {
     user: {
-      id: string;
+      id: number;
       email: string;
       username: string;
-      role: string;
+      role: number;
 
       name?: string | null;
       image?: string | null;
@@ -38,9 +38,9 @@ declare module "next-auth/jwt" {
    * whenever you sign a token in `callbacks.jwt`.
    */
   interface JWT {
-    id?: string;
+    id?: number;
     email?: string;
     username?: string;
-    role?: string;
+    role?: number;
   }
 }

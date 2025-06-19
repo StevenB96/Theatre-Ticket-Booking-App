@@ -19,17 +19,42 @@ import { redirect } from 'next/navigation';
  * - Revalidates the "/admin/tickets" path.
  */
 export async function createTicketAction(formData: FormData) {
+  const user_id = Number(formData.get('user_id'));
+  if (user_id == null) {
+    throw new Error('User ID is required');
+  }
+
+  const seat_id = Number(formData.get('seat_id'));
+  if (seat_id == null) {
+    throw new Error('Seat ID is required');
+  }
+
+  const performance_id = Number(formData.get('performance_id'));
+  if (performance_id == null) {
+    throw new Error('Performance ID is required');
+  }
+
+  const price = Number(formData.get('price'));
+  if (price == null) {
+    throw new Error('Price is required');
+  }
+
+  const status = Number(formData.get('status'));
+  if (status == null) {
+    throw new Error('Status is required');
+  }
+
   const input: CreateTicketInput = {
-    user_id: Number(formData.get('user_id') ?? 0),
-    seat_id: Number(formData.get('seat_id') ?? 0),
-    performance_id: Number(formData.get('performance_id') ?? 0),
-    price: Number(formData.get('price') ?? 0),
-    status: Number(formData.get('status') ?? 0),
+    user_id,
+    seat_id,
+    performance_id,
+    price,
+    status,
   };
 
   const ticket = await createTicket(input);
-  revalidatePath('/admin/tickets/' + ticket.id);
-  redirect('/admin/tickets/' + ticket.id);
+  revalidatePath(`/admin/tickets/${ticket.id}`);
+  redirect(`/admin/tickets/${ticket.id}`);
 }
 
 /**
@@ -39,15 +64,42 @@ export async function createTicketAction(formData: FormData) {
  */
 export async function updateTicketByIdAction(formData: FormData) {
   const id = Number(formData.get('id'));
-  if (!id) throw new Error('ID is required');
+  if (id == null) {
+    throw new Error('ID is required');
+  }
+
+  const user_id = Number(formData.get('user_id'));
+  if (user_id == null) {
+    throw new Error('User ID is required');
+  }
+
+  const seat_id = Number(formData.get('seat_id'));
+  if (seat_id == null) {
+    throw new Error('Seat ID is required');
+  }
+
+  const performance_id = Number(formData.get('performance_id'));
+  if (performance_id == null) {
+    throw new Error('Performance ID is required');
+  }
+
+  const price = Number(formData.get('price'));
+  if (price == null) {
+    throw new Error('Price is required');
+  }
+
+  const status = Number(formData.get('status'));
+  if (status == null) {
+    throw new Error('Status is required');
+  }
 
   const input: UpdateTicketInput = {
-    id: Number(formData.get('id') ?? 0),
-    user_id: Number(formData.get('user_id') ?? 0),
-    seat_id: Number(formData.get('seat_id') ?? 0),
-    performance_id: Number(formData.get('performance_id') ?? 0),
-    price: Number(formData.get('price') ?? 0),
-    status: Number(formData.get('status') ?? 0),
+    id,
+    user_id,
+    seat_id,
+    performance_id,
+    price,
+    status,
   };
 
   await updateTicketById(id, input);

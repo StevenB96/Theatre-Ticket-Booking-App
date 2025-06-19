@@ -20,11 +20,21 @@ import { redirect } from 'next/navigation';
  * - Revalidates the "/admin/<%= pluralName %>" path.
  */
 export async function create<%= Name %>Action(formData: FormData) {
+  /* TEMPLATE COMMENT:
+    // Example for a string field:
+    const someField = String(formData.get('someField') ?? '');
+    if (!someField) throw new Error('SomeField is required');
+
+    // Example for a number field:
+    const anotherField = Number(formData.get('anotherField') ?? NaN);
+    if (isNaN(anotherField)) throw new Error('AnotherField is required');
+  */
+
   const input: Create<%= Name %>Input = {
     /* TEMPLATE COMMENT:
-      Map formData fields to input properties, e.g.
-      name: String(formData.get('name') ?? ''),
-      status: Number(formData.get('status') ?? '')
+      someField,
+      anotherField,
+      // repeat for each input property
     */
   };
 
@@ -42,12 +52,22 @@ export async function update<%= Name %>ByIdAction(formData: FormData) {
   const id = Number(formData.get('id'));
   if (!id) throw new Error('ID is required');
 
+  /* TEMPLATE COMMENT:
+    // Example for a string field:
+    const someField = String(formData.get('someField') ?? '');
+    if (!someField) throw new Error('SomeField is required');
+
+    // Example for a number field:
+    const anotherField = Number(formData.get('anotherField') ?? NaN);
+    if (isNaN(anotherField)) throw new Error('AnotherField is required');
+  */
+
   const input: Update<%= Name %>Input = {
     id,
     /* TEMPLATE COMMENT:
-      Map other formData fields, e.g.
-      name: String(formData.get('name') ?? ''),
-      status: Number(formData.get('status') ?? '')
+      someField,
+      anotherField,
+      // repeat for each property
     */
   };
 
