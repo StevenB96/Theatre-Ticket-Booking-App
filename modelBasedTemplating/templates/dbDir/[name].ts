@@ -46,6 +46,7 @@ export async function create<%= Name %>(
         E.g. 'id',
       */
     ]);
+
   return new<%= Name %>;
 }
 
@@ -64,6 +65,7 @@ export async function update<%= Name %>ById(
         E.g. 'id',
       */
     ]);
+
   return updated<%= Name %>;
 }
 

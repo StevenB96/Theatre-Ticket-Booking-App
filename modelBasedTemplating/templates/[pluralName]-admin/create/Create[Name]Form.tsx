@@ -3,10 +3,19 @@ const createFormTemplate = `// app/admin/<%= pluralName %>/create/Create<%= Name
 
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation'
 import { create<%= Name %>Action } from '../actions';
 
 export default function Create<%= Name %>Form() {
+  const router = useRouter();
+
+  /* TEMPLATE COMMENT:
+    Add useState hooks for each editable field, initialized from user.
+    e.g.
+    const [status, setStatus] = useState(String(user.status));
+  */
+
   return (
     <form action={create<%= Name %>Action}>
       {/* TEMPLATE COMMENT:
@@ -20,7 +29,7 @@ export default function Create<%= Name %>Form() {
 
       <div>
         <button type="submit">Create</button>
-        <button type="button" onClick={() => history.back()}>
+        <button type="button" onClick={() => router.back()}>
           Cancel
         </button>
       </div>

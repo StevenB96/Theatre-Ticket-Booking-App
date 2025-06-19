@@ -1,17 +1,13 @@
 // app/admin/users/create/page.tsx
-import dynamic from 'next/dynamic';
-import type { ReactNode } from 'react';
 
-const CreateUserForm = dynamic(
-  () => import('./CreateUserForm'),
-  { loading: () => <p>Loading form…</p> }
-);
+import React from 'react';
+import CreateUserForm from './CreateUserForm';
 
-export default function CreateUserPage(): ReactNode {
+export default function CreateUserPage() {
   return (
     <div>
       <h1>Create User</h1>
       <CreateUserForm />
     </div>
   );
-};
+}

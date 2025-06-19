@@ -1,58 +1,35 @@
 // app/admin/users/[id]/edit/EditUserForm.tsx
+
 'use client';
 
-import { useState, FormEvent } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { User, UpdateUserInput } from '@/types/user';
+import type { User } from '@/types/user';
+import { updateUserByIdAction } from '../actions';
 
 interface EditUserFormProps {
   user: User;
 }
 
-export default function EditUserForm({
-  user,
-}: EditUserFormProps) {
-  const [usernameValue, setUsernameValue] = useState<string>(user.username);
-  const [emailValue, setEmailValue] = useState<string>(user.email);
-  const [passwordValue, setPasswordValue] = useState<string>('');
-  const [roleValue, setRoleValue] = useState<string>(user.role.toString());
-  const [statusValue, setStatusValue] = useState<string>(user.status.toString());
-
+export default function EditUserForm({ user }: EditUserFormProps) {
   const router = useRouter();
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    const payload: UpdateUserInput = {
-      id: Number(user.id),
-      username: usernameValue,
-      email: emailValue,
-      role: Number(roleValue),
-      status: Number(statusValue)
-    };
-
-    if (passwordValue) payload.password = passwordValue;
-
-    const res = await fetch('/api/users/' + user.id, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-
-    if (res.ok) {
-      router.push('/admin/users');
-    } else {
-      const err = await res.json();
-      alert('Error: ' + (err.error || res.statusText));
-    }
-  }
+  const [usernameValue, setUsernameValue] = useState<string>(String(user.username));
+  const [emailValue, setEmailValue] = useState<string>(String(user.email));
+  const [passwordValue, setPasswordValue] = useState<string>('');
+  const [roleValue, setRoleValue] = useState<string>(String(user.role.toString()));
+  const [statusValue, setStatusValue] = useState<string>(String(user.status.toString()));
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form action={updateUserByIdAction}>
+      <input type="hidden" name="id" value={user.id} />
+
       <div>
         <label>
           Username:
           <input
+            id="username"
+            name="username"
             type="text"
             value={usernameValue}
             onChange={(e) => setUsernameValue(e.target.value)}
@@ -65,6 +42,8 @@ export default function EditUserForm({
         <label>
           Email:
           <input
+            id="email"
+            name="email"
             type="email"
             value={emailValue}
             onChange={(e) => setEmailValue(e.target.value)}
@@ -77,6 +56,8 @@ export default function EditUserForm({
         <label>
           Password:
           <input
+            id="password"
+            name="password"
             type="password"
             value={passwordValue}
             onChange={(e) => setPasswordValue(e.target.value)}
@@ -88,6 +69,8 @@ export default function EditUserForm({
         <label>
           Role:
           <input
+            id="role"
+            name="role"
             type="number"
             value={roleValue}
             onChange={(e) => setRoleValue(e.target.value)}
@@ -100,6 +83,8 @@ export default function EditUserForm({
         <label>
           Status:
           <input
+            id="status"
+            name="status"
             type="number"
             value={statusValue}
             onChange={(e) => setStatusValue(e.target.value)}
@@ -110,10 +95,10 @@ export default function EditUserForm({
 
       <div>
         <button type="submit">Save</button>
-        <button type="button" onClick={() => router.back()}>
+        <button type="button" onClick={() => router.push('/admin/users')}>
           Cancel
         </button>
       </div>
     </form>
   );
-};
+}

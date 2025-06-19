@@ -1,8 +1,8 @@
 // src/app/admin/users/loading.tsx
 import React from 'react';
 
-export default function UsersLoading() {
+export default function Loading() {
   return (
-    <p> Loading users…</p >
+    <p>Loading users...</p>
   );
-};
+}

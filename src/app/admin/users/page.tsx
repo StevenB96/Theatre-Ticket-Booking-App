@@ -1,6 +1,7 @@
 // app/admin/users/page.tsx
+
 import Link from 'next/link';
-import UserTable from './UserTable.client';
+import UserTable from './UserTable';
 import { getAllUsers } from '@/library/db/user';
 
 export default async function UsersPage() {

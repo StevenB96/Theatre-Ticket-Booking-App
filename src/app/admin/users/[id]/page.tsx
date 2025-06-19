@@ -1,28 +1,21 @@
 // app/admin/users/[id]/edit/page.tsx
-import React, { ReactNode } from 'react';
-import dynamic from 'next/dynamic';
-import { getUserById } from '@/library/db/user';
 
-interface EditUserPageProps {
+import { getUserById } from '@/library/db/user';
+import EditUserForm from './EditUserForm';
+
+interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-const EditUserForm = dynamic(() => import('./EditUserForm'), {
-  loading: () => <p>Loading form…</p>,
-});
-
-export default async function EditUserPage({
-  params,
-}: EditUserPageProps): Promise<ReactNode> {
+export default async function EditUserPage({ params }: PageProps) {
   const { id } = await params;
-  const userIdFromUrl = parseInt(id, 10);
-  const user = await getUserById(userIdFromUrl);
+  const user = await getUserById(parseInt(id, 10));
 
   if (!user) {
     return (
       <div>
         <h1>User not found</h1>
-        <p>No user exists with ID #{userIdFromUrl}.</p>
+        <p>No user exists with ID #{id}.</p>
       </div>
     );
   }
@@ -33,4 +26,4 @@ export default async function EditUserPage({
       <EditUserForm user={user} />
     </div>
   );
-};
+}

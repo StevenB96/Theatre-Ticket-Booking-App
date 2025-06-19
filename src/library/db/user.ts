@@ -76,7 +76,7 @@ export async function updateUserById(
   // @ts-ignore: untyped function call may not accept type arguments
   const [updatedUser] = await db<User>('user')
     .where({ id })
-    .update(data)
+    .update(updateData)
     .returning([
       'id',
       'username',
@@ -88,7 +88,7 @@ export async function updateUserById(
     ]);
 
   return updatedUser;
-};
+}
 
 // Delete an existing user
 export async function deleteUserById(id: number): Promise<void> {
