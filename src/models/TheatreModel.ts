@@ -37,16 +37,14 @@ export class TheatreModel {
     return model;
   }
 
-  async update(input: UpdateTheatreInput): Promise<void> {
-    if (!this.data || this.id === null) throw new Error('No theatre loaded');
-    const updated = await db.updateTheatreById(this.id, input);
-    this.data = updated;
+  static async update(id: number, input: UpdateTheatreInput): Promise<TheatreModel> {
+    const updated = await db.updateTheatreById(id, input);
+    const model = new TheatreModel(id);
+    model.data = updated;
+    return model;
   }
 
-  async delete(): Promise<void> {
-    if (!this.data || this.id === null) throw new Error('No theatre loaded');
-    await db.deleteTheatreById(this.id);
-    this.data = null;
-    this.id = null;
+  static async delete(id: number): Promise<void> {
+    await db.deleteTheatreById(id);
   }
 }

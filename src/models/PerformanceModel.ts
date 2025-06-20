@@ -9,7 +9,6 @@ export class PerformanceModel {
     this.id = id ?? null;
   }
 
-  // Call this after construction to load the performance data
   async init(): Promise<void> {
     if (this.id === null) {
       this.data = null;
@@ -38,16 +37,14 @@ export class PerformanceModel {
     return model;
   }
 
-  async update(input: UpdatePerformanceInput): Promise<void> {
-    if (!this.data || this.id === null) throw new Error('No performance loaded');
-    const updated = await db.updatePerformanceById(this.id, input);
-    this.data = updated;
+  static async update(id: number, input: UpdatePerformanceInput): Promise<PerformanceModel> {
+    const updated = await db.updatePerformanceById(id, input);
+    const model = new PerformanceModel(id);
+    model.data = updated;
+    return model;
   }
 
-  async delete(): Promise<void> {
-    if (!this.data || this.id === null) throw new Error('No performance loaded');
-    await db.deletePerformanceById(this.id);
-    this.data = null;
-    this.id = null;
+  static async delete(id: number): Promise<void> {
+    await db.deletePerformanceById(id);
   }
 }

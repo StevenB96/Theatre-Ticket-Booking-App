@@ -37,16 +37,14 @@ export class ShowModel {
     return model;
   }
 
-  async update(input: UpdateShowInput): Promise<void> {
-    if (!this.data || this.id === null) throw new Error('No show loaded');
-    const updated = await db.updateShowById(this.id, input);
-    this.data = updated;
+  static async update(id: number, input: UpdateShowInput): Promise<ShowModel> {
+    const updated = await db.updateShowById(id, input);
+    const model = new ShowModel(id);
+    model.data = updated;
+    return model;
   }
 
-  async delete(): Promise<void> {
-    if (!this.data || this.id === null) throw new Error('No show loaded');
-    await db.deleteShowById(this.id);
-    this.data = null;
-    this.id = null;
+  static async delete(id: number): Promise<void> {
+    await db.deleteShowById(id);
   }
 }

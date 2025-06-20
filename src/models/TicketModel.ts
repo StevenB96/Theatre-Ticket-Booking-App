@@ -37,16 +37,14 @@ export class TicketModel {
     return model;
   }
 
-  async update(input: UpdateTicketInput): Promise<void> {
-    if (!this.data || this.id === null) throw new Error('No ticket loaded');
-    const updated = await db.updateTicketById(this.id, input);
-    this.data = updated;
+  static async update(id: number, input: UpdateTicketInput): Promise<TicketModel> {
+    const updated = await db.updateTicketById(id, input);
+    const model = new TicketModel(id);
+    model.data = updated;
+    return model;
   }
 
-  async delete(): Promise<void> {
-    if (!this.data || this.id === null) throw new Error('No ticket loaded');
-    await db.deleteTicketById(this.id);
-    this.data = null;
-    this.id = null;
+  static async delete(id: number): Promise<void> {
+    await db.deleteTicketById(id);
   }
 }
