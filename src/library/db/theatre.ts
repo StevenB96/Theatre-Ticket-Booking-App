@@ -1,4 +1,5 @@
 // src/library/db/theatre.ts
+
 import db from '@/library/dbClient';
 import type {
   Theatre,
@@ -69,6 +70,7 @@ export async function updateTheatreById(
       'created_at',
       'updated_at'
     ]);
+
   return updatedTheatre;
 }
 

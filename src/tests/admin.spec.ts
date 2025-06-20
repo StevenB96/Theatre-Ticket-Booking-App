@@ -11,13 +11,16 @@ test.describe('@admin @crud Operations', () => {
     page.on('console', msg => console.log(`🪵 [${msg.type()}]`, msg.text()));
     // page.on('request', req => console.log('⬆️', req.method(), req.url()));
     // page.on('response', res => console.log('⬇️', res.status(), res.url()));
+    // page.on('requestfailed', req =>
+    //   console.log(`❌ Request failed: ${req.method()} ${req.url()} — ${req.failure()?.errorText}`)
+    // );
 
     // Login as admin
     await page.goto('/login', { waitUntil: 'networkidle' });
     await page.fill('input[name="email"]', TEST_USER.email);
     await page.fill('input[name="password"]', TEST_USER.password);
     await page.click('button[type="submit"]');
-    await page.waitForURL(/\/admin(\?.*)?$/, { timeout: 60_000 });
+    await page.waitForURL(/\/admin(\?.*)?$/, { timeout: 20_000 });
   });
 
   /**
@@ -43,10 +46,10 @@ test.describe('@admin @crud Operations', () => {
       await page.waitForSelector('form, button');
 
       for (const [name, value] of Object.entries(createFields)) {
-        await page.fill(`input[name="${name}"]`, value);
+        await page.fill(`form *[name="${name}"]`, value);
       }
       await page.click(selectors.create);
-      await page.waitForURL(new RegExp(`/admin/${entity}s/\\d+(\\?.*)?$`), { timeout: 60_000 });
+      await page.waitForURL(new RegExp(`/admin/${entity}s/\\d+(\\?.*)?$`), { timeout: 20_000 });
 
       const match = page.url().match(new RegExp(`/admin/${entity}s/(\\d+)`));
       expect(match, `Expected URL to contain created ${entity} ID`).not.toBeNull();
@@ -65,9 +68,9 @@ test.describe('@admin @crud Operations', () => {
       await page.goto(`/admin/${entity}s/${id}`, { waitUntil: 'networkidle' });
       await page.waitForSelector('form, button');
 
-      await page.fill(`input[name="${updateField.name}"]`, updateField.value);
+      await page.fill(`form *[name="${updateField.name}"]`, updateField.value);
       await page.click(selectors.update);
-      await page.waitForURL(new RegExp(`/admin/${entity}s(\\?.*)?$`), { timeout: 60_000 });
+      await page.waitForURL(new RegExp(`/admin/${entity}s(\\?.*)?$`), { timeout: 20_000 });
 
       console.log(
         `⏱️ Update ${entity} duration:`,
@@ -82,7 +85,7 @@ test.describe('@admin @crud Operations', () => {
       await page.goto(`/admin/${entity}s`, { waitUntil: 'networkidle' });
       page.once('dialog', dialog => dialog.accept());
       await page.click(`button[name="${entity}Id"][value="${id}"]`);
-      await page.waitForURL(new RegExp(`/admin/${entity}s(\\?.*)?$`), { timeout: 60_000 });
+      await page.waitForURL(new RegExp(`/admin/${entity}s(\\?.*)?$`), { timeout: 20_000 });
 
       const row = page.locator('tr', { hasText: updateField.value });
       await expect(row).toHaveCount(0);
@@ -94,21 +97,26 @@ test.describe('@admin @crud Operations', () => {
   }
 
   test('Seats CRUD', async ({ page }) => {
+    test.setTimeout(60_000);
     await runCrud(
       page,
       'seat',
       {
-        theatreId: '1',
+        theatre_id: '1',
         code: 'A3',
         zone: 'Stalls',
         status: '1',
       },
       { name: 'zone', value: 'Balcony' },
-      { create: 'button[type="button"]:has-text("Create")', update: 'button[type="button"]:has-text("Save")' }
+      {
+        create: 'button[type="submit"]',
+        update: 'button[type="submit"]'
+      }
     );
   });
 
   test('Shows CRUD', async ({ page }) => {
+    test.setTimeout(60_000);
     await runCrud(
       page,
       'show',
@@ -117,11 +125,15 @@ test.describe('@admin @crud Operations', () => {
         status: '1'
       },
       { name: 'name', value: 'Updated Show' },
-      { create: 'button[type="submit"]', update: 'button[type="submit"]' }
+      {
+        create: 'button[type="submit"]',
+        update: 'button[type="submit"]'
+      }
     );
   });
 
   test('Tickets CRUD', async ({ page }) => {
+    test.setTimeout(60_000);
     await runCrud(
       page,
       'ticket',
@@ -135,12 +147,13 @@ test.describe('@admin @crud Operations', () => {
       { name: 'price', value: '75' },
       {
         create: 'button[type="submit"]',
-        update: 'button[type="submit"]',
+        update: 'button[type="submit"]'
       }
     );
   });
 
   test('Users CRUD', async ({ page }) => {
+    test.setTimeout(60_000);
     await runCrud(
       page,
       'user',
@@ -154,7 +167,50 @@ test.describe('@admin @crud Operations', () => {
       { name: 'username', value: 'Updated User' },
       {
         create: 'button[type="submit"]',
-        update: 'button[type="submit"]',
+        update: 'button[type="submit"]'
+      }
+    );
+  });
+
+  test('Performances CRUD', async ({ page }) => {
+    test.setTimeout(60_000);
+    await runCrud(
+      page,
+      'performance',
+      {
+        theatre_has_show_id: '1',
+        start_time: '16:00',
+        type: '0',
+        status: '1',
+      },
+      {
+        name: 'type',
+        value: '1'
+      },
+      {
+        create: 'button[type="submit"]',
+        update: 'button[type="submit"]'
+      }
+    );
+  });
+
+  test('Theatres CRUD', async ({ page }) => {
+    test.setTimeout(60_000);
+    await runCrud(
+      page,
+      'theatre',
+      {
+        name: 'Test',
+        address: 'Test Address',
+        status: '1',
+      },
+      {
+        name: 'address',
+        value: 'Updated Address'
+      },
+      {
+        create: 'button[type="submit"]',
+        update: 'button[type="submit"]'
       }
     );
   });

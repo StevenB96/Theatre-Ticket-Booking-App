@@ -1,5 +1,6 @@
 // templates/dbFunctionsTemplate.js
 const dbFunctionsTemplate = `// src/library/db/<%= name %>.ts
+
 import db from '@/library/dbClient';
 import type {
   <%= Name %>,

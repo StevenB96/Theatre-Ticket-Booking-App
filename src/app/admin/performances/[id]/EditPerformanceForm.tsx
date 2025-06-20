@@ -1,17 +1,19 @@
 // app/admin/performances/[id]/edit/EditPerformanceForm.tsx
+
 'use client';
 
-import { useState, FormEvent } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { Performance, UpdatePerformanceInput } from '@/types/performance';
+import type { Performance } from '@/types/performance';
+import { updatePerformanceByIdAction } from '../actions';
 
 interface EditPerformanceFormProps {
   performance: Performance;
 }
 
-export default function EditPerformanceForm({
-  performance,
-}: EditPerformanceFormProps) {
+export default function EditPerformanceForm({ performance }: EditPerformanceFormProps) {
+  const router = useRouter();
+
   const [theatreHasShowId, setTheatreHasShowId] = useState<string>(
     performance.theatre_has_show_id.toString()
   );
@@ -25,39 +27,20 @@ export default function EditPerformanceForm({
     performance.status.toString()
   );
 
-  const router = useRouter();
-
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    const payload: UpdatePerformanceInput = {
-      id: Number(performance.id),
-      theatre_has_show_id: Number(theatreHasShowId),
-      start_time: startTime,
-      type: Number(typeValue),
-      status: Number(statusValue),
-    };
-
-    const res = await fetch('/api/performances/' + performance.id, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-
-    if (res.ok) {
-      router.push('/admin/performances');
-    } else {
-      const err = await res.json();
-      alert('Error: ' + (err.error || res.statusText));
-    }
-  }
-
   return (
-    <form onSubmit={handleSubmit}>
+    <form action={updatePerformanceByIdAction}>
+      <input
+        type="hidden"
+        name="id"
+        value={performance.id}
+      />
+
       <div>
         <label>
           Theatre Has Show ID:
           <input
+            id="theatre_has_show_id"
+            name="theatre_has_show_id"
             type="number"
             value={theatreHasShowId}
             onChange={(e) => setTheatreHasShowId(e.target.value)}
@@ -70,6 +53,8 @@ export default function EditPerformanceForm({
         <label>
           Start Time:
           <input
+            id="start_time"
+            name="start_time"
             type="time"
             value={startTime}
             onChange={(e) => setStartTime(e.target.value)}
@@ -82,6 +67,8 @@ export default function EditPerformanceForm({
         <label>
           Type:
           <input
+            id="type"
+            name="type"
             type="number"
             value={typeValue}
             onChange={(e) => setTypeValue(e.target.value)}
@@ -94,6 +81,8 @@ export default function EditPerformanceForm({
         <label>
           Status:
           <input
+            id="status"
+            name="status"
             type="number"
             value={statusValue}
             onChange={(e) => setStatusValue(e.target.value)}
@@ -104,10 +93,11 @@ export default function EditPerformanceForm({
 
       <div>
         <button type="submit">Save</button>
-        <button type="button" onClick={() => router.back()}>
+        <button type="button" onClick={() => router.push('/admin/performances')}>
           Cancel
         </button>
       </div>
     </form>
   );
-};
+}
+

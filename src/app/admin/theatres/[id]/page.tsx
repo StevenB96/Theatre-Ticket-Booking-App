@@ -1,28 +1,21 @@
 // app/admin/theatres/[id]/edit/page.tsx
-import React, { ReactNode } from 'react';
-import dynamic from 'next/dynamic';
-import { getTheatreById } from '@/library/db/theatre';
 
-interface EditTheatrePageProps {
+import { getTheatreById } from '@/library/db/theatre';
+import EditTheatreForm from './EditTheatreForm';
+
+interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-const EditTheatreForm = dynamic(() => import('./EditTheatreForm'), {
-  loading: () => <p>Loading form…</p>,
-});
-
-export default async function EditTheatrePage({
-  params,
-}: EditTheatrePageProps): Promise<ReactNode> {
+export default async function EditTheatrePage({ params }: PageProps) {
   const { id } = await params;
-  const theatreIdFromUrl = parseInt(id, 10);
-  const theatre = await getTheatreById(theatreIdFromUrl);
+  const theatre = await getTheatreById(parseInt(id, 10));
 
   if (!theatre) {
     return (
       <div>
         <h1>Theatre not found</h1>
-        <p>No theatre exists with ID #{theatreIdFromUrl}.</p>
+        <p>No theatre exists with ID #{id}.</p>
       </div>
     );
   }
@@ -33,4 +26,4 @@ export default async function EditTheatrePage({
       <EditTheatreForm theatre={theatre} />
     </div>
   );
-};
+}

@@ -1,54 +1,23 @@
 // app/admin/performances/create/CreatePerformanceForm.tsx
+
 'use client';
 
-import { useState, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import React from 'react';
+import { useRouter } from 'next/navigation'
+import { createPerformanceAction } from '../actions';
 
 export default function CreatePerformanceForm() {
-  const [theatreHasShowId, setTheatreHasShowId] = useState<string>('');
-  const [startTime, setStartTime] = useState<string>('');
-  const [typeValue, setTypeValue] = useState<string>('');
-  const [statusValue, setStatusValue] = useState<string>('');
-
   const router = useRouter();
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    const payload = {
-      theatre_has_show_id: Number(theatreHasShowId),
-      start_time: startTime,
-      type: Number(typeValue),
-      status: Number(statusValue),
-    };
-
-    try {
-      const res = await fetch('/api/performances', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-
-      if (res.ok) {
-        router.push('/admin/performances');
-      } else {
-        const err = await res.json();
-        alert('Error: ' + (err.error || res.statusText));
-      }
-    } catch (error) {
-      alert('Unexpected error: ' + (error as Error).message);
-    }
-  }
-
   return (
-    <form onSubmit={handleSubmit}>
+    <form action={createPerformanceAction}>
       <div>
         <label>
           Theatre Has Show ID:
           <input
+            id="theatre_has_show_id"
+            name="theatre_has_show_id"
             type="number"
-            value={theatreHasShowId}
-            onChange={(e) => setTheatreHasShowId(e.target.value)}
             required
           />
         </label>
@@ -58,9 +27,9 @@ export default function CreatePerformanceForm() {
         <label>
           Start Time:
           <input
+            id="start_time"
+            name="start_time"
             type="time"
-            value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
             required
           />
         </label>
@@ -70,9 +39,9 @@ export default function CreatePerformanceForm() {
         <label>
           Type:
           <input
+            id="type"
+            name="type"
             type="number"
-            value={typeValue}
-            onChange={(e) => setTypeValue(e.target.value)}
             required
           />
         </label>
@@ -82,9 +51,9 @@ export default function CreatePerformanceForm() {
         <label>
           Status:
           <input
+            id="status"
+            name="status"
             type="number"
-            value={statusValue}
-            onChange={(e) => setStatusValue(e.target.value)}
             required
           />
         </label>

@@ -1,10 +1,10 @@
 // app/admin/performances/page.tsx
-import Link from 'next/link';
-import PerformanceTable from './PerformanceTable.client';
-import { getAllPerformances } from '@/library/db/performance';
-import type { ReactNode } from 'react';
 
-export default async function PerformancesPage(): Promise<ReactNode> {
+import Link from 'next/link';
+import PerformanceTable from './PerformanceTable';
+import { getAllPerformances } from '@/library/db/performance';
+
+export default async function PerformancesPage() {
   const performances = await getAllPerformances();
 
   return (

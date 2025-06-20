@@ -1,5 +1,6 @@
 // templates/actionsTemplate.js
 const actionsTemplate = `// app/admin/<%= pluralName %>/actions.ts
+
 'use server';
 
 import {

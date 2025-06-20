@@ -1,0 +1,64 @@
+# Page snapshot
+
+```yaml
+- complementary:
+  - navigation:
+    - text: Hello, admin
+    - link "Users":
+      - /url: /admin/users
+    - link "Theatres":
+      - /url: /admin/theatres
+    - link "Shows":
+      - /url: /admin/shows
+    - link "Performances":
+      - /url: /admin/performances
+    - link "Seats":
+      - /url: /admin/seats
+    - link "Tickets":
+      - /url: /admin/tickets
+    - button "Log Out"
+- main:
+  - heading "Performances" [level=1]
+  - paragraph:
+    - link "+ New Performance":
+      - /url: /admin/performances/create
+  - table:
+    - rowgroup:
+      - row "ID Theatre Has Show ID Start Time Type Status Created At Updated At Actions":
+        - cell "ID"
+        - cell "Theatre Has Show ID"
+        - cell "Start Time"
+        - cell "Type"
+        - cell "Status"
+        - cell "Created At"
+        - cell "Updated At"
+        - cell "Actions"
+    - rowgroup:
+      - row "1 1 19:00 1 1 04/06/2025 04/06/2025 Edit Delete":
+        - cell "1"
+        - cell "1"
+        - cell "19:00"
+        - cell "1"
+        - cell "1"
+        - cell "04/06/2025"
+        - cell "04/06/2025"
+        - cell "Edit Delete":
+          - link "Edit":
+            - /url: /admin/performances/1
+          - button "Delete"
+      - row "2 1 14:00 0 1 04/06/2025 04/06/2025 Edit Delete":
+        - cell "2"
+        - cell "1"
+        - cell "14:00"
+        - cell "0"
+        - cell "1"
+        - cell "04/06/2025"
+        - cell "04/06/2025"
+        - cell "Edit Delete":
+          - link "Edit":
+            - /url: /admin/performances/2
+          - button "Delete"
+- alert
+- button "Open Next.js Dev Tools":
+  - img
+```

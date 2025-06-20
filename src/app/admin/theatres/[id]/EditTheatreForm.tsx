@@ -1,17 +1,19 @@
 // app/admin/theatres/[id]/edit/EditTheatreForm.tsx
+
 'use client';
 
-import { useState, FormEvent } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { Theatre, UpdateTheatreInput } from '@/types/theatre';
+import type { Theatre } from '@/types/theatre';
+import { updateTheatreByIdAction } from '../actions';
 
 interface EditTheatreFormProps {
   theatre: Theatre;
 }
 
-export default function EditTheatreForm({
-  theatre,
-}: EditTheatreFormProps) {
+export default function EditTheatreForm({ theatre }: EditTheatreFormProps) {
+  const router = useRouter();
+
   const [nameValue, setNameValue] = useState<string>(
     theatre.name.toString()
   );
@@ -22,38 +24,16 @@ export default function EditTheatreForm({
     theatre.status.toString()
   );
 
-  const router = useRouter();
-
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    const payload: UpdateTheatreInput = {
-      id: Number(theatre.id),
-      name: nameValue,
-      address: addressValue,
-      status: Number(statusValue),
-    };
-
-    const res = await fetch('/api/theatres/' + theatre.id, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-
-    if (res.ok) {
-      router.push('/admin/theatres');
-    } else {
-      const err = await res.json();
-      alert('Error: ' + (err.error || res.statusText));
-    }
-  }
-
   return (
-    <form onSubmit={handleSubmit}>
+    <form action={updateTheatreByIdAction}>
+      <input type="hidden" name="id" value={theatre.id} />
+
       <div>
         <label>
           Name:
           <input
+            id="name"
+            name="name"
             type="text"
             value={nameValue}
             onChange={(e) => setNameValue(e.target.value)}
@@ -66,6 +46,8 @@ export default function EditTheatreForm({
         <label>
           Address:
           <textarea
+            id="address"
+            name="address"
             value={addressValue}
             onChange={(e) => setAddressValue(e.target.value)}
           />
@@ -76,6 +58,8 @@ export default function EditTheatreForm({
         <label>
           Status:
           <input
+            id="status"
+            name="status"
             type="number"
             value={statusValue}
             onChange={(e) => setStatusValue(e.target.value)}
@@ -86,10 +70,11 @@ export default function EditTheatreForm({
 
       <div>
         <button type="submit">Save</button>
-        <button type="button" onClick={() => router.back()}>
+        <button type="button" onClick={() => router.push('/admin/theatres')}>
           Cancel
         </button>
       </div>
     </form>
   );
-};
+}
+

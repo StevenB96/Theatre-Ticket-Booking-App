@@ -1,4 +1,5 @@
 // app/api/theatres/route.ts
+
 import { NextResponse } from 'next/server';
 import {
   getAllTheatres,

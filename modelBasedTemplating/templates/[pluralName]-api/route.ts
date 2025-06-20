@@ -1,5 +1,6 @@
 // templates/route.js
 const route = `// app/api/<%= pluralName %>/route.ts
+
 import { NextResponse } from 'next/server';
 import {
   getAll<%= PluralName %>,

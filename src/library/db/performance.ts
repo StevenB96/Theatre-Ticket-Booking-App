@@ -1,4 +1,5 @@
 // src/library/db/performance.ts
+
 import db from '@/library/dbClient';
 import type {
   Performance,
@@ -17,7 +18,7 @@ export async function getAllPerformances(): Promise<Performance[]> {
       'type',
       'status',
       'created_at',
-      'updated_at'
+      'updated_at',
     )
     .orderBy('id', 'asc');
 }

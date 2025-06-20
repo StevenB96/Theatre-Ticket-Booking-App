@@ -1,5 +1,6 @@
 // templates/types/[name].ts
 const typeTemplate = `// src/types/<%= name %>.ts
+
 export interface <%= Name %> {
   /* TEMPLATE COMMENT:
     Add relevant attributes.

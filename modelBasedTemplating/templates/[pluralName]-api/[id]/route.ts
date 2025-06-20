@@ -1,5 +1,7 @@
 // templates/idRouteTemplate.js
+
 const idRouteTemplate = `// app/api/<%= pluralName %>/[id]/route.ts
+
 import { NextResponse } from 'next/server';
 import {
   get<%= Name %>ById,

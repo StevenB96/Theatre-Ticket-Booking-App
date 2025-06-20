@@ -1,4 +1,5 @@
 // app/api/theatres/[id]/route.ts
+
 import { NextResponse } from 'next/server';
 import {
   getTheatreById,
@@ -19,6 +20,13 @@ export async function GET(
     const { id } = await context.params;
     const theatreIdFromUrl = parseInt(id, 10);
     const theatre = await getTheatreById(theatreIdFromUrl);
+
+    if (!theatre) {
+      return NextResponse.json(
+        { error: 'Theatre not found' },
+        { status: 404 }
+      );
+    }
 
     if (!theatre) {
       return NextResponse.json(

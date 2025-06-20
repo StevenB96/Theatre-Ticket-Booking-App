@@ -1,0 +1,91 @@
+// app/admin/performances/actions.ts
+
+'use server';
+
+import {
+  createPerformance,
+  updatePerformanceById,
+  deletePerformanceById,
+} from '@/library/db/performance';
+import type {
+  CreatePerformanceInput,
+  UpdatePerformanceInput,
+} from '@/types/performance';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
+
+/**
+ * Server action to create a new performance.
+ * - Redirects to the newly created performance's page.
+ * - Revalidates the "/admin/performances" path.
+ */
+export async function createPerformanceAction(formData: FormData) {
+  const theatre_has_show_id = Number(formData.get('theatre_has_show_id'));
+  if (theatre_has_show_id === null) throw new Error('Theatre Has Show Id is required');
+
+  const start_time = String(formData.get('start_time'));
+  if (!start_time) throw new Error('Start Time is required');
+
+  const type = Number(formData.get('type'));
+  if (type === null) throw new Error('Type is required');
+
+  const status = Number(formData.get('status'));
+  if (status === null) throw new Error('Status is required');
+
+  const input: CreatePerformanceInput = {
+    start_time,
+    theatre_has_show_id,
+    type,
+    status,
+  };
+
+  const performance = await createPerformance(input);
+  revalidatePath('/admin/performances/' + performance.id);
+  redirect('/admin/performances/' + performance.id);
+}
+
+/**
+ * Server action to update an existing performance by ID.
+ * - Redirects back to the list after success.
+ * - Revalidates the "/admin/performances" path.
+ */
+export async function updatePerformanceByIdAction(formData: FormData) {
+  const id = Number(formData.get('id'));
+  if (!id) throw new Error('ID is required');
+
+  const theatre_has_show_id = Number(formData.get('theatre_has_show_id'));
+  if (theatre_has_show_id === null) throw new Error('Theatre Has Show Id is required');
+
+  const start_time = String(formData.get('start_time'));
+  if (!start_time) throw new Error('Start Time is required');
+
+  const type = Number(formData.get('type'));
+  if (type === null) throw new Error('Type is required');
+
+  const status = Number(formData.get('status'));
+  if (status === null) throw new Error('Status is required');
+
+  const input: UpdatePerformanceInput = {
+    id,
+    start_time,
+    theatre_has_show_id,
+    type,
+    status,
+  };
+
+  await updatePerformanceById(id, input);
+  revalidatePath('/admin/performances');
+  redirect('/admin/performances');
+}
+
+/**
+ * Server action to delete a performance by ID.
+ * - Revalidates the "/admin/performances" path after deletion.
+ */
+export async function deletePerformanceByIdAction(formData: FormData) {
+  const id = Number(formData.get('performanceId'));
+  if (!id) return;
+
+  await deletePerformanceById(id);
+  revalidatePath('/admin/performances');
+};

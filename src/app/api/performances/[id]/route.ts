@@ -1,3 +1,5 @@
+// app/api/performances/[id]/route.ts
+
 import { NextResponse } from 'next/server';
 import {
   getPerformanceById,
@@ -18,6 +20,13 @@ export async function GET(
     const { id } = await context.params;
     const performanceIdFromUrl = parseInt(id, 10);
     const performance = await getPerformanceById(performanceIdFromUrl);
+
+    if (!performance) {
+      return NextResponse.json(
+        { error: 'Performance not found' },
+        { status: 404 }
+      );
+    }
 
     if (!performance) {
       return NextResponse.json(
@@ -78,9 +87,10 @@ export async function DELETE(
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error('DELETE performance error:', err);
+
     return NextResponse.json(
       { error: 'Failed to delete performance' },
       { status: 500 }
     );
   }
-}
+};

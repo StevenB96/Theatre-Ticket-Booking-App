@@ -1,5 +1,6 @@
 // templates/tableTemplate.js
 const tableTemplate = `// app/admin/<%= pluralName %>/<%= Name %>Table.tsx
+
 'use client';
 
 import Link from 'next/link';

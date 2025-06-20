@@ -1,8 +1,9 @@
 // src/app/admin/performances/loading.tsx
+
 import React from 'react';
 
-export default function PerformancesLoading() {
+export default function Loading() {
   return (
-    <p>Loading performances…</p >
+    <p>Loading performances...</p>
   );
-};
+}
