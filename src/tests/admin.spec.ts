@@ -87,7 +87,7 @@ test.describe('@admin @crud Operations', () => {
       await page.click(`button[name="${entity}Id"][value="${id}"]`);
       await page.waitForURL(new RegExp(`/admin/${entity}s(\\?.*)?$`), { timeout: 20_000 });
 
-      const row = page.locator('tr', { hasText: updateField.value });
+      const row = page.locator(`tr[data-row-id="${id}"]`, { hasText: updateField.value });
       await expect(row).toHaveCount(0);
       console.log(
         `⏱️ Delete ${entity} duration:`,

@@ -1,6 +1,5 @@
 // src/library/db/user.ts
 import db from '@/library/dbClient';
-import { hashPassword } from '@/library/auth';
 import type {
   User,
   CreateUserInput,
@@ -35,14 +34,12 @@ export async function getUserById(
 export async function createUser(
   input: CreateUserInput
 ): Promise<User> {
-  const password_hash = await hashPassword(input.password);
-
   // @ts-ignore: untyped function call may not accept type arguments
   const [newUser] = await db<User>('user')
     .insert({
       username: input.username,
       email: input.email,
-      password_hash: password_hash,
+      password_hash: input.password,
       role: input.role,
       status: input.status,
     })
@@ -64,19 +61,10 @@ export async function updateUserById(
   id: number,
   data: UpdateUserInput
 ): Promise<User> {
-  const updateData = { ...data };
-
-  if (data.password) {
-    const password_hash = await hashPassword(data.password);
-    updateData.password_hash = password_hash;
-  }
-
-  delete updateData.password;
-
   // @ts-ignore: untyped function call may not accept type arguments
   const [updatedUser] = await db<User>('user')
     .where({ id })
-    .update(updateData)
+    .update(data)
     .returning([
       'id',
       'username',

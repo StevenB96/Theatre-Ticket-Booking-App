@@ -1,11 +1,7 @@
 // app/admin/users/actions.ts
 'use server';
 
-import {
-  createUser,
-  updateUserById,
-  deleteUserById,
-} from '@/library/db/user';
+import { UserModel } from '@/models/UserModel';
 import type {
   CreateUserInput,
   UpdateUserInput,
@@ -42,7 +38,7 @@ export async function createUserAction(formData: FormData) {
     status,
   };
 
-  const user = await createUser(input);
+  const user = await UserModel.create(input);
   revalidatePath('/admin/users/' + user.id);
   redirect('/admin/users/' + user.id);
 }
@@ -82,7 +78,7 @@ export async function updateUserByIdAction(formData: FormData) {
     input.password = password;
   }
 
-  await updateUserById(id, input);
+  const user = await UserModel.update(id, input);
   revalidatePath('/admin/users');
   redirect('/admin/users');
 }
@@ -95,6 +91,6 @@ export async function deleteUserByIdAction(formData: FormData) {
   const id = Number(formData.get('userId'));
   if (!id) return;
 
-  await deleteUserById(id);
+  await UserModel.delete(id);
   revalidatePath('/admin/users');
 };

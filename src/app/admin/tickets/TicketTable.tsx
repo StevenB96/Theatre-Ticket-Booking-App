@@ -28,7 +28,7 @@ export default function TicketTable({ data }: Props) {
         </thead>
         <tbody>
           {data.map((ticket) => (
-            <tr key={ticket.id}>
+            <tr key={ticket.id} data-row-id={ticket.id}>
               <td>
                 {ticket.id}
               </td>

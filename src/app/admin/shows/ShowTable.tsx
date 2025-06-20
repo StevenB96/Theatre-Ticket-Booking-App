@@ -25,7 +25,7 @@ export default function ShowTable({ data }: Props) {
         </thead>
         <tbody>
           {data.map((show) => (
-            <tr key={show.id}>
+            <tr key={show.id} data-row-id={show.id}>
               <td>{show.id}</td>
               <td>{show.name}</td>
               <td>{show.status}</td>

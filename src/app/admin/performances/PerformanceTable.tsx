@@ -27,7 +27,7 @@ export default function PerformanceTable({ data }: Props) {
         </thead>
         <tbody>
           {data.map((performance) => (
-            <tr key={performance.id}>
+            <tr key={performance.id} data-row-id={performance.id}>
               <td>{performance.id}</td>
               <td>{performance.theatre_has_show_id}</td>
               <td>

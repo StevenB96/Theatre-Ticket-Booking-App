@@ -27,7 +27,7 @@ export default function SeatTable({ data }: Props) {
         </thead>
         <tbody>
           {data.map((seat) => (
-            <tr key={seat.id}>
+            <tr key={seat.id} data-row-id={seat.id}>
               <td>
                 {seat.id}
               </td>

@@ -27,7 +27,7 @@ export default function TheatreTable({ data }: Props) {
         </thead>
         <tbody>
           {data.map((theatre) => (
-            <tr key={theatre.id}>
+            <tr key={theatre.id} data-row-id={theatre.id}>
               <td>{
                 theatre.id
               }</td>

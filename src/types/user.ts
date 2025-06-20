@@ -3,12 +3,11 @@ export interface User {
   id: number;
   username: string;
   email: string;
-  password?: string;
   password_hash?: string;
   role: number;
   status: number;
-  created_at?: string;
-  updated_at?: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface CreateUserInput {
@@ -24,7 +23,6 @@ export interface UpdateUserInput {
   username: string;
   email: string;
   password?: string;
-  password_hash?: string;
   role: number;
   status: number;
 }

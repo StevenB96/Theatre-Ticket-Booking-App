@@ -27,7 +27,7 @@ export default function UserTable({ data }: Props) {
         </thead>
         <tbody>
           {data.map((user) => (
-            <tr key={user.id}>
+            <tr key={user.id} data-row-id={user.id}>
               <td>
                 {user.id}
               </td>
