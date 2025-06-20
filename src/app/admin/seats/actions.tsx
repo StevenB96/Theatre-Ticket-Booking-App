@@ -1,11 +1,7 @@
 // app/admin/seats/actions.ts
 'use server';
 
-import {
-  createSeat,
-  updateSeatById,
-  deleteSeatById,
-} from '@/library/db/seat';
+import { SeatModel } from '@/models/SeatModel';
 import type {
   CreateSeatInput,
   UpdateSeatInput,
@@ -46,7 +42,7 @@ export async function createSeatAction(formData: FormData) {
     status,
   };
 
-  const seat = await createSeat(input);
+  const seat = await SeatModel.create(input);
   revalidatePath(`/admin/seats/${seat.id}`);
   redirect(`/admin/seats/${seat.id}`);
 }
@@ -90,7 +86,7 @@ export async function updateSeatByIdAction(formData: FormData) {
     status,
   };
 
-  await updateSeatById(id, input);
+  await SeatModel.update(id, input);
   revalidatePath('/admin/seats');
   redirect('/admin/seats');
 }
@@ -103,6 +99,6 @@ export async function deleteSeatByIdAction(formData: FormData) {
   const id = Number(formData.get('seatId'));
   if (!id) return;
 
-  await deleteSeatById(id);
+  await SeatModel.delete(id);
   revalidatePath('/admin/seats');
 };

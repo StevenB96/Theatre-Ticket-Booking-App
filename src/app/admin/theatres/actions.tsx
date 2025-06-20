@@ -2,11 +2,7 @@
 
 'use server';
 
-import {
-  createTheatre,
-  updateTheatreById,
-  deleteTheatreById,
-} from '@/library/db/theatre';
+import { TheatreModel } from '@/models/TheatreModel';
 import type {
   CreateTheatreInput,
   UpdateTheatreInput,
@@ -35,7 +31,7 @@ export async function createTheatreAction(formData: FormData) {
     status
   };
 
-  const theatre = await createTheatre(input);
+  const theatre = await TheatreModel.create(input);
   revalidatePath('/admin/theatres/' + theatre.id);
   redirect('/admin/theatres/' + theatre.id);
 }
@@ -65,7 +61,7 @@ export async function updateTheatreByIdAction(formData: FormData) {
     status
   };
 
-  await updateTheatreById(id, input);
+  await TheatreModel.update(id, input);
   revalidatePath('/admin/theatres');
   redirect('/admin/theatres');
 }
@@ -78,6 +74,6 @@ export async function deleteTheatreByIdAction(formData: FormData) {
   const id = Number(formData.get('theatreId'));
   if (!id) return;
 
-  await deleteTheatreById(id);
+  await TheatreModel.delete(id);
   revalidatePath('/admin/theatres');
 };

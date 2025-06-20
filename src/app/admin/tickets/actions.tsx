@@ -1,11 +1,7 @@
 // app/admin/tickets/actions.ts
 'use server';
 
-import {
-  createTicket,
-  updateTicketById,
-  deleteTicketById,
-} from '@/library/db/ticket';
+import { TicketModel } from '@/models/TicketModel';
 import type {
   CreateTicketInput,
   UpdateTicketInput,
@@ -52,7 +48,7 @@ export async function createTicketAction(formData: FormData) {
     status,
   };
 
-  const ticket = await createTicket(input);
+  const ticket = await TicketModel.create(input);
   revalidatePath(`/admin/tickets/${ticket.id}`);
   redirect(`/admin/tickets/${ticket.id}`);
 }
@@ -102,7 +98,7 @@ export async function updateTicketByIdAction(formData: FormData) {
     status,
   };
 
-  await updateTicketById(id, input);
+  await TicketModel.update(id, input);
   revalidatePath('/admin/tickets');
   redirect('/admin/tickets');
 }
@@ -115,6 +111,6 @@ export async function deleteTicketByIdAction(formData: FormData) {
   const id = Number(formData.get('ticketId'));
   if (!id) return;
 
-  await deleteTicketById(id);
+  await TicketModel.delete(id);
   revalidatePath('/admin/tickets');
 };

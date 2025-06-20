@@ -2,11 +2,7 @@
 
 'use server';
 
-import {
-  createPerformance,
-  updatePerformanceById,
-  deletePerformanceById,
-} from '@/library/db/performance';
+import { PerformanceModel } from '@/models/PerformanceModel';
 import type {
   CreatePerformanceInput,
   UpdatePerformanceInput,
@@ -39,7 +35,7 @@ export async function createPerformanceAction(formData: FormData) {
     status,
   };
 
-  const performance = await createPerformance(input);
+  const performance = await PerformanceModel.create(input);
   revalidatePath('/admin/performances/' + performance.id);
   redirect('/admin/performances/' + performance.id);
 }
@@ -73,7 +69,7 @@ export async function updatePerformanceByIdAction(formData: FormData) {
     status,
   };
 
-  await updatePerformanceById(id, input);
+  await PerformanceModel.update(id, input);
   revalidatePath('/admin/performances');
   redirect('/admin/performances');
 }
@@ -86,6 +82,6 @@ export async function deletePerformanceByIdAction(formData: FormData) {
   const id = Number(formData.get('performanceId'));
   if (!id) return;
 
-  await deletePerformanceById(id);
+  await PerformanceModel.delete(id);
   revalidatePath('/admin/performances');
 };

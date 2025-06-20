@@ -1,11 +1,7 @@
 // app/admin/shows/actions.ts
 'use server';
 
-import {
-  createShow,
-  updateShowById,
-  deleteShowById,
-} from '@/library/db/show';
+import { ShowModel } from '@/models/ShowModel';
 import type {
   CreateShowInput,
   UpdateShowInput
@@ -35,7 +31,7 @@ export async function createShowAction(formData: FormData) {
     status
   };
 
-  const show = await createShow(input);
+  const show = await ShowModel.create(input);
 
   revalidatePath(`/admin/shows/${show.id}`);
   redirect(`/admin/shows/${show.id}`);
@@ -69,7 +65,7 @@ export async function updateShowByIdAction(formData: FormData) {
     status,
   };
 
-  await updateShowById(id, input);
+  await ShowModel.update(id, input);
 
   revalidatePath('/admin/shows');
   redirect('/admin/shows');
@@ -83,6 +79,6 @@ export async function deleteShowByIdAction(formData: FormData) {
   const id = Number(formData.get('showId'));
   if (!id) return;
 
-  await deleteShowById(id);
+  await ShowModel.delete(id);
   revalidatePath('/admin/shows');
 }
