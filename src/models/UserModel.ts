@@ -2,7 +2,7 @@ import * as db from '@/library/db/user';
 import { hashPassword } from '@/library/auth';
 import type { User, CreateUserInput, UpdateUserInput } from '@/types/user';
 
-export interface IUserModelStatic {
+export interface IUserModel {
   list(): Promise<User[]>;
   create(input: CreateUserInput): Promise<UserModel>;
   find(id: number): Promise<UserModel | null>;

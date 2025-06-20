@@ -1,9 +1,6 @@
 // app/api/users/route.ts
 import { NextResponse } from 'next/server';
-import {
-  getAllUsers,
-  createUser,
-} from '@/library/db/user';
+import { UserModel } from '@/models/UserModel';
 import {
   User,
   CreateUserInput,
@@ -12,7 +9,7 @@ import {
 // GET /api/users
 export async function GET() {
   try {
-    const users: User[] = await getAllUsers();
+    const users: User[] = await UserModel.list();
     return NextResponse.json(users);
   } catch (err) {
     console.error('GET users error:', err);
@@ -28,7 +25,8 @@ export async function POST(req: Request) {
   try {
     const body: CreateUserInput = await req.json();
 
-    const newUser: User = await createUser(body);
+    const model = await UserModel.create(body);
+    const newUser: User = model.data!;
 
     return NextResponse.json(newUser, { status: 201 });
   } catch (err) {

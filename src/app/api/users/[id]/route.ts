@@ -1,10 +1,6 @@
 // app/api/users/[id]/route.ts
 import { NextResponse } from 'next/server';
-import {
-  getUserById,
-  updateUserById,
-  deleteUserById,
-} from '@/library/db/user';
+import { UserModel } from '@/models/UserModel';
 import {
   User,
   UpdateUserInput
@@ -18,7 +14,11 @@ export async function GET(
   try {
     const { id } = await context.params;
     const userIdFromUrl = parseInt(id, 10);
-    const user = await getUserById(userIdFromUrl);
+    const model = await UserModel.find(userIdFromUrl);
+    if (!model || !model.data) {
+      throw new Error('User not found');
+    }
+    const user: User = model.data;
 
     if (!user) {
       return NextResponse.json(
@@ -61,7 +61,11 @@ export async function PUT(
       );
     };
 
-    const updated: User = await updateUserById(userIdFromUrl, body);
+    const model = await UserModel.update(userIdFromUrl, body);
+    if (!model || !model.data) {
+      throw new Error('User not found');
+    }
+    const updated: User = model.data;
 
     return NextResponse.json(updated);
   } catch (err) {
@@ -81,7 +85,7 @@ export async function DELETE(
   try {
     const { id } = await context.params;
     const userIdFromUrl = parseInt(id, 10);
-    await deleteUserById(userIdFromUrl);
+    await UserModel.delete(userIdFromUrl);
 
     return NextResponse.json({ success: true });
   } catch (err) {

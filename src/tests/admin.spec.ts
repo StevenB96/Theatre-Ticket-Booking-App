@@ -26,12 +26,14 @@ test.describe('@admin @crud Operations', () => {
   /**
    * Generic CRUD helper
    * @param entity - resource path
+   * @param entities - resources path
    * @param createFields - input[name] -> value
    * @param selectors - button selectors for create/update
    */
   async function runCrud(
     page: Page,
     entity: string,
+    entities: string,
     createFields: Record<string, string>,
     updateField: { name: string; value: string },
     selectors: { create: string; update: string }
@@ -42,14 +44,14 @@ test.describe('@admin @crud Operations', () => {
     await test.step(`Create ${entity}`, async () => {
       // Note: timing includes full page navigation, form fill, server round-trip, and client render
       const t0 = performance.now();
-      await page.goto(`/admin/${entity}s/create`, { waitUntil: 'networkidle' });
+      await page.goto(`/admin/${entities}/create`, { waitUntil: 'networkidle' });
       await page.waitForSelector('form, button');
 
       for (const [name, value] of Object.entries(createFields)) {
         await page.fill(`form *[name="${name}"]`, value);
       }
       await page.click(selectors.create);
-      await page.waitForURL(new RegExp(`/admin/${entity}s/\\d+(\\?.*)?$`), { timeout: 20_000 });
+      await page.waitForURL(new RegExp(`/admin/${entities}/\\d+(\\?.*)?$`), { timeout: 20_000 });
 
       const match = page.url().match(new RegExp(`/admin/${entity}s/(\\d+)`));
       expect(match, `Expected URL to contain created ${entity} ID`).not.toBeNull();
@@ -65,12 +67,12 @@ test.describe('@admin @crud Operations', () => {
     await test.step(`Update ${entity}`, async () => {
       // Note: timing includes navigation to edit page and update submission
       const t1 = performance.now();
-      await page.goto(`/admin/${entity}s/${id}`, { waitUntil: 'networkidle' });
+      await page.goto(`/admin/${entities}/${id}`, { waitUntil: 'networkidle' });
       await page.waitForSelector('form, button');
 
       await page.fill(`form *[name="${updateField.name}"]`, updateField.value);
       await page.click(selectors.update);
-      await page.waitForURL(new RegExp(`/admin/${entity}s(\\?.*)?$`), { timeout: 20_000 });
+      await page.waitForURL(new RegExp(`/admin/${entities}(\\?.*)?$`), { timeout: 20_000 });
 
       console.log(
         `⏱️ Update ${entity} duration:`,
@@ -82,10 +84,10 @@ test.describe('@admin @crud Operations', () => {
     await test.step(`Delete ${entity}`, async () => {
       // Note: timing includes navigation back to list and DOM check for deletion
       const t2 = performance.now();
-      await page.goto(`/admin/${entity}s`, { waitUntil: 'networkidle' });
+      await page.goto(`/admin/${entities}`, { waitUntil: 'networkidle' });
       page.once('dialog', dialog => dialog.accept());
       await page.click(`button[name="${entity}Id"][value="${id}"]`);
-      await page.waitForURL(new RegExp(`/admin/${entity}s(\\?.*)?$`), { timeout: 20_000 });
+      await page.waitForURL(new RegExp(`/admin/${entities}(\\?.*)?$`), { timeout: 20_000 });
 
       const row = page.locator(`tr[data-row-id="${id}"]`, { hasText: updateField.value });
       await expect(row).toHaveCount(0);
@@ -101,6 +103,7 @@ test.describe('@admin @crud Operations', () => {
     await runCrud(
       page,
       'seat',
+      'seats',
       {
         theatre_id: '1',
         code: 'A3',
@@ -120,6 +123,7 @@ test.describe('@admin @crud Operations', () => {
     await runCrud(
       page,
       'show',
+      'shows',
       {
         name: 'Test Show',
         status: '1'
@@ -137,6 +141,7 @@ test.describe('@admin @crud Operations', () => {
     await runCrud(
       page,
       'ticket',
+      'tickets',
       {
         user_id: '1',
         seat_id: '1',
@@ -157,6 +162,7 @@ test.describe('@admin @crud Operations', () => {
     await runCrud(
       page,
       'user',
+      'users',
       {
         username: 'Test User',
         email: 'test@example.com',
@@ -177,6 +183,7 @@ test.describe('@admin @crud Operations', () => {
     await runCrud(
       page,
       'performance',
+      'performances',
       {
         theatre_has_show_id: '1',
         start_time: '16:00',
@@ -199,6 +206,7 @@ test.describe('@admin @crud Operations', () => {
     await runCrud(
       page,
       'theatre',
+      'theatres',
       {
         name: 'Test',
         address: 'Test Address',
