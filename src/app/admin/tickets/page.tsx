@@ -1,10 +1,15 @@
 // app/admin/tickets/page.tsx
 import Link from 'next/link';
 import TicketTable from './TicketTable';
-import { getAllTickets } from '@/library/db/ticket';
+import { TicketModel } from '@/models/TicketModel';
 
 export default async function TicketsPage() {
-  const tickets = await getAllTickets();
+  const ticketModels = await TicketModel.findAll();
+  let tickets;
+
+  if (ticketModels) {
+    tickets = TicketModel.serialise(ticketModels);
+  }
 
   return (
     <div>

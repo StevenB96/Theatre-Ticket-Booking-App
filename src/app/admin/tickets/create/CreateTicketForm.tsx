@@ -4,46 +4,83 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation'
+import type { Seat } from '@/types/seat';
+import type { PerformanceWithRelations } from '@/types/performance';
+import type { User } from '@/types/user';
 import { createTicketAction } from '../actions';
 
-export default function CreateTicketForm() {
+interface CreateTicketFormProps {
+  users: User[];
+  seats: Seat[];
+  performances: PerformanceWithRelations[];
+}
+
+export default function CreateTicketForm({
+  users,
+  seats,
+  performances,
+}: CreateTicketFormProps) {
   const router = useRouter();
 
   return (
     <form action={createTicketAction}>
       <div>
         <label>
-          User ID:
-          <input
-            id="user_id"
+          User:
+          <select
             name="user_id"
-            type="number"
+            id="user_id"
             required
-          />
+          >
+            {users.map(user => (
+              <option
+                key={user.id}
+                value={user.id}
+              >
+                {user.username}
+              </option>
+            ))}
+          </select>
         </label>
       </div>
 
       <div>
         <label>
-          Seat ID:
-          <input
-            id="seat_id"
+          Seat:
+          <select
             name="seat_id"
-            type="number"
+            id="seat_id"
             required
-          />
+          >
+            {seats.map(seat => (
+              <option
+                key={seat.id}
+                value={seat.id}
+              >
+                {seat.code}
+              </option>
+            ))}
+          </select>
         </label>
       </div>
 
       <div>
         <label>
-          Performance ID:
-          <input
-            id="performance_id"
+          Performance:
+          <select
             name="performance_id"
-            type="number"
+            id="performance_id"
             required
-          />
+          >
+            {performances.map(performance => (
+              <option
+                key={performance.id}
+                value={performance.id}
+              >
+                {performance.show?.name} - {performance.theatre?.name}
+              </option>
+            ))}
+          </select>
         </label>
       </div>
 
@@ -62,12 +99,14 @@ export default function CreateTicketForm() {
       <div>
         <label>
           Status:
-          <input
-            id="status"
+          <select
             name="status"
-            type="number"
+            id="status"
             required
-          />
+          >
+            <option value={1}>Active</option>
+            <option value={0}>Inactive</option>
+          </select>
         </label>
       </div>
 

@@ -1,7 +1,10 @@
 // app/admin/tickets/[id]/edit/page.tsx
 
-import { getTicketById } from '@/library/db/ticket';
 import EditTicketForm from './EditTicketForm';
+import { TicketModel } from '@/models/TicketModel';
+import { PerformanceModel } from '@/models/PerformanceModel';
+import { getAllUsers } from '@/library/db/user';
+import { getAllSeats } from '@/library/db/seat';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -9,7 +12,12 @@ interface PageProps {
 
 export default async function EditTicketPage({ params }: PageProps) {
   const { id } = await params;
-  const ticket = await getTicketById(parseInt(id, 10));
+  const ticket = await TicketModel.load(parseInt(id, 10));
+  const users = await getAllUsers();
+  const seats = await getAllSeats();
+
+  const performanceModels = await PerformanceModel.findAll();
+  const performances = PerformanceModel.serialise(performanceModels);
 
   if (!ticket) {
     return (
@@ -22,8 +30,13 @@ export default async function EditTicketPage({ params }: PageProps) {
 
   return (
     <div>
-      <h1>Edit Ticket #{ticket.id}</h1>
-      <EditTicketForm ticket={ticket} />
+      <h1>Edit Ticket #{ticket.data.id}</h1>
+      <EditTicketForm
+        users={users}
+        seats={seats}
+        performances={performances}
+        ticket={ticket.data}
+      />
     </div>
   );
 }

@@ -2,11 +2,11 @@
 'use client';
 
 import Link from 'next/link';
-import type { Ticket } from '@/types/ticket';
+import type { TicketWithRelations } from '@/types/ticket';
 import { deleteTicketByIdAction } from './actions';
 
 interface Props {
-  data: Ticket[];
+  data: TicketWithRelations[];
 }
 
 export default function TicketTable({ data }: Props) {
@@ -16,9 +16,9 @@ export default function TicketTable({ data }: Props) {
         <thead>
           <tr>
             <th>ID</th>
-            <th>User ID</th>
-            <th>Seat ID</th>
-            <th>Performance ID</th>
+            <th>User</th>
+            <th>Seat</th>
+            <th>Performance</th>
             <th>Price</th>
             <th>Status</th>
             <th>Created At</th>
@@ -33,19 +33,17 @@ export default function TicketTable({ data }: Props) {
                 {ticket.id}
               </td>
               <td>
-                {ticket.user_id}
+                {ticket.user?.username}
               </td>
               <td>
-                {ticket.seat_id}
+                {ticket.seat?.code}
               </td>
-              <td>
-                {ticket.performance_id}
-              </td>
+              <td>{ticket.performance?.show?.name} - {ticket.performance?.theatre?.name}</td>
               <td>
                 {ticket.price}
               </td>
               <td>
-                {ticket.status}
+                {ticket.status === 1 ? 'Active' : ticket.status === 0 ? 'Inactive' : 'Unknown'}
               </td>
               <td>
                 {ticket.created_at

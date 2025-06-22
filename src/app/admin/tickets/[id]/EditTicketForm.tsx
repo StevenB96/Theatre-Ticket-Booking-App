@@ -5,13 +5,24 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import type { Ticket } from '@/types/ticket';
+import type { Seat } from '@/types/seat';
+import type { PerformanceWithRelations } from '@/types/performance';
+import type { User } from '@/types/user';
 import { updateTicketByIdAction } from '../actions';
 
 interface EditTicketFormProps {
   ticket: Ticket;
+  users: User[];
+  seats: Seat[];
+  performances: PerformanceWithRelations[];
 }
 
-export default function EditTicketForm({ ticket }: EditTicketFormProps) {
+export default function EditTicketForm({
+  users,
+  seats,
+  performances,
+  ticket,
+}: EditTicketFormProps) {
   const router = useRouter();
 
   const [userIdValue, setUserIdValue] = useState<string>(ticket.user_id.toString(),
@@ -27,43 +38,67 @@ export default function EditTicketForm({ ticket }: EditTicketFormProps) {
 
       <div>
         <label>
-          User ID:
-          <input
-            id="user_id"
+          User:
+          <select
             name="user_id"
-            type="number"
+            id="user_id"
+            required
             value={userIdValue}
             onChange={(e) => setUserIdValue(e.target.value)}
-            required
-          />
+          >
+            {users.map(user => (
+              <option
+                key={user.id}
+                value={user.id}
+              >
+                {user.username}
+              </option>
+            ))}
+          </select>
         </label>
       </div>
 
       <div>
         <label>
-          Seat ID:
-          <input
-            id="seat_id"
+          Seat:
+          <select
             name="seat_id"
-            type="number"
+            id="seat_id"
+            required
             value={seatIdValue}
             onChange={(e) => setSeatIdValue(e.target.value)}
-            required
-          />
+          >
+            {seats.map(seat => (
+              <option
+                key={seat.id}
+                value={seat.id}
+              >
+                {seat.code}
+              </option>
+            ))}
+          </select>
         </label>
       </div>
 
       <div>
         <label>
-          Performance ID:
-          <input
-            id="performance_id"
+          Performance:
+          <select
             name="performance_id"
-            type="number"
+            id="performance_id"
+            required
             value={performanceIdValue}
             onChange={(e) => setPerformanceIdValue(e.target.value)}
-            required
-          />
+          >
+            {performances.map(performance => (
+              <option
+                key={performance.id}
+                value={performance.id}
+              >
+                {performance.show?.name} - {performance.theatre?.name}
+              </option>
+            ))}
+          </select>
         </label>
       </div>
 
@@ -84,14 +119,16 @@ export default function EditTicketForm({ ticket }: EditTicketFormProps) {
       <div>
         <label>
           Status:
-          <input
-            id="status"
+          <select
             name="status"
-            type="number"
+            id="status"
+            required
             value={statusValue}
             onChange={(e) => setStatusValue(e.target.value)}
-            required
-          />
+          >
+            <option value={1}>Active</option>
+            <option value={0}>Inactive</option>
+          </select>
         </label>
       </div>
 

@@ -49,8 +49,8 @@ export async function createTicketAction(formData: FormData) {
   };
 
   const ticket = await TicketModel.create(input);
-  revalidatePath(`/admin/tickets/${ticket.id}`);
-  redirect(`/admin/tickets/${ticket.id}`);
+  revalidatePath(`/admin/tickets/${ticket.data.id}`);
+  redirect(`/admin/tickets/${ticket.data.id}`);
 }
 
 /**

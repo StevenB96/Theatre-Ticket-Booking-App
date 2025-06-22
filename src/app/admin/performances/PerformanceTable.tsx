@@ -30,7 +30,7 @@ export default function PerformanceTable({ data }: Props) {
           {data.map((performance) => (
             <tr key={performance.id} data-row-id={performance.id}>
               <td>{performance.id}</td>
-              <td>{performance.show && performance.show.name} - {performance.theatre && performance.theatre.name}</td>
+              <td>{performance.show?.name} - {performance.theatre?.name}</td>
               <td>
                 {new Date(performance.start_time).toLocaleDateString('en-GB', {
                   day: '2-digit',

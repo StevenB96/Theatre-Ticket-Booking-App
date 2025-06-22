@@ -1,7 +1,7 @@
+// --- src/types/performance.ts ---
+
 import type { Theatre } from '@/types/theatre';
 import type { Show } from '@/types/show';
-
-// --- src/types/performance.ts ---
 
 export interface Performance {
   id: number;

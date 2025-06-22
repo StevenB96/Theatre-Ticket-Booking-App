@@ -1,6 +1,5 @@
 // app/admin/performances/[id]/edit/page.tsx
 
-import { getPerformanceById } from '@/library/db/performance';
 import EditPerformanceForm from './EditPerformanceForm';
 import { PerformanceModel } from '@/models/PerformanceModel';
 
@@ -10,7 +9,7 @@ interface PageProps {
 
 export default async function EditPerformancePage({ params }: PageProps) {
   const { id } = await params;
-  const performance = await getPerformanceById(parseInt(id, 10));
+  const performance = await PerformanceModel.load(parseInt(id, 10));
 
   const theatreHasShowOptions = await PerformanceModel.loadTheatreHasShowOptions();
 
@@ -25,9 +24,9 @@ export default async function EditPerformancePage({ params }: PageProps) {
 
   return (
     <div>
-      <h1>Edit Performance #{performance.id}</h1>
+      <h1>Edit Performance #{performance.data.id}</h1>
       <EditPerformanceForm
-        performance={performance}
+        performance={performance.data}
         theatreHasShowOptions={theatreHasShowOptions}
       />
     </div>

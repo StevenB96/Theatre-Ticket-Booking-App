@@ -5,7 +5,12 @@ import PerformanceTable from './PerformanceTable';
 import { PerformanceModel } from '@/models/PerformanceModel';
 
 export default async function PerformancesPage() {
-  const performances = await PerformanceModel.findAll(true);
+  const performanceModels = await PerformanceModel.findAll();
+  let performances;
+
+  if (performanceModels) {
+    performances = PerformanceModel.serialise(performanceModels);
+  }
 
   return (
     <div>
