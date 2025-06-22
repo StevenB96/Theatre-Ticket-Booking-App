@@ -17,7 +17,7 @@ export class TicketModel {
   /**
    * Fetch all tickets plus related user, seat, performance, show, and theatre.
    */
-  static async findAll(): Promise<TicketModel[] | null> {
+  static async findAll(): Promise<TicketModel[]> {
     const rows = await db('ticket as tk')
       .leftJoin('user as u', 'tk.user_id', 'u.id')
       .leftJoin('seat as st', 'tk.seat_id', 'st.id')

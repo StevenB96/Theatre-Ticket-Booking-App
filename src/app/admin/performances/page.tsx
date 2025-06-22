@@ -6,11 +6,7 @@ import { PerformanceModel } from '@/models/PerformanceModel';
 
 export default async function PerformancesPage() {
   const performanceModels = await PerformanceModel.findAll();
-  let performances;
-
-  if (performanceModels) {
-    performances = PerformanceModel.serialise(performanceModels);
-  }
+  const performances = PerformanceModel.serialise(performanceModels)
 
   return (
     <div>

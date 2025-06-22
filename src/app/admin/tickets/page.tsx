@@ -5,11 +5,7 @@ import { TicketModel } from '@/models/TicketModel';
 
 export default async function TicketsPage() {
   const ticketModels = await TicketModel.findAll();
-  let tickets;
-
-  if (ticketModels) {
-    tickets = TicketModel.serialise(ticketModels);
-  }
+  const tickets = TicketModel.serialise(ticketModels);
 
   return (
     <div>

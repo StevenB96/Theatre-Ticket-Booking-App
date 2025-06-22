@@ -29,6 +29,7 @@ export default function CreatePerformanceForm({
             {theatreHasShowOptions.map(
               option =>
                 <option
+                  key={option.id}
                   value={option.id}>
                   {option.show_name} - {option.theatre_name}
                 </option>
