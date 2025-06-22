@@ -4,20 +4,46 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation'
+import type { TheatreHasShowOption } from '@/types/performance';
 import { createPerformanceAction } from '../actions';
 
-export default function CreatePerformanceForm() {
+interface CreatePerformanceFormProps {
+  theatreHasShowOptions: TheatreHasShowOption[];
+}
+
+export default function CreatePerformanceForm({
+  theatreHasShowOptions
+}: CreatePerformanceFormProps) {
   const router = useRouter();
 
   return (
     <form action={createPerformanceAction}>
       <div>
         <label>
-          Theatre Has Show ID:
-          <input
-            id="theatre_has_show_id"
+          Show:
+          <select
             name="theatre_has_show_id"
-            type="number"
+            id="theatre_has_show_id"
+            required
+          >
+            {theatreHasShowOptions.map(
+              option =>
+                <option
+                  value={option.id}>
+                  {option.show_name} - {option.theatre_name}
+                </option>
+            )}
+          </select>
+        </label>
+      </div>
+
+      <div>
+        <label>
+          Date:
+          <input
+            id="date"
+            name="date"
+            type="date"
             required
           />
         </label>
@@ -25,10 +51,10 @@ export default function CreatePerformanceForm() {
 
       <div>
         <label>
-          Start Time:
+          Time:
           <input
-            id="start_time"
-            name="start_time"
+            id="time"
+            name="time"
             type="time"
             required
           />
@@ -38,24 +64,28 @@ export default function CreatePerformanceForm() {
       <div>
         <label>
           Type:
-          <input
-            id="type"
+          <select
             name="type"
-            type="number"
+            id="type"
             required
-          />
+          >
+            <option value={1}>Evening</option>
+            <option value={0}>Matinee</option>
+          </select>
         </label>
       </div>
 
       <div>
         <label>
           Status:
-          <input
-            id="status"
+          <select
             name="status"
-            type="number"
+            id="status"
             required
-          />
+          >
+            <option value={1}>Active</option>
+            <option value={0}>Inactive</option>
+          </select>
         </label>
       </div>
 

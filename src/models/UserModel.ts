@@ -1,4 +1,4 @@
-import * as db from '@/library/db/user';
+import * as userDomainFunctions from '@/library/db/user';
 import { hashPassword } from '@/library/auth';
 import type { User, CreateUserInput, UpdateUserInput } from '@/types/user';
 
@@ -23,12 +23,12 @@ export class UserModel {
       this.data = null;
       return;
     }
-    const user = await db.getUserById(this.id);
+    const user = await userDomainFunctions.getUserById(this.id);
     this.data = user ?? null;
   }
 
   static async list(): Promise<User[]> {
-    return db.getAllUsers();
+    return userDomainFunctions.getAllUsers();
   }
 
   static async create(input: CreateUserInput): Promise<UserModel> {
@@ -39,14 +39,14 @@ export class UserModel {
       updateData.password = password;
     }
 
-    const newUser = await db.createUser(updateData);
+    const newUser = await userDomainFunctions.createUser(updateData);
     const model = new UserModel(newUser.id);
     model.data = newUser;
     return model;
   }
 
   static async find(id: number): Promise<UserModel | null> {
-    const user = await db.getUserById(id);
+    const user = await userDomainFunctions.getUserById(id);
     if (!user) return null;
     const model = new UserModel(id);
     model.data = user;
@@ -60,7 +60,7 @@ export class UserModel {
       input.password = await hashPassword(input.password);
     }
 
-    const updated = await db.updateUserById(id, input);
+    const updated = await userDomainFunctions.updateUserById(id, input);
     const model = new UserModel(id);
     model.data = updated;
     return model;
@@ -68,6 +68,6 @@ export class UserModel {
 
   // Static delete method takes id explicitly
   static async delete(id: number): Promise<void> {
-    await db.deleteUserById(id);
+    await userDomainFunctions.deleteUserById(id);
   }
 }

@@ -1,4 +1,4 @@
-import * as db from '@/library/db/ticket';
+import * as ticketDomainFunctions from '@/library/db/ticket';
 import type { Ticket, CreateTicketInput, UpdateTicketInput } from '@/types/ticket';
 
 export class TicketModel {
@@ -14,23 +14,23 @@ export class TicketModel {
       this.data = null;
       return;
     }
-    const ticket = await db.getTicketById(this.id);
+    const ticket = await ticketDomainFunctions.getTicketById(this.id);
     this.data = ticket ?? null;
   }
 
   static async list(): Promise<Ticket[]> {
-    return db.getAllTickets();
+    return ticketDomainFunctions.getAllTickets();
   }
 
   static async create(input: CreateTicketInput): Promise<TicketModel> {
-    const newTicket = await db.createTicket(input);
+    const newTicket = await ticketDomainFunctions.createTicket(input);
     const model = new TicketModel(newTicket.id);
     model.data = newTicket;
     return model;
   }
 
   static async find(id: number): Promise<TicketModel | null> {
-    const ticket = await db.getTicketById(id);
+    const ticket = await ticketDomainFunctions.getTicketById(id);
     if (!ticket) return null;
     const model = new TicketModel(id);
     model.data = ticket;
@@ -38,13 +38,13 @@ export class TicketModel {
   }
 
   static async update(id: number, input: UpdateTicketInput): Promise<TicketModel> {
-    const updated = await db.updateTicketById(id, input);
+    const updated = await ticketDomainFunctions.updateTicketById(id, input);
     const model = new TicketModel(id);
     model.data = updated;
     return model;
   }
 
   static async delete(id: number): Promise<void> {
-    await db.deleteTicketById(id);
+    await ticketDomainFunctions.deleteTicketById(id);
   }
 }

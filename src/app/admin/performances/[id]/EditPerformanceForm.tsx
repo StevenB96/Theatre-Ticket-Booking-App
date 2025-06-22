@@ -4,22 +4,38 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import type { Performance } from '@/types/performance';
+import type { Performance, TheatreHasShowOption } from '@/types/performance';
+import {
+  formatDateToDDMMYYYY,
+  parseDDMMYYYYToISO
+} from '@/library/functions'
 import { updatePerformanceByIdAction } from '../actions';
 
 interface EditPerformanceFormProps {
   performance: Performance;
+  theatreHasShowOptions: TheatreHasShowOption[];
 }
 
-export default function EditPerformanceForm({ performance }: EditPerformanceFormProps) {
+export default function EditPerformanceForm({
+  performance,
+  theatreHasShowOptions
+}: EditPerformanceFormProps) {
   const router = useRouter();
 
   const [theatreHasShowId, setTheatreHasShowId] = useState<string>(
     performance.theatre_has_show_id.toString()
   );
-  const [startTime, setStartTime] = useState<string>(
-    performance.start_time
+
+  const dateObj = new Date(performance.start_time); // e.g. "2025-06-05T19:00:00"
+
+  const [startDate, setStartDate] = React.useState<string>(
+    !isNaN(dateObj.getTime()) ? dateObj.toISOString().slice(0, 10) : ''
   );
+
+  const [hoursMinutes, setHoursMinutes] = React.useState<string>(
+    !isNaN(dateObj.getTime()) ? dateObj.toTimeString().slice(0, 5) : ''
+  );
+
   const [typeValue, setTypeValue] = useState<string>(
     performance.type.toString()
   );
@@ -37,13 +53,35 @@ export default function EditPerformanceForm({ performance }: EditPerformanceForm
 
       <div>
         <label>
-          Theatre Has Show ID:
-          <input
-            id="theatre_has_show_id"
+          Show:
+          <select
             name="theatre_has_show_id"
-            type="number"
+            id="theatre_has_show_id"
+            required
             value={theatreHasShowId}
             onChange={(e) => setTheatreHasShowId(e.target.value)}
+          >
+            {theatreHasShowOptions.map(option => (
+              <option
+                key={option.id}
+                value={option.id}
+              >
+                {option.show_name} - {option.theatre_name}
+              </option>
+            ))}
+          </select>
+        </label>
+      </div>
+
+      <div>
+        <label>
+          Date:
+          <input
+            id="date"
+            name="date"
+            type="date"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
             required
           />
         </label>
@@ -51,13 +89,13 @@ export default function EditPerformanceForm({ performance }: EditPerformanceForm
 
       <div>
         <label>
-          Start Time:
+          Time:
           <input
-            id="start_time"
-            name="start_time"
+            id="time"
+            name="time"
             type="time"
-            value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
+            value={hoursMinutes}
+            onChange={(e) => setHoursMinutes(e.target.value)}
             required
           />
         </label>
@@ -66,28 +104,32 @@ export default function EditPerformanceForm({ performance }: EditPerformanceForm
       <div>
         <label>
           Type:
-          <input
-            id="type"
+          <select
             name="type"
-            type="number"
+            id="type"
+            required
             value={typeValue}
             onChange={(e) => setTypeValue(e.target.value)}
-            required
-          />
+          >
+            <option value={1}>Evening</option>
+            <option value={0}>Matinee</option>
+          </select>
         </label>
       </div>
 
       <div>
         <label>
           Status:
-          <input
-            id="status"
+          <select
             name="status"
-            type="number"
+            id="status"
+            required
             value={statusValue}
             onChange={(e) => setStatusValue(e.target.value)}
-            required
-          />
+          >
+            <option value={1}>Active</option>
+            <option value={0}>Inactive</option>
+          </select>
         </label>
       </div>
 

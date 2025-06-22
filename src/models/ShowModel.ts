@@ -1,4 +1,4 @@
-import * as db from '@/library/db/show';
+import * as showDomainFunctions from '@/library/db/show';
 import type { Show, CreateShowInput, UpdateShowInput } from '@/types/show';
 
 export class ShowModel {
@@ -14,23 +14,23 @@ export class ShowModel {
       this.data = null;
       return;
     }
-    const show = await db.getShowById(this.id);
+    const show = await showDomainFunctions.getShowById(this.id);
     this.data = show ?? null;
   }
 
   static async list(): Promise<Show[]> {
-    return db.getAllShows();
+    return showDomainFunctions.getAllShows();
   }
 
   static async create(input: CreateShowInput): Promise<ShowModel> {
-    const newShow = await db.createShow(input);
+    const newShow = await showDomainFunctions.createShow(input);
     const model = new ShowModel(newShow.id);
     model.data = newShow;
     return model;
   }
 
   static async find(id: number): Promise<ShowModel | null> {
-    const show = await db.getShowById(id);
+    const show = await showDomainFunctions.getShowById(id);
     if (!show) return null;
     const model = new ShowModel(id);
     model.data = show;
@@ -38,13 +38,13 @@ export class ShowModel {
   }
 
   static async update(id: number, input: UpdateShowInput): Promise<ShowModel> {
-    const updated = await db.updateShowById(id, input);
+    const updated = await showDomainFunctions.updateShowById(id, input);
     const model = new ShowModel(id);
     model.data = updated;
     return model;
   }
 
   static async delete(id: number): Promise<void> {
-    await db.deleteShowById(id);
+    await showDomainFunctions.deleteShowById(id);
   }
 }

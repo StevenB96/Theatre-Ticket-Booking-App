@@ -1,4 +1,4 @@
-import * as db from '@/library/db/theatre';
+import * as theatreDomainFunctions from '@/library/db/theatre';
 import type { Theatre, CreateTheatreInput, UpdateTheatreInput } from '@/types/theatre';
 
 export class TheatreModel {
@@ -14,23 +14,23 @@ export class TheatreModel {
       this.data = null;
       return;
     }
-    const theatre = await db.getTheatreById(this.id);
+    const theatre = await theatreDomainFunctions.getTheatreById(this.id);
     this.data = theatre ?? null;
   }
 
   static async list(): Promise<Theatre[]> {
-    return db.getAllTheatres();
+    return theatreDomainFunctions.getAllTheatres();
   }
 
   static async create(input: CreateTheatreInput): Promise<TheatreModel> {
-    const newTheatre = await db.createTheatre(input);
+    const newTheatre = await theatreDomainFunctions.createTheatre(input);
     const model = new TheatreModel(newTheatre.id);
     model.data = newTheatre;
     return model;
   }
 
   static async find(id: number): Promise<TheatreModel | null> {
-    const theatre = await db.getTheatreById(id);
+    const theatre = await theatreDomainFunctions.getTheatreById(id);
     if (!theatre) return null;
     const model = new TheatreModel(id);
     model.data = theatre;
@@ -38,13 +38,13 @@ export class TheatreModel {
   }
 
   static async update(id: number, input: UpdateTheatreInput): Promise<TheatreModel> {
-    const updated = await db.updateTheatreById(id, input);
+    const updated = await theatreDomainFunctions.updateTheatreById(id, input);
     const model = new TheatreModel(id);
     model.data = updated;
     return model;
   }
 
   static async delete(id: number): Promise<void> {
-    await db.deleteTheatreById(id);
+    await theatreDomainFunctions.deleteTheatreById(id);
   }
 }

@@ -2,10 +2,10 @@
 
 import Link from 'next/link';
 import PerformanceTable from './PerformanceTable';
-import { getAllPerformances } from '@/library/db/performance';
+import { PerformanceModel } from '@/models/PerformanceModel';
 
 export default async function PerformancesPage() {
-  const performances = await getAllPerformances();
+  const performances = await PerformanceModel.findAll(true);
 
   return (
     <div>

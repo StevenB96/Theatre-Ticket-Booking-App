@@ -19,8 +19,12 @@ export async function createPerformanceAction(formData: FormData) {
   const theatre_has_show_id = Number(formData.get('theatre_has_show_id'));
   if (theatre_has_show_id === null) throw new Error('Theatre Has Show Id is required');
 
-  const start_time = String(formData.get('start_time'));
-  if (!start_time) throw new Error('Start Time is required');
+  const date = formData.get('date');
+  const time = formData.get('time');
+  if (!date || !time) throw new Error('Start Date and Time are required');
+
+  // Combine date and time into an ISO string
+  const start_time = new Date(`${date}T${time}`).toISOString();
 
   const type = Number(formData.get('type'));
   if (type === null) throw new Error('Type is required');
@@ -36,8 +40,8 @@ export async function createPerformanceAction(formData: FormData) {
   };
 
   const performance = await PerformanceModel.create(input);
-  revalidatePath('/admin/performances/' + performance.id);
-  redirect('/admin/performances/' + performance.id);
+  revalidatePath('/admin/performances/' + performance.data.id);
+  redirect('/admin/performances/' + performance.data.id);
 }
 
 /**
@@ -52,8 +56,12 @@ export async function updatePerformanceByIdAction(formData: FormData) {
   const theatre_has_show_id = Number(formData.get('theatre_has_show_id'));
   if (theatre_has_show_id === null) throw new Error('Theatre Has Show Id is required');
 
-  const start_time = String(formData.get('start_time'));
-  if (!start_time) throw new Error('Start Time is required');
+  const date = formData.get('date');
+  const time = formData.get('time');
+  if (!date || !time) throw new Error('Start Date and Time are required');
+
+  // Combine date and time into an ISO string
+  const start_time = new Date(`${date}T${time}`).toISOString();
 
   const type = Number(formData.get('type'));
   if (type === null) throw new Error('Type is required');

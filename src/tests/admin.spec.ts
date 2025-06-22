@@ -42,14 +42,23 @@ test.describe('@admin @crud Operations', () => {
 
     // CREATE
     await test.step(`Create ${entity}`, async () => {
-      // Note: timing includes full page navigation, form fill, server round-trip, and client render
       const t0 = performance.now();
       await page.goto(`/admin/${entities}/create`, { waitUntil: 'networkidle' });
       await page.waitForSelector('form, button');
 
       for (const [name, value] of Object.entries(createFields)) {
-        await page.fill(`form *[name="${name}"]`, value);
+        const element = await page.$(`form *[name="${name}"]`);
+        if (!element) throw new Error(`No form element with name="${name}" found`);
+
+        const tagName = await element.evaluate(el => el.tagName.toLowerCase());
+
+        if (tagName === 'select') {
+          await page.selectOption(`form *[name="${name}"]`, value);
+        } else {
+          await page.fill(`form *[name="${name}"]`, value);
+        }
       }
+
       await page.click(selectors.create);
       await page.waitForURL(new RegExp(`/admin/${entities}/\\d+(\\?.*)?$`), { timeout: 20_000 });
 
@@ -65,12 +74,21 @@ test.describe('@admin @crud Operations', () => {
 
     // UPDATE
     await test.step(`Update ${entity}`, async () => {
-      // Note: timing includes navigation to edit page and update submission
       const t1 = performance.now();
       await page.goto(`/admin/${entities}/${id}`, { waitUntil: 'networkidle' });
       await page.waitForSelector('form, button');
 
-      await page.fill(`form *[name="${updateField.name}"]`, updateField.value);
+      const element = await page.$(`form *[name="${updateField.name}"]`);
+      if (!element) throw new Error(`No form element with name="${updateField.name}" found`);
+
+      const tagName = await element.evaluate(el => el.tagName.toLowerCase());
+
+      if (tagName === 'select') {
+        await page.selectOption(`form *[name="${updateField.name}"]`, updateField.value);
+      } else {
+        await page.fill(`form *[name="${updateField.name}"]`, updateField.value);
+      }
+
       await page.click(selectors.update);
       await page.waitForURL(new RegExp(`/admin/${entities}(\\?.*)?$`), { timeout: 20_000 });
 
@@ -186,13 +204,14 @@ test.describe('@admin @crud Operations', () => {
       'performances',
       {
         theatre_has_show_id: '1',
-        start_time: '16:00',
-        type: '0',
+        date: '2025-01-01',
+        time: '01:00',
+        type: '1',
         status: '1',
       },
       {
-        name: 'type',
-        value: '1'
+        name: 'time',
+        value: '02:00',
       },
       {
         create: 'button[type="submit"]',

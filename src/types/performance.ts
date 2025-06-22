@@ -1,4 +1,8 @@
+import type { Theatre } from '@/types/theatre';
+import type { Show } from '@/types/show';
+
 // --- src/types/performance.ts ---
+
 export interface Performance {
   id: number;
   theatre_has_show_id: number;
@@ -18,4 +22,17 @@ export interface CreatePerformanceInput {
 
 export interface UpdatePerformanceInput extends CreatePerformanceInput {
   id: number;
+}
+
+export interface PerformanceWithRelations extends Performance {
+  theatre: Theatre | null;
+  show: Show | null;
+}
+
+export interface TheatreHasShowOption {
+  id: number;
+  theatre_id: number;
+  theatre_name: string;
+  show_id: number;
+  show_name: string;
 }

@@ -2,6 +2,7 @@
 
 import { getPerformanceById } from '@/library/db/performance';
 import EditPerformanceForm from './EditPerformanceForm';
+import { PerformanceModel } from '@/models/PerformanceModel';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -10,6 +11,8 @@ interface PageProps {
 export default async function EditPerformancePage({ params }: PageProps) {
   const { id } = await params;
   const performance = await getPerformanceById(parseInt(id, 10));
+
+  const theatreHasShowOptions = await PerformanceModel.loadTheatreHasShowOptions();
 
   if (!performance) {
     return (
@@ -23,7 +26,10 @@ export default async function EditPerformancePage({ params }: PageProps) {
   return (
     <div>
       <h1>Edit Performance #{performance.id}</h1>
-      <EditPerformanceForm performance={performance} />
+      <EditPerformanceForm
+        performance={performance}
+        theatreHasShowOptions={theatreHasShowOptions}
+      />
     </div>
   );
 }
