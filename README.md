@@ -3,7 +3,7 @@ Progressive Learning Next.js Application
 
 ## Overview
 
-This project is a progressive learning platform built with Next.js, designed to help you deepen your knowledge of full-stack web development. It emphasizes clean architecture, performance optimization, and best practices throughout the data, domain, application, and UI layers.
+This project is a progressive learning platform built with Next.js, designed to help you deepen your knowledge of full-stack web development. It emphasises clean architecture, performance optimisation, and best practices throughout the data, domain, application, and UI layers.
 
 ---
 
@@ -121,7 +121,7 @@ The codebase follows a layered approach:
 
 ## Next Steps & Improvements
 
-<!-- * **Modularize Shared Components**: Extract recurring UI elements (tables, forms, buttons) into a shared component library.
+<!-- * **Modularise Shared Components**: Extract recurring UI elements (tables, forms, buttons) into a shared component library.
 * **Type-Safe Data Access**: Integrate Zod or Yup for runtime schema validation in queries and API handlers.
 * **Caching & Performance**: Add ISR/SSG for public pages, SWR/react-query for client-side caching in the admin UI.
 * **Authentication Enhancements**: Implement role-based access control (RBAC) and multi-factor auth flows.

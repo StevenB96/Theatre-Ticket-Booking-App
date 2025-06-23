@@ -1,0 +1,32 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: nextjs_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_PORT: 3306
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: S3cureP@ssw0rd!
+      MYSQL_DATABASE: theatre_booking_prod
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runner
+    container_name: nextjs_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+volumes:
+  db_data:
