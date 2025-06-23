@@ -1,24 +1,25 @@
+// knexfile.js
 const path = require('path');
 const fs = require('fs');
 const dotenv = require('dotenv');
 
-// Load base .env first (this should include ENV=development or ENV=production)
+// Step 1: Load base .env (this contains ENV)
 dotenv.config();
 
+// Step 2: Use the ENV value from .env to load env-specific file
 const envName = process.env.ENV || 'development';
-const envFile = `.env.${envName}`;
+const envFile = path.resolve(process.cwd(), `.env.${envName}`);
 
-// Load override env file if it exists
 if (fs.existsSync(envFile)) {
   dotenv.config({ path: envFile });
   console.log(`Loaded environment variables from: ${envFile}`);
 } else {
-  console.warn(`No ${envFile} file found. Falling back to base .env`);
+  console.warn(`No ${envFile} file found. Using base .env only`);
 }
 
 console.log('Active ENV:', envName);
 
-// Define development config (SQLite)
+// Knex configurations
 const development = {
   client: 'sqlite3',
   connection: {
@@ -33,7 +34,6 @@ const development = {
   },
 };
 
-// Define production config (MySQL)
 const production = {
   client: 'mysql2',
   connection: {
@@ -52,8 +52,4 @@ const production = {
   },
 };
 
-// Export the full config object
-module.exports = {
-  development,
-  production,
-};
+module.exports = { development, production };

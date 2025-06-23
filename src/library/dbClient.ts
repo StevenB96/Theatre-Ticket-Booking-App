@@ -1,27 +1,32 @@
+// src/library/dbClient.ts
 import knex, { Knex } from 'knex';
 import knexConfig from '../../knexfile';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import * as path from 'path';
 
-// Step 1: Load base .env (must include ENV=development or production)
+// Step 1: Load base .env first (which sets ENV)
 dotenv.config();
 
-// Step 2: Determine correct environment file (e.g., .env.production)
-const appEnv = process.env.ENV || 'development';
-const envFile = path.resolve(process.cwd(), `.env.${appEnv}`);
+const resolvedNodeEnv = process.env.ENV || 'development'; // now ENV is read *after* loading .env
+const envFilePath = path.resolve(process.cwd(), `.env.${resolvedNodeEnv}`);
 
-if (fs.existsSync(envFile)) {
-  dotenv.config({ path: envFile });
-  console.log(`Loaded environment from ${envFile}`);
+// Step 2: Load ENV-specific override
+if (fs.existsSync(envFilePath)) {
+  dotenv.config({ path: envFilePath });
+  console.log(`Loaded environment from ${envFilePath}`);
 } else {
-  console.warn(`No environment override file (${envFile}) found. Using base .env`);
+  console.warn(`No environment override file (${envFilePath}) found. Using base .env`);
 }
 
-// Step 3: Pick knex config based on NODE_ENV
-const knexEnv = (process.env.NODE_ENV as 'development' | 'production') || 'development';
-const config = knexConfig[knexEnv];
+console.log(`Active ENV: ${resolvedNodeEnv}`);
+console.log(`Using knex config for environment: ${resolvedNodeEnv}`);
 
+// Step 3: Narrow the env to what knexConfig expects
+const knexEnv: 'development' | 'production' =
+  resolvedNodeEnv === 'production' ? 'production' : 'development';
+
+const config = knexConfig[knexEnv];
 const db: Knex = knex(config);
 
 export default db;
