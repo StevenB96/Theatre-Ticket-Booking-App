@@ -1,4 +1,142 @@
-This NEXTJS project is designed to help me learn in a progressive way. There have been attempts made to optimise code structure and performance.
+# Project Title
 
+Progressive Learning Next.js Application
 
+## Overview
 
+This project is a progressive learning platform built with Next.js, designed to help you deepen your knowledge of full-stack web development. It emphasizes clean architecture, performance optimization, and best practices throughout the data, domain, application, and UI layers.
+
+---
+
+## Architecture
+
+The codebase follows a layered approach:
+
+* **Data Layer** (`@/knex/`)
+
+  * Handles database migrations, seeds, and query builder setup with Knex.js.
+* **Domain Layer** (`@/library/db/`)
+
+  * Encapsulates low-level database operations and domain-specific data access logic.
+* **Application Layer** (`@/models/`, `@/app/api/`)
+
+  * Defines business models and Next.js API routes for CRUD operations.
+* **UI Layer** (`@/app/admin`, `@/app/auth`)
+
+  * Implements client-side and server-side rendered pages, forms, and tables using React and Next.js App Router.
+
+---
+
+## Scripts & Commands
+
+```json
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",         // Build then start for best performance
+    "start": "next start",
+    "lint": "next lint",
+    "migrate": "knex migrate:latest --knexfile knexfile.js",
+    "rollback": "knex migrate:rollback --knexfile knexfile.js",
+    "seed": "knex seed:run --knexfile knexfile.js",
+    "generate": "node modelBasedTemplating/generateAll.js",  // Development only
+    "test": "playwright test"      // E2E tests for login/admin CRUD
+  }
+}
+```
+
+---
+
+## Folder Structure
+
+```plaintext
+├── app
+│   ├── favicon.ico
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── page.module.css
+│   ├── page.tsx
+│   ├── Providers.tsx
+│   ├── auth
+│   │   ├── login/page.tsx
+│   │   └── register/page.tsx
+│   ├── admin
+│   │   ├── layout.client.tsx
+│   │   ├── layout.module.css
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   ├── performances
+│   │   │   ├── actions.tsx
+│   │   │   ├── loading.tsx
+│   │   │   ├── page.tsx
+│   │   │   ├── PerformanceTable.tsx
+│   │   │   ├── [id]/
+│   │   │   │   ├── EditPerformanceForm.tsx
+│   │   │   │   └── page.tsx
+│   │   │   └── create/
+│   │   │       ├── CreatePerformanceForm.tsx
+│   │   │       └── page.tsx
+│   │   └── ... (seats, shows, theatres, tickets, users)
+├── api
+│   └── ... (Next.js API routes mirroring admin resources)
+├── knex
+│   ├── migrations
+│   └── seeds
+├── library
+│   ├── auth.js
+│   ├── dbClient.ts
+│   ├── functions.ts
+│   └── db (domain-specific data modules)
+├── models (business models)
+├── tests (Playwright specs)
+└── types (TypeScript interfaces)
+```
+
+---
+
+## Getting Started
+
+1. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+2. **Run migrations & seeds**
+
+   ```bash
+   npm run migrate
+   npm run seed
+   ```
+3. **Start in dev mode**
+
+   ```bash
+   npm run dev
+   ```
+4. **Run tests**
+
+   ```bash
+   npm run test
+   ```
+
+---
+
+## Next Steps & Improvements
+
+<!-- * **Modularize Shared Components**: Extract recurring UI elements (tables, forms, buttons) into a shared component library.
+* **Type-Safe Data Access**: Integrate Zod or Yup for runtime schema validation in queries and API handlers.
+* **Caching & Performance**: Add ISR/SSG for public pages, SWR/react-query for client-side caching in the admin UI.
+* **Authentication Enhancements**: Implement role-based access control (RBAC) and multi-factor auth flows.
+* **End-to-End CI/CD**: Automate builds, tests, migrations, and deployments using GitHub Actions or another CI provider.
+* **GraphQL Gateway**: Explore introducing a GraphQL API layer for more flexible data fetching patterns. -->
+
+---
+
+## Contributing
+
+Contributions are welcome! Please file issues for bugs or feature requests, and open PRs with descriptive titles and tests.
+
+---
+
+## License
+
+[MIT](./LICENSE)
