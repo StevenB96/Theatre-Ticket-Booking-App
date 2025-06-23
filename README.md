@@ -1,5 +1,4 @@
-# Project Title
-
+# Theatre Ticket Booking App
 Progressive Learning Next.js Application
 
 ## Overview
