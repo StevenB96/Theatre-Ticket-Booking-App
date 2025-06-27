@@ -139,3 +139,7 @@ Contributions are welcome! Please file issues for bugs or feature requests, and 
 ## License
 
 [MIT](./LICENSE)
+
+docker system prune -a --volumes -f; docker builder prune --all -f
+
+docker-compose build --no-cache --progress=plain; docker-compose up -d

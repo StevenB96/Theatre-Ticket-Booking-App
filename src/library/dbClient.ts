@@ -1,5 +1,6 @@
 // src/library/dbClient.ts
 import knex, { Knex } from 'knex';
+import { attachKnexLogging } from './knex-logger';
 import knexConfig from '../../knexfile';
 import * as dotenv from 'dotenv';
 import * as fs from 'fs';
@@ -28,5 +29,8 @@ const knexEnv: 'development' | 'production' =
 
 const config = knexConfig[knexEnv];
 const db: Knex = knex(config);
+
+// Wire up logging with exit-on-error enabled
+attachKnexLogging(db, { exitOnError: true });
 
 export default db;

@@ -8,10 +8,9 @@
     "start":   "next start",
     "lint":    "next lint",
 
-    "migrate": "npx knex migrate:latest --knexfile knexfile.js",
-    "rollback":"npx knex migrate:rollback --knexfile knexfile.js",
-    "seed":    "npx knex seed:run --knexfile knexfile.js",
-
+    "migrate": "npx knex migrate:latest --knexfile knexfile.js   --verbose",
+    "rollback":"npx knex migrate:rollback --knexfile knexfile.js   --verbose",
+    "seed":    "npx knex seed:run --knexfile knexfile.js  --verbose",
     "generate":"node modelBasedTemplating/generateAll.js",
     "test":    "playwright test"
   },

@@ -2,19 +2,19 @@
 version: '3.8'
 
 services:
-  db:
-    image: mysql:8.0
-    container_name: nextjs_mysql
-    restart: unless-stopped
-    environment:
-      MYSQL_PORT: 3306
-      MYSQL_USER: app_user
-      MYSQL_PASSWORD: S3cureP@ssw0rd!
-      MYSQL_DATABASE: theatre_booking_prod
-    volumes:
-      - db_data:/var/lib/mysql
-    ports:
-      - "3306:3306"
+  # db:
+  #   image: mysql:8.0
+  #   container_name: nextjs_mysql
+  #   restart: unless-stopped
+  #   environment:
+  #     MYSQL_PORT: 3306
+  #     MYSQL_USER: app_user
+  #     MYSQL_PASSWORD: S3cureP@ssw0rd!
+  #     MYSQL_DATABASE: theatre_booking_prod
+  #   volumes:
+  #     - db_data:/var/lib/mysql
+  #   ports:
+  #     - "3306:3306"
 
   app:
     build:
@@ -25,8 +25,16 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
-    depends_on:
-      - db
+    # depends_on:
+      # - db
+    deploy:
+      resources:
+        limits:
+          cpus: "0.75"
+          memory: "384M"
+        reservations:
+          cpus: "0.5"
+          memory: "256M"
 
 volumes:
   db_data:

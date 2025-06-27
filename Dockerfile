@@ -1,45 +1,68 @@
-# Stage 1: deps + Playwright browsers (noble image with browsers)
-FROM mcr.microsoft.com/playwright:v1.53.0-noble AS deps
-WORKDIR /app
-COPY package.json package-lock.json* yarn.lock* pnpm-lock.yaml* ./
-RUN if [ -f package-lock.json ]; then npm ci; \
-    elif [ -f yarn.lock ];   then yarn --frozen-lockfile; \
-    elif [ -f pnpm-lock.yaml ]; then npm install -g pnpm && pnpm install; \
-    else echo "Lockfile not found." && exit 1; fi
-
-# Stage 2: run tests & build
+# Stage 1: Builder
 FROM mcr.microsoft.com/playwright:v1.53.0-noble AS builder
+
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+
+# Install dependencies with proper lockfile handling
+COPY package.json ./
+COPY package-lock.json ./
+
+RUN set -eux; \
+  if [ -f package-lock.json ]; then \
+    npm ci --loglevel verbose; \
+  else \
+    echo "❌ No lockfile found. Aborting." && exit 1; \
+  fi
+
+# Install Playwright dependencies and browsers
+RUN npx playwright install --with-deps
+
+# Copy source and environment config
 COPY . .
-RUN npm run migrate
-RUN npm run seed
-RUN npm run test
-RUN npm run build
+COPY .env .env.development ./
 
-# Stage 3: production runner (slim Alpine)
+# Run database migrations and seeds
+RUN set -eux; \
+  echo "🔧 Running Migrations..."; \
+  npx knex migrate:latest --env development --verbose; \
+  echo "🌱 Running Seeds..."; \
+  npx knex seed:run --env development --verbose
+
+# Build the app
+RUN echo "🔨 Building Next.js app..." && npm run build
+
+# Optional: Verify SQLite contents (development debugging only)
+RUN apt-get update && apt-get install -y sqlite3; \
+  echo "🔍 Tables:" && sqlite3 dev.sqlite3 ".tables"; \
+  echo "🔍 Schema for 'show':" && sqlite3 dev.sqlite3 "PRAGMA table_info('show');"
+
+# Stage 2: Runtime
 FROM node:lts-alpine AS runner
+
 WORKDIR /app
 
-ENV NODE_ENV=production \
-    PORT=3000
-
-# Install runtime dependencies (Chromium for Playwright if needed by your app)
+# Install required system packages
 RUN apk add --no-cache \
-    dumb-init \
-    chromium \
-    nss \
-    freetype \
-    harfbuzz \
-    ca-certificates \
-    ttf-freefont
+  dumb-init \
+  chromium \
+  nss \
+  freetype \
+  harfbuzz \
+  ca-certificates \
+  ttf-freefont
 
-# Copy built assets and runtime deps
-COPY --from=builder /app/.next       ./.next
-COPY --from=builder /app/public      ./public
+# Copy production build and dependencies
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dev.sqlite3 ./dev.sqlite3
+COPY --from=builder /app/.env ./
+COPY --from=builder /app/.env.development ./
 
-ENTRYPOINT ["dumb-init", "--"]
+# Set correct DB permissions
+RUN chmod 664 dev.sqlite3
+
 EXPOSE 3000
-CMD ["npm", "start"]
+ENTRYPOINT ["dumb-init", "--"]
+CMD ["npm", "run", "start"]
