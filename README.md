@@ -119,6 +119,16 @@ The codebase follows a layered approach:
 
 ---
 
+## Docker Support
+
+The app can be run using docker compose and the example configuration found in env.example.txt and env.[].example.txt. Production support is planned but not tested.
+
+Here are some relevant commands:
+- docker system prune -a --volumes -f; docker builder prune --all -f
+- docker-compose build --no-cache --progress=plain; docker-compose up -d
+
+---
+
 ## Next Steps & Improvements
 
 <!-- * **Modularise Shared Components**: Extract recurring UI elements (tables, forms, buttons) into a shared component library.
@@ -130,16 +140,9 @@ The codebase follows a layered approach:
 
 ---
 
-## Contributing
-
-Contributions are welcome! Please file issues for bugs or feature requests, and open PRs with descriptive titles and tests.
-
----
-
 ## License
 
 [MIT](./LICENSE)
 
-docker system prune -a --volumes -f; docker builder prune --all -f
 
-docker-compose build --no-cache --progress=plain; docker-compose up -d
+
