@@ -25,3 +25,5 @@ docker-compose.yml
 
 # Tests output or coverage (optional)
 coverage
+
+dev.sqlite3
