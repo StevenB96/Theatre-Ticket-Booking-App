@@ -11,8 +11,16 @@ interface LayoutClientProps {
   children: ReactNode;
 }
 
+const links = [
+  { href: "/admin/users", label: "Users" },
+  { href: "/admin/theatres", label: "Theatres" },
+  { href: "/admin/shows", label: "Shows" },
+  { href: "/admin/performances", label: "Performances" },
+  { href: "/admin/seats", label: "Seats" },
+  { href: "/admin/tickets", label: "Tickets" },
+];
+
 export default function LayoutClient({ children }: LayoutClientProps) {
-  // `data` can be Session or null
   const { data: session } = useSession() as { data: Session | null };
 
   const handleLogout = () => {
@@ -27,24 +35,13 @@ export default function LayoutClient({ children }: LayoutClientProps) {
           <div className={styles.username}>
             {session?.user?.username ? `Hello, ${session.user.username}` : "Loading..."}
           </div>
-          <Link href="/admin/users" className={styles.link}>
-            Users
-          </Link>
-          <Link href="/admin/theatres" className={styles.link}>
-            Theatres
-          </Link>
-          <Link href="/admin/shows" className={styles.link}>
-            Shows
-          </Link>
-          <Link href="/admin/performances" className={styles.link}>
-            Performances
-          </Link>
-          <Link href="/admin/seats" className={styles.link}>
-            Seats
-          </Link>
-          <Link href="/admin/tickets" className={styles.link}>
-            Tickets
-          </Link>
+
+          {links.map(({ href, label }) => (
+            <Link key={href} href={href} className={styles.link}>
+              {label}
+            </Link>
+          ))}
+
           <button onClick={handleLogout}>Log Out</button>
         </nav>
       </aside>

@@ -3,18 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev":     "next dev",
-    "build":   "next build",
-    "start":   "next start",
-    "lint":    "next lint",
-
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
     "migrate": "npx knex migrate:latest --knexfile knexfile.js   --verbose",
-    "rollback":"npx knex migrate:rollback --knexfile knexfile.js   --verbose",
-    "seed":    "npx knex seed:run --knexfile knexfile.js  --verbose",
-    "generate":"node modelBasedTemplating/generateAll.js",
-    "test":    "playwright test"
+    "rollback": "npx knex migrate:rollback --knexfile knexfile.js   --verbose",
+    "seed": "npx knex seed:run --knexfile knexfile.js  --verbose",
+    "generate": "node modelBasedTemplating/generateAll.js",
+    "test": "playwright test"
   },
   "dependencies": {
+    "autoprefixer": "^10.4.21",
     "bcryptjs": "^3.0.2",
     "commander": "^13.1.0",
     "ejs": "^3.1.10",
@@ -30,12 +30,15 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@playwright/test": "^1.53.0",
+    "@tailwindcss/postcss": "^4.1.11",
     "@types/node": "^22.15.29",
     "@types/react": "^19.1.6",
     "cross-env": "^7.0.3",
     "dotenv-cli": "^8.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.3.2",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.11",
     "typescript": "^5.8.3"
   }
 }
