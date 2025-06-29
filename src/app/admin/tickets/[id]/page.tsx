@@ -1,6 +1,6 @@
 // app/admin/tickets/[id]/edit/page.tsx
 
-import EditTicketForm from './EditTicketForm';
+import TicketForm from '../TicketForm';
 import { TicketModel } from '@/models/TicketModel';
 import { PerformanceModel } from '@/models/PerformanceModel';
 import { getAllUsers } from '@/library/db/user';
@@ -33,7 +33,7 @@ export default async function EditTicketPage({ params }: PageProps) {
       <div className="page-header">
         <h1 className="page-title">Edit Ticket #{ticket.data.id}</h1>
       </div>
-      <EditTicketForm
+      <TicketForm
         users={users}
         seats={seats}
         performances={performances}

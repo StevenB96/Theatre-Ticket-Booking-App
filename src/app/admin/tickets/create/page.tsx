@@ -1,8 +1,6 @@
 // app/admin/tickets/create/page.tsx
 
-import React from 'react';
-import CreateTicketForm from './CreateTicketForm';
-import { TicketModel } from '@/models/TicketModel';
+import TicketForm from '../TicketForm';
 import { PerformanceModel } from '@/models/PerformanceModel';
 import { getAllUsers } from '@/library/db/user';
 import { getAllSeats } from '@/library/db/seat';
@@ -16,12 +14,10 @@ export default async function CreateTicketPage() {
 
   return (
     <div>
-      <h1>Create Ticket</h1>
-      <CreateTicketForm
-        users={users}
-        seats={seats}
-        performances={performances}
-      />
+      <div className="page-header">
+        <h1 className="page-title">Create New Ticket</h1>
+      </div>
+      <TicketForm users={users} seats={seats} performances={performances} />
     </div>
   );
 }

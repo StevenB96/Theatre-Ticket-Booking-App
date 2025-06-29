@@ -81,11 +81,13 @@ export default function TicketTable({ data }: Props) {
     <form action={deleteTicketByIdAction}>
       <table className="table">
         <thead className="thead">
-          {columns.map(col => (
-            <th key={col.key} className="th">
-              {col.header}
-            </th>
-          ))}
+          <tr>
+            {columns.map(col => (
+              <th key={col.key} className="th">
+                {col.header}
+              </th>
+            ))}
+          </tr>
         </thead>
         <tbody>
           {data.map(ticket => (
