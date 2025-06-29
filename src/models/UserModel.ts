@@ -2,14 +2,6 @@ import * as userDomainFunctions from '@/library/db/user';
 import { hashPassword } from '@/library/auth';
 import type { User, CreateUserInput, UpdateUserInput } from '@/types/user';
 
-export interface IUserModel {
-  list(): Promise<User[]>;
-  create(input: CreateUserInput): Promise<UserModel>;
-  find(id: number): Promise<UserModel | null>;
-  update(id: number, input: UpdateUserInput): Promise<UserModel>;
-  delete(id: number): Promise<void>;
-}
-
 export class UserModel {
   data: User | null = null;
   id: number | null = null;
@@ -31,6 +23,14 @@ export class UserModel {
     return userDomainFunctions.getAllUsers();
   }
 
+  static async find(id: number): Promise<UserModel | null> {
+    const user = await userDomainFunctions.getUserById(id);
+    if (!user) return null;
+    const model = new UserModel(id);
+    model.data = user;
+    return model;
+  }
+
   static async create(input: CreateUserInput): Promise<UserModel> {
     const updateData = { ...input };
 
@@ -42,14 +42,6 @@ export class UserModel {
     const newUser = await userDomainFunctions.createUser(updateData);
     const model = new UserModel(newUser.id);
     model.data = newUser;
-    return model;
-  }
-
-  static async find(id: number): Promise<UserModel | null> {
-    const user = await userDomainFunctions.getUserById(id);
-    if (!user) return null;
-    const model = new UserModel(id);
-    model.data = user;
     return model;
   }
 

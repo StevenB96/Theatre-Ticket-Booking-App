@@ -22,18 +22,18 @@ export class SeatModel {
     return seatDomainFunctions.getAllSeats();
   }
 
-  static async create(input: CreateSeatInput): Promise<SeatModel> {
-    const newSeat = await seatDomainFunctions.createSeat(input);
-    const model = new SeatModel(newSeat.id);
-    model.data = newSeat;
-    return model;
-  }
-
   static async find(id: number): Promise<SeatModel | null> {
     const seat = await seatDomainFunctions.getSeatById(id);
     if (!seat) return null;
     const model = new SeatModel(id);
     model.data = seat;
+    return model;
+  }
+
+  static async create(input: CreateSeatInput): Promise<SeatModel> {
+    const newSeat = await seatDomainFunctions.createSeat(input);
+    const model = new SeatModel(newSeat.id);
+    model.data = newSeat;
     return model;
   }
 

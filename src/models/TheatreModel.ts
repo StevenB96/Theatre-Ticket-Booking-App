@@ -22,18 +22,18 @@ export class TheatreModel {
     return theatreDomainFunctions.getAllTheatres();
   }
 
-  static async create(input: CreateTheatreInput): Promise<TheatreModel> {
-    const newTheatre = await theatreDomainFunctions.createTheatre(input);
-    const model = new TheatreModel(newTheatre.id);
-    model.data = newTheatre;
-    return model;
-  }
-
   static async find(id: number): Promise<TheatreModel | null> {
     const theatre = await theatreDomainFunctions.getTheatreById(id);
     if (!theatre) return null;
     const model = new TheatreModel(id);
     model.data = theatre;
+    return model;
+  }
+
+  static async create(input: CreateTheatreInput): Promise<TheatreModel> {
+    const newTheatre = await theatreDomainFunctions.createTheatre(input);
+    const model = new TheatreModel(newTheatre.id);
+    model.data = newTheatre;
     return model;
   }
 

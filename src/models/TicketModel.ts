@@ -110,7 +110,7 @@ export class TicketModel {
    */
   static async load(
     id: number,
-  ): Promise<TicketModel | null> {
+  ): Promise<TicketModel> {
     const row = await db('ticket as tk')
       .leftJoin('user as u', 'tk.user_id', 'u.id')
       .leftJoin('seat as st', 'tk.seat_id', 'st.id')
@@ -151,8 +151,6 @@ export class TicketModel {
       ])
       .where('tk.id', id)
       .first();
-
-    if (!row) return null;
 
     // Load the full performance (with show & theatre)
     const perfModel = await PerformanceModel.load(row.performance_id);

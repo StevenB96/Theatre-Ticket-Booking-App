@@ -22,18 +22,18 @@ export class ShowModel {
     return showDomainFunctions.getAllShows();
   }
 
-  static async create(input: CreateShowInput): Promise<ShowModel> {
-    const newShow = await showDomainFunctions.createShow(input);
-    const model = new ShowModel(newShow.id);
-    model.data = newShow;
-    return model;
-  }
-
   static async find(id: number): Promise<ShowModel | null> {
     const show = await showDomainFunctions.getShowById(id);
     if (!show) return null;
     const model = new ShowModel(id);
     model.data = show;
+    return model;
+  }
+
+  static async create(input: CreateShowInput): Promise<ShowModel> {
+    const newShow = await showDomainFunctions.createShow(input);
+    const model = new ShowModel(newShow.id);
+    model.data = newShow;
     return model;
   }
 
