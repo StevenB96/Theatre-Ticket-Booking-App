@@ -30,7 +30,9 @@ export default async function EditTicketPage({ params }: PageProps) {
 
   return (
     <div>
-      <h1>Edit Ticket #{ticket.data.id}</h1>
+      <div className="page-header">
+        <h1 className="page-title">Edit Ticket #{ticket.data.id}</h1>
+      </div>
       <EditTicketForm
         users={users}
         seats={seats}

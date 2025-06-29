@@ -31,6 +31,6 @@ const config = knexConfig[knexEnv];
 const db: Knex = knex(config);
 
 // Wire up logging with exit-on-error enabled
-attachKnexLogging(db, { exitOnError: true });
+// attachKnexLogging(db, { exitOnError: true });
 
 export default db;

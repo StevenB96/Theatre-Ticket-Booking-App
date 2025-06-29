@@ -5,7 +5,7 @@ import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import type { ReactNode } from "react";
 import type { Session } from "next-auth";
-import styles from "./layout.module.css";
+import "./admin.css";
 
 interface LayoutClientProps {
   children: ReactNode;
@@ -28,16 +28,16 @@ export default function LayoutClient({ children }: LayoutClientProps) {
   };
 
   return (
-    <div className={styles.container}>
+    <div className="container">
       {/* Sidebar */}
-      <aside className={styles.sidebar}>
-        <nav className={styles.nav}>
-          <div className={styles.username}>
+      <aside className="sidebar">
+        <nav className="nav">
+          <div className="username">
             {session?.user?.username ? `Hello, ${session.user.username}` : "Loading..."}
           </div>
 
           {links.map(({ href, label }) => (
-            <Link key={href} href={href} className={styles.link}>
+            <Link key={href} href={href} className="link">
               {label}
             </Link>
           ))}
@@ -47,7 +47,7 @@ export default function LayoutClient({ children }: LayoutClientProps) {
       </aside>
 
       {/* Main content */}
-      <main className={styles.main}>{children}</main>
+      <main className="main">{children}</main>
     </div>
   );
 }

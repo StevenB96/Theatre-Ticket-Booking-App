@@ -9,10 +9,12 @@ export default async function TicketsPage() {
 
   return (
     <div>
-      <h1>Tickets</h1>
-      <p>
-        <Link href="/admin/tickets/create">+ New Ticket</Link>
-      </p>
+      <div className="page-header">
+        <h1 className="page-title">Tickets</h1>
+        <Link href="/admin/tickets/create" className="page-action">
+          + New Ticket
+        </Link>
+      </div>
       <TicketTable data={tickets} />
     </div>
   );

@@ -1,5 +1,3 @@
-// app/admin/tickets/[id]/edit/EditTicketForm.tsx
-
 'use client';
 
 import React, { useState } from 'react';
@@ -17,6 +15,8 @@ interface EditTicketFormProps {
   performances: PerformanceWithRelations[];
 }
 
+type SelectOption = { label: string; value: string | number };
+
 export default function EditTicketForm({
   users,
   seats,
@@ -25,116 +25,92 @@ export default function EditTicketForm({
 }: EditTicketFormProps) {
   const router = useRouter();
 
-  const [userIdValue, setUserIdValue] = useState<string>(ticket.user_id.toString(),
-  );
-  const [seatIdValue, setSeatIdValue] = useState<string>(ticket.seat_id.toString());
-  const [performanceIdValue, setPerformanceIdValue] = useState<string>(ticket.performance_id.toString());
-  const [priceValue, setPriceValue] = useState<string>(ticket.price.toString());
-  const [statusValue, setStatusValue] = useState<string>(ticket.status.toString());
+  const [formState, setFormState] = useState({
+    user_id: ticket.user_id.toString(),
+    seat_id: ticket.seat_id.toString(),
+    performance_id: ticket.performance_id.toString(),
+    price: ticket.price.toString(),
+    status: ticket.status.toString(),
+  });
+
+  const handleChange = (field: string, value: string) => {
+    setFormState((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const fields: {
+    name: keyof typeof formState;
+    label: string;
+    type: 'select' | 'number';
+    options?: SelectOption[];
+  }[] = [
+      {
+        name: 'user_id',
+        label: 'User',
+        type: 'select',
+        options: users.map((u) => ({ label: u.username, value: u.id.toString() })),
+      },
+      {
+        name: 'seat_id',
+        label: 'Seat',
+        type: 'select',
+        options: seats.map((s) => ({ label: s.code, value: s.id.toString() })),
+      },
+      {
+        name: 'performance_id',
+        label: 'Performance',
+        type: 'select',
+        options: performances.map((p) => ({
+          label: `${p.show?.name} - ${p.theatre?.name}`,
+          value: p.id.toString(),
+        })),
+      },
+      {
+        name: 'price',
+        label: 'Price',
+        type: 'number',
+      },
+      {
+        name: 'status',
+        label: 'Status',
+        type: 'select',
+        options: [
+          { label: 'Active', value: '1' },
+          { label: 'Inactive', value: '0' },
+        ],
+      },
+    ];
 
   return (
     <form action={updateTicketByIdAction}>
       <input type="hidden" name="id" value={ticket.id} />
 
-      <div>
-        <label>
-          User:
-          <select
-            name="user_id"
-            id="user_id"
-            required
-            value={userIdValue}
-            onChange={(e) => setUserIdValue(e.target.value)}
-          >
-            {users.map(user => (
-              <option
-                key={user.id}
-                value={user.id}
-              >
-                {user.username}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
+      {fields.map(({ name, label, type, options }) => (
+        <div key={name} className="form-group">
+          <label htmlFor={name} className="form-label">
+            {label}:
+          </label>
 
-      <div>
-        <label>
-          Seat:
-          <select
-            name="seat_id"
-            id="seat_id"
-            required
-            value={seatIdValue}
-            onChange={(e) => setSeatIdValue(e.target.value)}
-          >
-            {seats.map(seat => (
-              <option
-                key={seat.id}
-                value={seat.id}
-              >
-                {seat.code}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
+          {type === 'select' ? (
+            <select id={name} name={name} className="form-select" required>
+              {options?.map(({ label, value }) => (
+                <option key={value} value={value}>{label}</option>
+              ))}
+            </select>
+          ) : (
+            <input
+              id={name}
+              name={name}
+              type={type}
+              className="form-input"
+              required
+            />
+          )}
+        </div>
+      ))}
 
-      <div>
-        <label>
-          Performance:
-          <select
-            name="performance_id"
-            id="performance_id"
-            required
-            value={performanceIdValue}
-            onChange={(e) => setPerformanceIdValue(e.target.value)}
-          >
-            {performances.map(performance => (
-              <option
-                key={performance.id}
-                value={performance.id}
-              >
-                {performance.show?.name} - {performance.theatre?.name}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
-
-      <div>
-        <label>
-          Price:
-          <input
-            id="price"
-            name="price"
-            type="number"
-            value={priceValue}
-            onChange={(e) => setPriceValue(e.target.value)}
-            required
-          />
-        </label>
-      </div>
-
-      <div>
-        <label>
-          Status:
-          <select
-            name="status"
-            id="status"
-            required
-            value={statusValue}
-            onChange={(e) => setStatusValue(e.target.value)}
-          >
-            <option value={1}>Active</option>
-            <option value={0}>Inactive</option>
-          </select>
-        </label>
-      </div>
-
-      <div>
-        <button type="submit">Save</button>
-        <button type="button" onClick={() => router.push('/admin/tickets')}>
+      <div className="form-actions">
+        <button type="submit" className="btn-primary">Save</button>
+        <button type="button" onClick={() => router.push('/admin/tickets')} className="btn-secondary">
           Cancel
         </button>
       </div>
