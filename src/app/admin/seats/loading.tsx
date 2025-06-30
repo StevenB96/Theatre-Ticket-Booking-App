@@ -2,6 +2,6 @@
 
 export default function SeatsLoading() {
   return (
-    <p className="page-title">Loading seats…</p >
+    <h1 className="page-title">Loading seats…</p >
   );
 };

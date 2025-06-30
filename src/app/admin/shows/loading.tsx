@@ -2,6 +2,6 @@
 
 export default function ShowsLoading() {
   return (
-    <p className="page-title">Loading shows…</p >
+    <h1 className="page-title">Loading shows…</p >
   );
 };

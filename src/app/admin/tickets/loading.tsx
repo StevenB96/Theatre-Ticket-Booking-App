@@ -2,6 +2,6 @@
 
 export default function TicketsLoading() {
   return (
-    <p className="page-title">Loading tickets…</p >
+    <h1 className="page-title">Loading tickets…</p >
   );
 };
