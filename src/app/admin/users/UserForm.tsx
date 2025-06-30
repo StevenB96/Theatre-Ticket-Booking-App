@@ -142,7 +142,7 @@ export default function UserForm({ user }: UserFormProps) {
                 <button
                     type="button"
                     className="btn-secondary"
-                    onClick={() => router.back()}
+                    onClick={() => isEdit ? router.push('/admin/users') : router.back()}
                 >
                     Cancel
                 </button>

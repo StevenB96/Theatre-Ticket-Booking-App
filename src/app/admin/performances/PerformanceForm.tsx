@@ -166,7 +166,7 @@ export default function PerformanceForm({
                 <button
                     type="button"
                     className="btn-secondary"
-                    onClick={() => router.back()}
+                    onClick={() => isEdit ? router.push('/admin/performances') : router.back()}
                 >
                     Cancel
                 </button>

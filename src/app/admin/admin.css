@@ -12,6 +12,8 @@ p,
 a,
 label,
 select,
+input,
+textarea,
 tr {
   font-family: var(--font-source-sans-3), sans-serif;
 }
@@ -112,6 +114,7 @@ tr {
 
 .form-actions {
   @apply mt-6 flex justify-start gap-3;
+  font-family: var(--font-source-sans-3), sans-serif;
 }
 
 .btn-primary {

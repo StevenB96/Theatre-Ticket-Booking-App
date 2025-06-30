@@ -107,7 +107,7 @@ export default function TheatreForm({ theatre }: TheatreFormProps) {
                 <button
                     type="button"
                     className="btn-secondary"
-                    onClick={() => router.back()}
+                    onClick={() => isEdit ? router.push('/admin/theatres') : router.back()}
                 >
                     Cancel
                 </button>

@@ -123,7 +123,7 @@ export default function SeatForm({ seat }: SeatFormProps) {
                 <button
                     type="button"
                     className="btn-secondary"
-                    onClick={() => router.back()}
+                    onClick={() => isEdit ? router.push('/admin/seats') : router.back()}
                 >
                     Cancel
                 </button>

@@ -89,7 +89,7 @@ export default function ShowForm({ show }: ShowFormProps) {
                 <button
                     type="button"
                     className="btn-secondary"
-                    onClick={() => router.back()}
+                    onClick={() => isEdit ? router.push('/admin/shows') : router.back()}
                 >
                     Cancel
                 </button>

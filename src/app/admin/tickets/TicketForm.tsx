@@ -166,7 +166,7 @@ export default function TicketForm({
         </button>
         <button
           type="button"
-          onClick={() => router.push('/admin/tickets')}
+          onClick={() => isEditMode ? router.push('/admin/performances') : router.back()}
           className="btn-secondary"
         >
           Cancel
