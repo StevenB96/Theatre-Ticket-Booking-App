@@ -1,4 +1,4 @@
-// app/admin/tickets/[id]/edit/page.tsx
+// app/admin/tickets/[id]/page.tsx
 
 import TicketForm from '../TicketForm';
 import { TicketModel } from '@/models/TicketModel';
@@ -11,8 +11,10 @@ interface PageProps {
 }
 
 export default async function EditTicketPage({ params }: PageProps) {
-  const { id } = await params;
-  const ticket = await TicketModel.load(parseInt(id, 10));
+  // await the params promise
+  const { id: idStr } = await params;
+  const id = parseInt(idStr, 10);
+  const ticket = await TicketModel.load(id);
   const users = await getAllUsers();
   const seats = await getAllSeats();
 

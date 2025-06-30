@@ -9,11 +9,13 @@ export default async function UsersPage() {
 
   return (
     <div>
-      <h1>Users</h1>
-      <p>
-        <Link href="/admin/users/create">+ New User</Link>
-      </p>
+      <div className="page-header">
+        <h1 className="page-title">Users</h1>
+        <Link href="/admin/users/create" className="page-action">
+          + New User
+        </Link>
+      </div>
       <UserTable data={users} />
     </div>
   );
-};
+}

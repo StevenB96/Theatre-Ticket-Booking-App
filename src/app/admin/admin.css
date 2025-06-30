@@ -2,6 +2,20 @@
 
 @import 'tailwindcss';
 
+h1,
+th,
+button {
+  font-family: var(--font-playfair), serif;
+}
+
+p,
+a,
+label,
+select,
+tr {
+  font-family: var(--font-source-sans-3), sans-serif;
+}
+
 /* —— LAYOUT —— */
 .container {
   @apply flex min-h-screen w-screen bg-white text-black;
@@ -79,6 +93,7 @@
 .actions a,
 .actions button {
   @apply text-blue-700 hover:underline;
+  font-family: var(--font-source-sans-3), sans-serif;
 }
 
 /* —— FORMS —— */

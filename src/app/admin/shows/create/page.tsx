@@ -1,12 +1,15 @@
 // app/admin/shows/create/page.tsx
+
 import React from 'react';
-import CreateShowForm from './CreateShowForm';
+import ShowForm from '../ShowForm';
 
 export default function CreateShowPage() {
   return (
     <div>
-      <h1>Create Show</h1>
-      <CreateShowForm />
+      <div className="page-header">
+        <h1 className="page-title">Create Show</h1>
+      </div>
+      <ShowForm />
     </div>
   );
 }

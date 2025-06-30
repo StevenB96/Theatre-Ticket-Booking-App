@@ -1,4 +1,5 @@
 // app/admin/tickets/page.tsx
+
 import Link from 'next/link';
 import TicketTable from './TicketTable';
 import { TicketModel } from '@/models/TicketModel';
@@ -18,4 +19,4 @@ export default async function TicketsPage() {
       <TicketTable data={tickets} />
     </div>
   );
-};
+}

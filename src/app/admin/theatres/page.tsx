@@ -9,11 +9,13 @@ export default async function TheatresPage() {
 
   return (
     <div>
-      <h1>Theatres</h1>
-      <p>
-        <Link href="/admin/theatres/create">+ New Theatre</Link>
-      </p>
+      <div className="page-header">
+        <h1 className="page-title">Theatres</h1>
+        <Link href="/admin/theatres/create" className="page-action">
+          + New Theatre
+        </Link>
+      </div>
       <TheatreTable data={theatres} />
     </div>
   );
-};
+}

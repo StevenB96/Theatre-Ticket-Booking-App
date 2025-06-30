@@ -1,9 +1,7 @@
 // src/app/admin/performances/loading.tsx
 
-import React from 'react';
-
 export default function Loading() {
   return (
-    <p>Loading performances...</p>
+    <p className="page-title">Loading performances...</p>
   );
 }

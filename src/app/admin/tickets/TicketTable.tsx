@@ -1,4 +1,5 @@
 // app/admin/tickets/TicketTable.tsx
+
 'use client';
 
 import Link from 'next/link';

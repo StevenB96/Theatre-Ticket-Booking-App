@@ -32,9 +32,9 @@ export default function LayoutClient({ children }: LayoutClientProps) {
       {/* Sidebar */}
       <aside className="sidebar">
         <nav className="nav">
-          <div className="username">
+          <h1 className="username">
             {session?.user?.username ? `Hello, ${session.user.username}` : "Loading..."}
-          </div>
+          </h1>
 
           {links.map(({ href, label }) => (
             <Link key={href} href={href} className="link">

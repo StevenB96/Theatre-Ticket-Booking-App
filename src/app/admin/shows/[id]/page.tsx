@@ -1,6 +1,7 @@
-// app/admin/shows/[id]/edit/page.tsx
+// app/admin/shows/[id]/page.tsx
 
-import EditShowForm from './EditShowForm';
+import React from 'react';
+import ShowForm from '../ShowForm';
 import { getShowById } from '@/library/db/show';
 
 interface PageProps {
@@ -8,8 +9,10 @@ interface PageProps {
 }
 
 export default async function EditShowPage({ params }: PageProps) {
-  const { id } = await params;
-  const show = await getShowById(parseInt(id, 10));
+  // await the params promise
+  const { id: idStr } = await params;
+  const id = parseInt(idStr, 10);
+  const show = await getShowById(id);
 
   if (!show) {
     return (
@@ -22,8 +25,10 @@ export default async function EditShowPage({ params }: PageProps) {
 
   return (
     <div>
-      <h1>Edit Show #{show.id}</h1>
-      <EditShowForm show={show} />
+      <div className="page-header">
+        <h1 className="page-title">Edit Show #{show.id}</h1>
+      </div>
+      <ShowForm show={show} />
     </div>
   );
 }

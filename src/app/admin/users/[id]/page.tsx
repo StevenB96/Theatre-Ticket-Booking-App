@@ -1,15 +1,18 @@
-// app/admin/users/[id]/edit/page.tsx
+// app/admin/users/[id]/page.tsx
 
+import React from 'react';
+import UserForm from '../UserForm';
 import { getUserById } from '@/library/db/user';
-import EditUserForm from './EditUserForm';
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
 export default async function EditUserPage({ params }: PageProps) {
-  const { id } = await params;
-  const user = await getUserById(parseInt(id, 10));
+  // await the params promise
+  const { id: idStr } = await params;
+  const id = parseInt(idStr, 10);
+  const user = await getUserById(id);
 
   if (!user) {
     return (
@@ -22,8 +25,10 @@ export default async function EditUserPage({ params }: PageProps) {
 
   return (
     <div>
-      <h1>Edit User #{user.id}</h1>
-      <EditUserForm user={user} />
+      <div className="page-header">
+        <h1 className="page-title">Edit User #{user.id}</h1>
+      </div>
+      <UserForm user={user} />
     </div>
   );
 }
