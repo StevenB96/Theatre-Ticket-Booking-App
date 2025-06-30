@@ -2,6 +2,6 @@
 
 export default function Loading() {
   return (
-    <h1 className="page-title">Loading users...</p>
+    <h1 className="page-title">Loading users...</h1>
   );
 }
