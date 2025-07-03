@@ -12,7 +12,9 @@ export default async function CreatePerformancePage() {
       <div className="page-header">
         <h1 className="page-title">Create Performance</h1>
       </div>
-      <PerformanceForm theatreHasShowOptions={theatreHasShowOptions} />
+      <PerformanceForm
+        theatreHasShowOptions={theatreHasShowOptions}
+      />
     </div>
   );
 }

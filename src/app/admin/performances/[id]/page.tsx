@@ -12,11 +12,11 @@ export default async function EditPerformancePage({ params }: PageProps) {
   // await the params promise
   const { id: idStr } = await params;
   const id = parseInt(idStr, 10);
-
   const performance = await PerformanceModel.load(id);
+  const performanceData = performance.data;
   const theatreHasShowOptions = await PerformanceModel.loadTheatreHasShowOptions();
 
-  if (!performance) {
+  if (!performanceData) {
     return (
       <div>
         <h1>Performance not found</h1>
@@ -29,11 +29,11 @@ export default async function EditPerformancePage({ params }: PageProps) {
     <div>
       <div className="page-header">
         <h1 className="page-title">
-          Edit Performance #{performance.data.id}
+          Edit Performance #{performanceData.id}
         </h1>
       </div>
       <PerformanceForm
-        performance={performance.data}
+        performance={performanceData}
         theatreHasShowOptions={theatreHasShowOptions}
       />
     </div>

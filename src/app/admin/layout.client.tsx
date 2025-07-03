@@ -11,13 +11,17 @@ interface LayoutClientProps {
   children: ReactNode;
 }
 
-const links = [
+const CRUDLinks = [
   { href: "/admin/users", label: "Users" },
   { href: "/admin/theatres", label: "Theatres" },
   { href: "/admin/shows", label: "Shows" },
   { href: "/admin/performances", label: "Performances" },
   { href: "/admin/seats", label: "Seats" },
   { href: "/admin/tickets", label: "Tickets" },
+];
+
+const additionalLinks = [
+  { href: "/admin/analytics", label: "Analytics" },
 ];
 
 export default function LayoutClient({ children }: LayoutClientProps) {
@@ -28,26 +32,38 @@ export default function LayoutClient({ children }: LayoutClientProps) {
   };
 
   return (
-    <div className="container">
+    <div className="layout-container">
       {/* Sidebar */}
-      <aside className="sidebar">
+      <aside className="layout-sidebar">
         <nav className="nav">
-          <h1 className="username">
+          <h1 className="nav-username">
             {session?.user?.username ? `Hello, ${session.user.username}` : "Loading..."}
           </h1>
 
-          {links.map(({ href, label }) => (
+          <hr />
+
+          {CRUDLinks.map(({ href, label }) => (
             <Link key={href} href={href} className="link">
               {label}
             </Link>
           ))}
+
+          <hr />
+
+          {additionalLinks.map(({ href, label }) => (
+            <Link key={href} href={href} className="link">
+              {label}
+            </Link>
+          ))}
+
+          <hr />
 
           <button onClick={handleLogout}>Log Out</button>
         </nav>
       </aside>
 
       {/* Main content */}
-      <main className="main">{children}</main>
+      <main className="layout-main">{children}</main>
     </div>
   );
 }

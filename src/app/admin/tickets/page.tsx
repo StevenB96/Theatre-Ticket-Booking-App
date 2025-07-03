@@ -3,10 +3,27 @@
 import Link from 'next/link';
 import TicketTable from './TicketTable';
 import { TicketModel } from '@/models/TicketModel';
+import { PerformanceModel } from '@/models/PerformanceModel';
 
 export default async function TicketsPage() {
+  // 1. Fetch all tickets
   const ticketModels = await TicketModel.findAll();
-  const tickets = TicketModel.serialise(ticketModels);
+
+  // 2. Map into real data objects, awaiting each performance load
+  const ticketsData = await Promise.all(
+    ticketModels.map(async (ticketModel) => {
+      const ticket = ticketModel.data;
+
+      // load the performance and grab its related show & theatre
+      const performanceModel = await PerformanceModel.load(ticket.performance_id!);
+      const performance = performanceModel.data;
+
+      return {
+        ...ticket,
+        performance,
+      };
+    })
+  );
 
   return (
     <div>
@@ -16,7 +33,7 @@ export default async function TicketsPage() {
           + New Ticket
         </Link>
       </div>
-      <TicketTable data={tickets} />
+      <TicketTable data={ticketsData} />
     </div>
   );
 }

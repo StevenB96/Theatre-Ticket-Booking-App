@@ -19,15 +19,15 @@ tr {
 }
 
 /* —— LAYOUT —— */
-.container {
-  @apply flex min-h-screen w-screen bg-white text-black;
+.layout-container {
+  @apply flex min-h-screen w-screen bg-white text-black min-w-screen;
 }
 
-.sidebar {
+.layout-sidebar {
   @apply w-64 bg-black text-white p-6 flex flex-col justify-between;
 }
 
-.main {
+.layout-main {
   @apply flex-1 overflow-y-auto p-8 bg-white;
 }
 
@@ -40,11 +40,11 @@ tr {
   @apply block py-2 px-4 rounded-md font-medium text-white hover:bg-blue-600 transition;
 }
 
-.username {
+.nav-username {
   @apply text-2xl font-semibold text-white mb-6;
 }
 
-.sidebar button {
+.layout-sidebar button {
   @apply w-full text-left mt-4 px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition font-medium;
 }
 

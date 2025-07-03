@@ -7,9 +7,9 @@ import type {
 import db from '@/library/dbClient';
 
 export class PerformanceModel {
-  data: PerformanceWithRelations;
+  public data: PerformanceWithRelations;
 
-  private constructor(data: PerformanceWithRelations) {
+  constructor(data: PerformanceWithRelations) {
     this.data = data;
   }
 
@@ -45,44 +45,66 @@ export class PerformanceModel {
       ]);
 
     return rows.map(row => {
-      const perf: PerformanceWithRelations = {
-        id: row.id,
-        theatre_has_show_id: row.theatre_has_show_id,
-        start_time: row.start_time,
-        type: row.type,
-        status: row.status,
-        created_at: row.created_at,
-        updated_at: row.updated_at,
-        theatre: row.theatre_id
+      const {
+        id,
+        theatre_has_show_id,
+        start_time,
+        type,
+        status,
+        created_at,
+        updated_at,
+
+        theatre_id,
+        theatre_name,
+        theatre_address,
+        theatre_status,
+        theatre_created_at,
+        theatre_updated_at,
+
+        show_id,
+        show_name,
+        show_status,
+        show_created_at,
+        show_updated_at,
+      } = row;
+
+      const perfData: PerformanceWithRelations = {
+        id,
+        theatre_has_show_id,
+        start_time,
+        type,
+        status,
+        created_at,
+        updated_at,
+        theatre: theatre_id
           ? {
-            id: row.theatre_id,
-            name: row.theatre_name,
-            address: row.theatre_address,
-            status: row.theatre_status,
-            created_at: row.theatre_created_at,
-            updated_at: row.theatre_updated_at,
+            id: theatre_id,
+            name: theatre_name,
+            address: theatre_address,
+            status: theatre_status,
+            created_at: theatre_created_at,
+            updated_at: theatre_updated_at,
           }
           : null,
-        show: row.show_id
+        show: show_id
           ? {
-            id: row.show_id,
-            name: row.show_name,
-            status: row.show_status,
-            created_at: row.show_created_at,
-            updated_at: row.show_updated_at,
+            id: show_id,
+            name: show_name,
+            status: show_status,
+            created_at: show_created_at,
+            updated_at: show_updated_at,
           }
           : null,
       };
-      return new PerformanceModel(perf);
+
+      return new PerformanceModel(perfData);
     });
   }
 
   /**
    * Fetch one performance (with relations) by ID.
    */
-  static async load(
-    id: number,
-  ): Promise<PerformanceModel> {
+  static async load(id: number): Promise<PerformanceModel> {
     const row = await db('performance as p')
       .leftJoin('theatre_has_show as ths', 'p.theatre_has_show_id', 'ths.id')
       .leftJoin('theatre as t', 'ths.theatre_id', 't.id')
@@ -112,36 +134,63 @@ export class PerformanceModel {
       .where('p.id', id)
       .first();
 
-    const perf: PerformanceWithRelations = {
-      id: row.id,
-      theatre_has_show_id: row.theatre_has_show_id,
-      start_time: row.start_time,
-      type: row.type,
-      status: row.status,
-      created_at: row.created_at,
-      updated_at: row.updated_at,
-      theatre: row.theatre_id
+    if (!row) {
+      throw new Error(`Performance with id ${id} not found`);
+    }
+
+    const {
+      id: perfId,
+      theatre_has_show_id,
+      start_time,
+      type,
+      status,
+      created_at,
+      updated_at,
+
+      theatre_id,
+      theatre_name,
+      theatre_address,
+      theatre_status,
+      theatre_created_at,
+      theatre_updated_at,
+
+      show_id,
+      show_name,
+      show_status,
+      show_created_at,
+      show_updated_at,
+    } = row;
+
+    const perfData: PerformanceWithRelations = {
+      id: perfId,
+      theatre_has_show_id,
+      start_time,
+      type,
+      status,
+      created_at,
+      updated_at,
+      theatre: theatre_id
         ? {
-          id: row.theatre_id,
-          name: row.theatre_name,
-          address: row.theatre_address,
-          status: row.theatre_status,
-          created_at: row.theatre_created_at,
-          updated_at: row.theatre_updated_at,
+          id: theatre_id,
+          name: theatre_name,
+          address: theatre_address,
+          status: theatre_status,
+          created_at: theatre_created_at,
+          updated_at: theatre_updated_at,
         }
         : null,
-      show: row.show_id
+      show: show_id
         ? {
-          id: row.show_id,
-          name: row.show_name,
-          status: row.show_status,
-          created_at: row.show_created_at,
-          updated_at: row.show_updated_at,
+          id: show_id,
+          name: show_name,
+          status: show_status,
+          created_at: show_created_at,
+          updated_at: show_updated_at,
         }
         : null,
     };
 
-    return new PerformanceModel(perf);
+    return new PerformanceModel(perfData);
   }
 
   static async loadTheatreHasShowOptions() {
@@ -157,10 +206,6 @@ export class PerformanceModel {
       ]);
 
     return theatreHasShowOptions;
-  }
-
-  static serialise(performances: PerformanceModel[]): PerformanceWithRelations[] {
-    return performances.map(p => p.data);
   }
 
   /**

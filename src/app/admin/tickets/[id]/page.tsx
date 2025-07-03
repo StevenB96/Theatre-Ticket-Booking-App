@@ -17,9 +17,8 @@ export default async function EditTicketPage({ params }: PageProps) {
   const ticket = await TicketModel.load(id);
   const users = await getAllUsers();
   const seats = await getAllSeats();
-
   const performanceModels = await PerformanceModel.findAll();
-  const performances = PerformanceModel.serialise(performanceModels);
+  const performanceData = performanceModels.map(performance => performance.data);
 
   if (!ticket) {
     return (
@@ -38,7 +37,7 @@ export default async function EditTicketPage({ params }: PageProps) {
       <TicketForm
         users={users}
         seats={seats}
-        performances={performances}
+        performances={performanceData}
         ticket={ticket.data}
       />
     </div>

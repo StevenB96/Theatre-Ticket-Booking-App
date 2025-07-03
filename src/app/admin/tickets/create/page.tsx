@@ -8,16 +8,19 @@ import { getAllSeats } from '@/library/db/seat';
 export default async function CreateTicketPage() {
   const users = await getAllUsers();
   const seats = await getAllSeats();
-
   const performanceModels = await PerformanceModel.findAll();
-  const performances = PerformanceModel.serialise(performanceModels);
+  const performanceData = performanceModels.map(performance => performance.data);
 
   return (
     <div>
       <div className="page-header">
         <h1 className="page-title">Create New Ticket</h1>
       </div>
-      <TicketForm users={users} seats={seats} performances={performances} />
+      <TicketForm
+        users={users}
+        seats={seats}
+        performances={performanceData}
+      />
     </div>
   );
 }

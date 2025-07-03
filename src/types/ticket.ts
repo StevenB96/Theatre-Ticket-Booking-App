@@ -1,8 +1,8 @@
 // src/types/ticket.ts
 
 import type { User } from '@/types/user';
-import type { PerformanceWithRelations } from '@/types/performance';
 import type { Seat } from '@/types/seat';
+import type { Performance } from '@/types/performance';
 
 export interface Ticket {
   id: number;
@@ -29,6 +29,6 @@ export interface UpdateTicketInput extends CreateTicketInput {
 
 export interface TicketWithRelations extends Ticket {
   user: User | null;
-  performance: PerformanceWithRelations | null;
+  performance: Performance | null;
   seat: Seat | null;
 }

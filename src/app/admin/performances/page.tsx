@@ -6,7 +6,7 @@ import { PerformanceModel } from '@/models/PerformanceModel';
 
 export default async function PerformancesPage() {
   const performanceModels = await PerformanceModel.findAll();
-  const performances = PerformanceModel.serialise(performanceModels);
+  const performanceData = performanceModels.map(performance => performance.data);
 
   return (
     <div>
@@ -16,7 +16,7 @@ export default async function PerformancesPage() {
           + New Performance
         </Link>
       </div>
-      <PerformanceTable data={performances} />
+      <PerformanceTable data={performanceData} />
     </div>
   );
 }
