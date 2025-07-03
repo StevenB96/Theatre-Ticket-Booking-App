@@ -1,50 +1,50 @@
+// src/models/TheatreModel.ts
 import * as theatreDomainFunctions from '@/library/db/theatre';
 import type { Theatre, CreateTheatreInput, UpdateTheatreInput } from '@/types/theatre';
+import { SeatModel } from '@/models/SeatModel';
 
 export class TheatreModel {
-  data: Theatre | null = null;
-  id: number | null = null;
+  public data: Theatre;
 
-  constructor(id?: number) {
-    this.id = id ?? null;
+  constructor(data: Theatre) {
+    this.data = data;
   }
 
-  async init(): Promise<void> {
-    if (this.id === null) {
-      this.data = null;
-      return;
-    }
-    const theatre = await theatreDomainFunctions.getTheatreById(this.id);
-    this.data = theatre ?? null;
+  /** Fetch all theatres */
+  static async findAll(): Promise<TheatreModel[]> {
+    const all = await theatreDomainFunctions.getAllTheatres();
+    return all.map((t) => new TheatreModel(t));
   }
 
-  static async list(): Promise<Theatre[]> {
-    return theatreDomainFunctions.getAllTheatres();
-  }
-
-  static async find(id: number): Promise<TheatreModel | null> {
+  /** Fetch one theatre by ID */
+  static async load(id: number): Promise<TheatreModel> {
     const theatre = await theatreDomainFunctions.getTheatreById(id);
-    if (!theatre) return null;
-    const model = new TheatreModel(id);
-    model.data = theatre;
-    return model;
+    if (!theatre) {
+      throw new Error(`Theatre with id ${id} not found`);
+    }
+    return new TheatreModel(theatre);
   }
 
+  /** Create a new theatre */
   static async create(input: CreateTheatreInput): Promise<TheatreModel> {
     const newTheatre = await theatreDomainFunctions.createTheatre(input);
-    const model = new TheatreModel(newTheatre.id);
-    model.data = newTheatre;
-    return model;
+    return new TheatreModel(newTheatre);
   }
 
+  /** Update an existing theatre */
   static async update(id: number, input: UpdateTheatreInput): Promise<TheatreModel> {
     const updated = await theatreDomainFunctions.updateTheatreById(id, input);
-    const model = new TheatreModel(id);
-    model.data = updated;
-    return model;
+    return new TheatreModel(updated);
   }
 
+  /** Delete a theatre */
   static async delete(id: number): Promise<void> {
     await theatreDomainFunctions.deleteTheatreById(id);
+  }
+
+  async numberOfSeats(): Promise<number> {
+    const seatModels = await SeatModel.findAll();
+    const seatCount = seatModels.filter(seat => seat.data.theatre_id === this.data.id).length
+    return seatCount;
   }
 }

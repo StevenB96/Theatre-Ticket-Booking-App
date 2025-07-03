@@ -1,64 +1,51 @@
+// src/models/UserModel.ts
 import * as userDomainFunctions from '@/library/db/user';
 import { hashPassword } from '@/library/auth';
 import type { User, CreateUserInput, UpdateUserInput } from '@/types/user';
 
 export class UserModel {
-  data: User | null = null;
-  id: number | null = null;
+  public data: User;
 
-  constructor(id?: number) {
-    this.id = id ?? null;
+  constructor(data: User) {
+    this.data = data;
   }
 
-  async init(): Promise<void> {
-    if (this.id === null) {
-      this.data = null;
-      return;
-    }
-    const user = await userDomainFunctions.getUserById(this.id);
-    this.data = user ?? null;
+  /** Fetch all users */
+  static async findAll(): Promise<UserModel[]> {
+    const users = await userDomainFunctions.getAllUsers();
+    return users.map((u) => new UserModel(u));
   }
 
-  static async list(): Promise<User[]> {
-    return userDomainFunctions.getAllUsers();
-  }
-
-  static async find(id: number): Promise<UserModel | null> {
+  /** Fetch one user by ID */
+  static async load(id: number): Promise<UserModel> {
     const user = await userDomainFunctions.getUserById(id);
-    if (!user) return null;
-    const model = new UserModel(id);
-    model.data = user;
-    return model;
+    if (!user) {
+      throw new Error(`User with id ${id} not found`);
+    }
+    return new UserModel(user);
   }
 
+  /** Create a new user (hashes password if provided) */
   static async create(input: CreateUserInput): Promise<UserModel> {
-    const updateData = { ...input };
-
-    if (input.password) {
-      const password = await hashPassword(input.password);
-      updateData.password = password;
+    const data = { ...input };
+    if (data.password) {
+      data.password = await hashPassword(data.password);
     }
-
-    const newUser = await userDomainFunctions.createUser(updateData);
-    const model = new UserModel(newUser.id);
-    model.data = newUser;
-    return model;
+    const newUser = await userDomainFunctions.createUser(data);
+    return new UserModel(newUser);
   }
 
-  // Static update method takes id and input explicitly
+  /** Update an existing user (hashes password if provided) */
   static async update(id: number, input: UpdateUserInput): Promise<UserModel> {
-    // Hash password if provided
-    if (input.password) {
-      input.password = await hashPassword(input.password);
+    const data = { ...input };
+    if (data.password) {
+      data.password = await hashPassword(data.password);
     }
-
-    const updated = await userDomainFunctions.updateUserById(id, input);
-    const model = new UserModel(id);
-    model.data = updated;
-    return model;
+    const updated = await userDomainFunctions.updateUserById(id, data);
+    return new UserModel(updated);
   }
 
-  // Static delete method takes id explicitly
+  /** Delete a user */
   static async delete(id: number): Promise<void> {
     await userDomainFunctions.deleteUserById(id);
   }

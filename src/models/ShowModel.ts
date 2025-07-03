@@ -1,49 +1,42 @@
+// src/models/ShowModel.ts
 import * as showDomainFunctions from '@/library/db/show';
 import type { Show, CreateShowInput, UpdateShowInput } from '@/types/show';
 
 export class ShowModel {
-  data: Show | null = null;
-  id: number | null = null;
+  public data: Show;
 
-  constructor(id?: number) {
-    this.id = id ?? null;
+  constructor(data: Show) {
+    this.data = data;
   }
 
-  async init(): Promise<void> {
-    if (this.id === null) {
-      this.data = null;
-      return;
-    }
-    const show = await showDomainFunctions.getShowById(this.id);
-    this.data = show ?? null;
+  /** Fetch all shows */
+  static async findAll(): Promise<ShowModel[]> {
+    const shows = await showDomainFunctions.getAllShows();
+    return shows.map((s) => new ShowModel(s));
   }
 
-  static async list(): Promise<Show[]> {
-    return showDomainFunctions.getAllShows();
-  }
-
-  static async find(id: number): Promise<ShowModel | null> {
+  /** Fetch one show by ID */
+  static async load(id: number): Promise<ShowModel> {
     const show = await showDomainFunctions.getShowById(id);
-    if (!show) return null;
-    const model = new ShowModel(id);
-    model.data = show;
-    return model;
+    if (!show) {
+      throw new Error(`Show with id ${id} not found`);
+    }
+    return new ShowModel(show);
   }
 
+  /** Create a new show */
   static async create(input: CreateShowInput): Promise<ShowModel> {
     const newShow = await showDomainFunctions.createShow(input);
-    const model = new ShowModel(newShow.id);
-    model.data = newShow;
-    return model;
+    return new ShowModel(newShow);
   }
 
+  /** Update an existing show */
   static async update(id: number, input: UpdateShowInput): Promise<ShowModel> {
     const updated = await showDomainFunctions.updateShowById(id, input);
-    const model = new ShowModel(id);
-    model.data = updated;
-    return model;
+    return new ShowModel(updated);
   }
 
+  /** Delete a show */
   static async delete(id: number): Promise<void> {
     await showDomainFunctions.deleteShowById(id);
   }

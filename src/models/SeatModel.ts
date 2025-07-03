@@ -1,49 +1,42 @@
+// src/models/SeatModel.ts
 import * as seatDomainFunctions from '@/library/db/seat';
 import type { Seat, CreateSeatInput, UpdateSeatInput } from '@/types/seat';
 
 export class SeatModel {
-  data: Seat | null = null;
-  id: number | null = null;
+  public data: Seat;
 
-  constructor(id?: number) {
-    this.id = id ?? null;
+  constructor(data: Seat) {
+    this.data = data;
   }
 
-  async init(): Promise<void> {
-    if (this.id === null) {
-      this.data = null;
-      return;
-    }
-    const seat = await seatDomainFunctions.getSeatById(this.id);
-    this.data = seat ?? null;
+  /** Fetch all seats */
+  static async findAll(): Promise<SeatModel[]> {
+    const seats = await seatDomainFunctions.getAllSeats();
+    return seats.map((s) => new SeatModel(s));
   }
 
-  static async list(): Promise<Seat[]> {
-    return seatDomainFunctions.getAllSeats();
-  }
-
-  static async find(id: number): Promise<SeatModel | null> {
+  /** Fetch one seat by ID */
+  static async load(id: number): Promise<SeatModel> {
     const seat = await seatDomainFunctions.getSeatById(id);
-    if (!seat) return null;
-    const model = new SeatModel(id);
-    model.data = seat;
-    return model;
+    if (!seat) {
+      throw new Error(`Seat with id ${id} not found`);
+    }
+    return new SeatModel(seat);
   }
 
+  /** Create a new seat */
   static async create(input: CreateSeatInput): Promise<SeatModel> {
     const newSeat = await seatDomainFunctions.createSeat(input);
-    const model = new SeatModel(newSeat.id);
-    model.data = newSeat;
-    return model;
+    return new SeatModel(newSeat);
   }
 
+  /** Update an existing seat */
   static async update(id: number, input: UpdateSeatInput): Promise<SeatModel> {
     const updated = await seatDomainFunctions.updateSeatById(id, input);
-    const model = new SeatModel(id);
-    model.data = updated;
-    return model;
+    return new SeatModel(updated);
   }
 
+  /** Delete a seat */
   static async delete(id: number): Promise<void> {
     await seatDomainFunctions.deleteSeatById(id);
   }
