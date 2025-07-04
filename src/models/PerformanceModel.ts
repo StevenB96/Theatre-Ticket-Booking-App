@@ -18,18 +18,22 @@ export class PerformanceModel {
  */
   static async findAll(): Promise<PerformanceModel[]> {
     const rows = await db('performance as p')
-      .leftJoin('theatre_has_show as ths', 'p.theatre_has_show_id', 'ths.id')
-      .leftJoin('theatre as t', 'ths.theatre_id', 't.id')
-      .leftJoin('show as s', 'ths.show_id', 's.id')
+      // join theatre directly off p.theatre_id
+      .leftJoin('theatre as t', 't.id', 'p.theatre_id')
+      // join show directly off p.show_id
+      .leftJoin('show as s', 's.id', 'p.show_id')
       .select([
+        // performance fields
         'p.id',
-        'p.theatre_has_show_id',
+        'p.theatre_id',
+        'p.show_id',
         'p.start_time',
         'p.type',
         'p.status',
         'p.created_at',
         'p.updated_at',
 
+        // theatre fields
         't.id as theatre_id',
         't.name as theatre_name',
         't.address as theatre_address',
@@ -37,6 +41,7 @@ export class PerformanceModel {
         't.created_at as theatre_created_at',
         't.updated_at as theatre_updated_at',
 
+        // show fields
         's.id as show_id',
         's.name as show_name',
         's.status as show_status',
@@ -47,7 +52,6 @@ export class PerformanceModel {
     return rows.map(row => {
       const {
         id,
-        theatre_has_show_id,
         start_time,
         type,
         status,
@@ -70,7 +74,8 @@ export class PerformanceModel {
 
       const perfData: PerformanceWithRelations = {
         id,
-        theatre_has_show_id,
+        theatre_id,
+        show_id,
         start_time,
         type,
         status,
@@ -106,18 +111,22 @@ export class PerformanceModel {
    */
   static async load(id: number): Promise<PerformanceModel> {
     const row = await db('performance as p')
-      .leftJoin('theatre_has_show as ths', 'p.theatre_has_show_id', 'ths.id')
-      .leftJoin('theatre as t', 'ths.theatre_id', 't.id')
-      .leftJoin('show as s', 'ths.show_id', 's.id')
+      // Join the theatre directly
+      .leftJoin('theatre as t', 't.id', 'p.theatre_id')
+      // Join the show directly
+      .leftJoin('show as s', 's.id', 'p.show_id')
       .select([
+        // performance fields
         'p.id',
-        'p.theatre_has_show_id',
+        'p.theatre_id',
+        'p.show_id',
         'p.start_time',
         'p.type',
         'p.status',
         'p.created_at',
         'p.updated_at',
 
+        // theatre fields
         't.id as theatre_id',
         't.name as theatre_name',
         't.address as theatre_address',
@@ -125,6 +134,7 @@ export class PerformanceModel {
         't.created_at as theatre_created_at',
         't.updated_at as theatre_updated_at',
 
+        // show fields
         's.id as show_id',
         's.name as show_name',
         's.status as show_status',
@@ -140,7 +150,6 @@ export class PerformanceModel {
 
     const {
       id: perfId,
-      theatre_has_show_id,
       start_time,
       type,
       status,
@@ -163,7 +172,8 @@ export class PerformanceModel {
 
     const perfData: PerformanceWithRelations = {
       id: perfId,
-      theatre_has_show_id,
+      theatre_id,
+      show_id,
       start_time,
       type,
       status,
@@ -191,21 +201,6 @@ export class PerformanceModel {
     };
 
     return new PerformanceModel(perfData);
-  }
-
-  static async loadTheatreHasShowOptions() {
-    const theatreHasShowOptions = await db('theatre_has_show as ths')
-      .leftJoin('theatre as t', 'ths.theatre_id', 't.id')
-      .leftJoin('show as s', 'ths.show_id', 's.id')
-      .select([
-        'ths.id as id',
-        't.id as theatre_id',
-        't.name as theatre_name',
-        's.id as show_id',
-        's.name as show_name',
-      ]);
-
-    return theatreHasShowOptions;
   }
 
   /**

@@ -16,8 +16,11 @@ import { redirect } from 'next/navigation';
  * - Revalidates the "/admin/performances" path.
  */
 export async function createPerformanceAction(formData: FormData) {
-  const theatre_has_show_id = Number(formData.get('theatre_has_show_id'));
-  if (theatre_has_show_id === null) throw new Error('Theatre Has Show Id is required');
+  const theatre_id = Number(formData.get('theatre_id'));
+  if (theatre_id === null) throw new Error('Theatre Id is required');
+
+  const show_id = Number(formData.get('show_id'));
+  if (show_id === null) throw new Error('Show Id is required');
 
   const date = formData.get('date');
   const time = formData.get('time');
@@ -33,8 +36,9 @@ export async function createPerformanceAction(formData: FormData) {
   if (status === null) throw new Error('Status is required');
 
   const input: CreatePerformanceInput = {
+    theatre_id,
+    show_id,
     start_time,
-    theatre_has_show_id,
     type,
     status,
   };
@@ -53,8 +57,11 @@ export async function updatePerformanceByIdAction(formData: FormData) {
   const id = Number(formData.get('id'));
   if (!id) throw new Error('ID is required');
 
-  const theatre_has_show_id = Number(formData.get('theatre_has_show_id'));
-  if (theatre_has_show_id === null) throw new Error('Theatre Has Show Id is required');
+  const theatre_id = Number(formData.get('theatre_id'));
+  if (theatre_id === null) throw new Error('Theatre Id is required');
+
+  const show_id = Number(formData.get('show_id'));
+  if (show_id === null) throw new Error('Show Id is required');
 
   const date = formData.get('date');
   const time = formData.get('time');
@@ -71,8 +78,9 @@ export async function updatePerformanceByIdAction(formData: FormData) {
 
   const input: UpdatePerformanceInput = {
     id,
+    theatre_id,
+    show_id,
     start_time,
-    theatre_has_show_id,
     type,
     status,
   };

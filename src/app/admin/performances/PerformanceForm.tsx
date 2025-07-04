@@ -4,7 +4,9 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import type { Performance, TheatreHasShowOption } from '@/types/performance';
+import type { Performance } from '@/types/performance';
+import type { Theatre } from '@/types/theatre';
+import type { Show } from '@/types/show';
 import {
     createPerformanceAction,
     updatePerformanceByIdAction,
@@ -12,11 +14,13 @@ import {
 
 interface PerformanceFormProps {
     performance?: Performance;
-    theatreHasShowOptions: TheatreHasShowOption[];
+    theatres: Theatre[];
+    shows: Show[];
 }
 
 type FormState = {
-    theatre_has_show_id: string;
+    theatre_id: string;
+    show_id: string;
     date: string;
     time: string;
     type: string;
@@ -31,7 +35,8 @@ type Field = {
 
 export default function PerformanceForm({
     performance,
-    theatreHasShowOptions,
+    theatres,
+    shows,
 }: PerformanceFormProps) {
     const router = useRouter();
     const isEdit = Boolean(performance);
@@ -48,7 +53,8 @@ export default function PerformanceForm({
     }
 
     const [form, setForm] = React.useState<FormState>({
-        theatre_has_show_id: performance?.theatre_has_show_id.toString() ?? '',
+        theatre_id: performance?.theatre_id.toString() ?? '',
+        show_id: performance?.theatre_id.toString() ?? '',
         date: initDate,
         time: initTime,
         type: performance?.type.toString() ?? '1',
@@ -60,21 +66,42 @@ export default function PerformanceForm({
 
     const fields: Field[] = [
         {
-            key: 'theatre_has_show_id',
+            key: 'theatre_id',
+            label: 'Theatre',
+            render: (s, onChange) => (
+                <select
+                    id="theatre_id"
+                    name="theatre_id"
+                    className="form-select"
+                    required
+                    value={s.theatre_id}
+                    onChange={e => onChange('theatre_id', e.target.value)}
+                >
+                    <option value="">Select theatre</option>
+                    {theatres.map((theatre: Theatre) => (
+                        <option key={theatre.id} value={theatre.id}>
+                            {theatre.name}
+                        </option>
+                    ))}
+                </select>
+            ),
+        },
+        {
+            key: 'show_id',
             label: 'Show',
             render: (s, onChange) => (
                 <select
-                    id="theatre_has_show_id"
-                    name="theatre_has_show_id"
+                    id="show_id"
+                    name="show_id"
                     className="form-select"
                     required
-                    value={s.theatre_has_show_id}
-                    onChange={e => onChange('theatre_has_show_id', e.target.value)}
+                    value={s.show_id}
+                    onChange={e => onChange('show_id', e.target.value)}
                 >
                     <option value="">Select show</option>
-                    {theatreHasShowOptions.map(o => (
-                        <option key={o.id} value={o.id}>
-                            {o.show_name} – {o.theatre_name}
+                    {shows.map((show: Show) => (
+                        <option key={show.id} value={show.id}>
+                            {show.name}
                         </option>
                     ))}
                 </select>

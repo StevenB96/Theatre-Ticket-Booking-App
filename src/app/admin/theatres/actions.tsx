@@ -32,8 +32,8 @@ export async function createTheatreAction(formData: FormData) {
   };
 
   const theatre = await TheatreModel.create(input);
-  revalidatePath('/admin/theatres/' + theatre.id);
-  redirect('/admin/theatres/' + theatre.id);
+  revalidatePath('/admin/theatres/' + theatre.data.id);
+  redirect('/admin/theatres/' + theatre.data.id);
 }
 
 /**

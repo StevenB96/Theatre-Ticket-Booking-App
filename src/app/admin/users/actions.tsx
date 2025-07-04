@@ -39,8 +39,8 @@ export async function createUserAction(formData: FormData) {
   };
 
   const user = await UserModel.create(input);
-  revalidatePath('/admin/users/' + user.id);
-  redirect('/admin/users/' + user.id);
+  revalidatePath('/admin/users/' + user.data.id);
+  redirect('/admin/users/' + user.data.id);
 }
 
 /**

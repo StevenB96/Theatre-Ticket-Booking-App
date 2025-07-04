@@ -26,11 +26,17 @@ exports.up = async function (knex) {
   await knex.schema.createTable("performance", (table) => {
     table.increments("id")
       .primary();
-    table.integer("theatre_has_show_id")
+    table.integer("theatre_id")
       .unsigned()
       .notNullable()
       .references("id")
-      .inTable("theatre_has_show")
+      .inTable("theatre")
+      .onDelete("CASCADE");
+    table.integer("show_id")
+      .unsigned()
+      .notNullable()
+      .references("id")
+      .inTable("show")
       .onDelete("CASCADE");
     table.timestamp("start_time")
       .notNullable();

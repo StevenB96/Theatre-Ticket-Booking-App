@@ -3,6 +3,8 @@
 import React from 'react';
 import PerformanceForm from '../PerformanceForm';
 import { PerformanceModel } from '@/models/PerformanceModel';
+import { TheatreModel } from '@/models/TheatreModel';
+import { ShowModel } from '@/models/ShowModel';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -12,9 +14,9 @@ export default async function EditPerformancePage({ params }: PageProps) {
   // await the params promise
   const { id: idStr } = await params;
   const id = parseInt(idStr, 10);
-  const performance = await PerformanceModel.load(id);
-  const performanceData = performance.data;
-  const theatreHasShowOptions = await PerformanceModel.loadTheatreHasShowOptions();
+  const performanceData = (await PerformanceModel.load(id)).data;
+  const theatresData = (await TheatreModel.findAll()).map(t => t.data);
+  const showsData = (await ShowModel.findAll()).map(s => s.data);
 
   if (!performanceData) {
     return (
@@ -34,7 +36,8 @@ export default async function EditPerformancePage({ params }: PageProps) {
       </div>
       <PerformanceForm
         performance={performanceData}
-        theatreHasShowOptions={theatreHasShowOptions}
+        theatres={theatresData}
+        shows={showsData}
       />
     </div>
   );

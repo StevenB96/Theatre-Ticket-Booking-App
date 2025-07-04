@@ -44,7 +44,9 @@ export class TheatreModel {
 
   async numberOfSeats(): Promise<number> {
     const seatModels = await SeatModel.findAll();
-    const seatCount = seatModels.filter(seat => seat.data.theatre_id === this.data.id).length
+    const seatCount = seatModels.filter(
+      seat => seat.data.theatre_id === this.data.id
+    ).length;
     return seatCount;
   }
 }

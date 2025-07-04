@@ -45,7 +45,7 @@ function getFormFields(
     },
     {
       name: 'performance_id',
-      label: 'Performance',
+      label: 'Show - Theatre',
       type: 'select',
       options: performances.map((p) => ({
         label: `${p.show?.name} - ${p.theatre?.name}`,

@@ -48,7 +48,8 @@ export class TicketModel {
         'st.updated_at as seat_updated_at',
 
         'p.id as performance_id',
-        'p.theatre_has_show_id as performance_theatre_has_show_id',
+        'p.theatre_id as performance_theatre_id',
+        'p.show_id as performance_show_id',
         'p.start_time as performance_start_time',
         'p.type as performance_type',
         'p.status as performance_status',
@@ -81,7 +82,8 @@ export class TicketModel {
         seat_created_at,
         seat_updated_at,
 
-        performance_theatre_has_show_id,
+        performance_theatre_id,
+        performance_show_id,
         performance_start_time,
         performance_type,
         performance_status,
@@ -123,7 +125,8 @@ export class TicketModel {
         performance: performance_id
           ? {
             id: performance_id,
-            theatre_has_show_id: performance_theatre_has_show_id,
+            theatre_id: performance_theatre_id,
+            show_id: performance_show_id,
             start_time: performance_start_time,
             type: performance_type,
             status: performance_status,
@@ -173,7 +176,8 @@ export class TicketModel {
         'st.updated_at as seat_updated_at',
 
         'p.id as performance_id',
-        'p.theatre_has_show_id as performance_theatre_has_show_id',
+        'p.theatre_id as performance_theatre_id',
+        'p.show_id as performance_show_id',
         'p.start_time as performance_start_time',
         'p.type as performance_type',
         'p.status as performance_status',
@@ -211,7 +215,8 @@ export class TicketModel {
       seat_created_at,
       seat_updated_at,
 
-      performance_theatre_has_show_id,
+      performance_theatre_id,
+      performance_show_id,
       performance_start_time,
       performance_type,
       performance_status,
@@ -253,7 +258,8 @@ export class TicketModel {
       performance: performance_id
         ? {
           id: performance_id,
-          theatre_has_show_id: performance_theatre_has_show_id,
+          theatre_id: performance_theatre_id,
+          show_id: performance_show_id,
           start_time: performance_start_time,
           type: performance_type,
           status: performance_status,

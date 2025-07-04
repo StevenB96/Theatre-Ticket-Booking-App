@@ -203,7 +203,8 @@ test.describe('@admin @crud Operations', () => {
       'performance',
       'performances',
       {
-        theatre_has_show_id: '1',
+        theatre_id: '1',
+        show_id: '1',
         date: '2025-01-01',
         time: '01:00',
         type: '1',

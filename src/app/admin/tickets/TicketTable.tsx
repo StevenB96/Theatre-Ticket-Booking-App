@@ -24,7 +24,7 @@ export default function TicketTable({ data }: Props) {
     { key: 'seat', header: 'Seat', render: t => t.seat?.code ?? '—' },
     {
       key: 'performance',
-      header: 'Performance',
+      header: 'Show - Theatre',
       render: t =>
         t.performance
           ? `${t.performance.show?.name} – ${t.performance.theatre?.name}`

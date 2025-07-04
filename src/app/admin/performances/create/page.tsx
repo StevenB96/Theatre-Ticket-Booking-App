@@ -2,10 +2,12 @@
 
 import React from 'react';
 import PerformanceForm from '../PerformanceForm';
-import { PerformanceModel } from '@/models/PerformanceModel';
+import { TheatreModel } from '@/models/TheatreModel';
+import { ShowModel } from '@/models/ShowModel';
 
 export default async function CreatePerformancePage() {
-  const theatreHasShowOptions = await PerformanceModel.loadTheatreHasShowOptions();
+  const theatresData = (await TheatreModel.findAll()).map(t => t.data);
+  const showsData = (await ShowModel.findAll()).map(s => s.data);
 
   return (
     <div>
@@ -13,7 +15,8 @@ export default async function CreatePerformancePage() {
         <h1 className="page-title">Create Performance</h1>
       </div>
       <PerformanceForm
-        theatreHasShowOptions={theatreHasShowOptions}
+        theatres={theatresData}
+        shows={showsData}
       />
     </div>
   );

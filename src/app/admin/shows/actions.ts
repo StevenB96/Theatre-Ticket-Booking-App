@@ -33,8 +33,8 @@ export async function createShowAction(formData: FormData) {
 
   const show = await ShowModel.create(input);
 
-  revalidatePath(`/admin/shows/${show.id}`);
-  redirect(`/admin/shows/${show.id}`);
+  revalidatePath(`/admin/shows/${show.data.id}`);
+  redirect(`/admin/shows/${show.data.id}`);
 }
 
 /**

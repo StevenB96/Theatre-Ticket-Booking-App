@@ -43,8 +43,8 @@ export async function createSeatAction(formData: FormData) {
   };
 
   const seat = await SeatModel.create(input);
-  revalidatePath(`/admin/seats/${seat.id}`);
-  redirect(`/admin/seats/${seat.id}`);
+  revalidatePath(`/admin/seats/${seat.data.id}`);
+  redirect(`/admin/seats/${seat.data.id}`);
 }
 
 /**

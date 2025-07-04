@@ -21,10 +21,10 @@ export default function PerformanceTable({ data }: Props) {
   const columns: Column<PerformanceWithRelations>[] = [
     { key: 'id', header: 'ID', render: ({ id }) => id },
     {
-      key: 'performance', header: 'Show – Theatre', render: p =>
-        p.show?.name && p.theatre?.name
-          ? `${p.show.name} – ${p.theatre.name}`
-          : '—'
+      key: 'theatre', header: 'Theatre', render: p => p.theatre?.name
+    },
+    {
+      key: 'show', header: 'Show', render: p => p.show?.name
     },
     {
       key: 'date', header: 'Date', render: p =>
