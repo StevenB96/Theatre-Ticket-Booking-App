@@ -20,7 +20,7 @@ interface Props {
     data: RevenueData[];
 }
 
-export default function RevenueByTHS({ data }: Props) {
+export default function RevenueByTHSChart({ data }: Props) {
     // 1) Coerce strings to numbers once
     const chartData = data.map((d) => ({
         label: d.label,

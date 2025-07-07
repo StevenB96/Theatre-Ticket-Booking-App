@@ -228,4 +228,34 @@ export class PerformanceModel {
   static async delete(id: number): Promise<void> {
     await performanceDomainFunctions.deletePerformanceById(id);
   }
+
+  async getSeatSalesByPricePercentage(): Promise<{
+    percentage: number;
+    price: number;
+  }[]> {
+    const totalRow = await db('ticket')
+      .where('performance_id', this.data.id)
+      .where('status', 1)
+      .count('* as total')
+      .first();
+
+    const total = Number(totalRow?.total ?? 1); // prevent divide-by-zero
+
+    const result = await db('ticket')
+      .where('performance_id', this.data.id)
+      .where('status', 1)
+      .andWhere('user_id', '!=', 0)
+      .groupBy('price')
+      .select(
+        'price',
+        db.raw('COUNT(*) as sold'),
+        db.raw('ROUND(COUNT(*) * 100.0 / ?, 2) as percentage', [total])
+      );
+
+
+
+    console.log({ result });
+
+    return result;
+  }
 }

@@ -33,7 +33,7 @@ export default function TheatreSeatsChart({ data }: Props) {
                 >
                     <CartesianGrid strokeDasharray="3 3" />
 
-                    {/* X-Axis */}
+                    {/* 2) X-Axis */}
                     <XAxis
                         dataKey="name"
                         height={60}
@@ -44,7 +44,7 @@ export default function TheatreSeatsChart({ data }: Props) {
                         }}
                     />
 
-                    {/* Tooltip */}
+                    {/* 3) Tooltip */}
                     <Tooltip
                         formatter={value => [`${value}`, 'Seats']}
                         itemStyle={{
@@ -53,7 +53,7 @@ export default function TheatreSeatsChart({ data }: Props) {
                         }}
                     />
 
-                    {/* Bars + Labels */}
+                    {/* 4) Bars + Labels */}
                     <Bar dataKey="seats" fill="#3182ce">
                         <LabelList
                             dataKey="seats"

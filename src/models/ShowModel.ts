@@ -43,7 +43,7 @@ export class ShowModel {
     await showDomainFunctions.deleteShowById(id);
   }
 
-  async ticketSales(): Promise<{
+  async getTicketSalesData(): Promise<{
     show_id: number;
     show_name: string;
     theatre_name: string;
@@ -60,9 +60,11 @@ export class ShowModel {
       .leftJoin('ticket as tk', 'tk.performance_id', 'p.id')
       // 4) Filter to this show & only active shows
       .where('s.id', this.data.id)
-      .andWhere('s.status', 1)
+      .andWhere('p.status', 1)
+      .andWhere('tk.status', 1)
+      .whereNot('tk.user_id', 0)
       // 5) Group by show + theatre
-      .groupBy('s.id', 's.name', 'th.id', 'th.name')
+      .groupBy('s.id', 'th.id')
       // 6) Select the identifying fields
       .select(
         's.id as show_id',

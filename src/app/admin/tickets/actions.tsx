@@ -66,9 +66,9 @@ export async function updateTicketByIdAction(formData: FormData) {
   }
 
   const user_id = Number(formData.get('user_id'));
-  if (user_id == null) {
-    throw new Error('User ID is required');
-  }
+  // if (user_id == null) {
+  //   throw new Error('User ID is required');
+  // }
 
   const seat_id = Number(formData.get('seat_id'));
   if (seat_id == null) {

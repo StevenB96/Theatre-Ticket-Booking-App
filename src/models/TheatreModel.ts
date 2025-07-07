@@ -1,7 +1,8 @@
 // src/models/TheatreModel.ts
+
+import db from '@/library/dbClient';
 import * as theatreDomainFunctions from '@/library/db/theatre';
 import type { Theatre, CreateTheatreInput, UpdateTheatreInput } from '@/types/theatre';
-import { SeatModel } from '@/models/SeatModel';
 
 export class TheatreModel {
   public data: Theatre;
@@ -42,11 +43,15 @@ export class TheatreModel {
     await theatreDomainFunctions.deleteTheatreById(id);
   }
 
-  async numberOfSeats(): Promise<number> {
-    const seatModels = await SeatModel.findAll();
-    const seatCount = seatModels.filter(
-      seat => seat.data.theatre_id === this.data.id
-    ).length;
-    return seatCount;
+  async getSeatCount(): Promise<number> {
+    const result = await db<{
+      count: number;
+    }>('seat')
+      .where('theatre_id', this.data.id)
+      .andWhere('status', 1)
+      .count<{ count: number }>('id as count')
+      .first();
+
+    return Number(result?.count ?? 0);
   }
 }
