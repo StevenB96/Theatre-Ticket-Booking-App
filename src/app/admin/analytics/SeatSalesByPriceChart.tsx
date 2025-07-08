@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import {
     ResponsiveContainer,
     PieChart,
@@ -78,19 +77,19 @@ interface PieChartCardProps {
 }
 
 const COLORS = [
-    '#CC4F6A', // dark pink (darker #FF6384)
-    '#2A7ABF', // dark bright blue (#36A2EB)
-    '#CCAA45', // dark yellow (#FFCE56)
-    '#3B9797', // dark teal (#4BC0C0)
-    '#7A4DB3', // dark purple (#9966FF)
-    '#CC7D33', // dark orange (#FF9F40)
-    '#00917C', // dark greenish cyan (#00C49F)
-    '#CC5353', // dark coral (#FF6B6B)
-    '#B28E00', // dark gold (#FFD700)
-    '#5EA3CC', // dark sky blue (#7FDBFF)
+    '#CC4F6A',
+    '#2A7ABF',
+    '#CCAA45',
+    '#3B9797',
+    '#7A4DB3',
+    '#CC7D33',
+    '#00917C',
+    '#CC5353',
+    '#B28E00',
+    '#5EA3CC',
 ];
 
-const PieChartCard: React.FC<PieChartCardProps> = ({ group: { label, data } }) => (
+const PieChartCard = ({ group: { label, data } }: PieChartCardProps) => (
     <div className="w-full h-80 bg-white p-4 rounded-lg">
         <h1 className="text-center mb-2 whitespace-pre-wrap text-[20px] fill-gray-700">{label}</h1>
         <ResponsiveContainer width="100%" height="100%">
@@ -123,7 +122,7 @@ interface SeatSalesByPriceChartProps {
     data: SalesGroup[];
 }
 
-const SeatSalesByPriceChart: React.FC<SeatSalesByPriceChartProps> = ({ data }) => {
+const SeatSalesByPriceChart = ({ data }: SeatSalesByPriceChartProps) => {
     if (!data?.length) {
         return <p>No data available</p>;
     }
