@@ -131,7 +131,7 @@ const SeatSalesByPriceChart: React.FC<SeatSalesByPriceChartProps> = ({ data }) =
     }
 
     return (
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 gap-y-30">
+        <div className="grid grid-cols-1 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 gap-y-30">
             {data.map(group => (
                 <PieChartCard key={group.performance_id} group={group} />
             ))}
