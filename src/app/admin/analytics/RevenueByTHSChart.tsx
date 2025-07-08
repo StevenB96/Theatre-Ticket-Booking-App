@@ -12,7 +12,7 @@ import React from 'react';
 
 interface RevenueData {
     label: string;
-    total_revenue: number;
+    revenue: number;
 }
 
 interface Props {
@@ -66,9 +66,9 @@ export default function RevenueByTHSChart({ data }: Props) {
                         interval={0}
                         tick={<RotatedTick />}
                     />
-                    <Bar dataKey="total_revenue" fill="#3182ce">
+                    <Bar dataKey="revenue" fill="#3182ce">
                         <LabelList
-                            dataKey="total_revenue"
+                            dataKey="revenue"
                             content={({ x, y, width, value }) => (
                                 <text
                                     x={x + width / 2}

@@ -27,12 +27,12 @@ export default async function Page() {
             showModels.map(async (show) => {
                 const data = await show.getTicketSalesData();
                 return data.map(d => ({
-                    total_revenue: d.total_revenue,
+                    revenue: d.revenue,
                     label: trimLabel(`${d.show_name} | ${d.theatre_name}`, 60),
                 }));
             })
         )
-    ).flat().sort((a, b) => b.total_revenue - a.total_revenue).slice(0, 5);
+    ).flat().sort((a, b) => b.revenue - a.revenue).slice(0, 5);
 
     // Sales Chart
     const performanceModels = await PerformanceModel.findAll();

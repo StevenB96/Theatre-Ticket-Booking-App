@@ -48,8 +48,7 @@ export class ShowModel {
     show_name: string;
     theatre_name: string;
     ticket_count: number;
-    total_revenue: number;
-    avg_ticket_price: number;
+    revenue: number;
   }[]> {
     const result = await db('show as s')
       // 1) Join performances directly by show_id
@@ -72,17 +71,15 @@ export class ShowModel {
         'th.name as theatre_name',
       )
       // 7) Aggregate metrics
-      .avg('tk.price as avg_ticket_price')
       .count('tk.id as ticket_count')
-      .sum('tk.price as total_revenue');
+      .sum('tk.price as revenue');
 
     return result.map(row => ({
       show_id: Number(row.show_id),
       show_name: row.show_name,
       theatre_name: row.theatre_name,
       ticket_count: Number(row.ticket_count),
-      total_revenue: Number(row.total_revenue),
-      avg_ticket_price: Number(row.avg_ticket_price),
+      revenue: Number(row.revenue),
     }));
   }
 }
