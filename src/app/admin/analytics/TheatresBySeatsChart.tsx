@@ -18,21 +18,30 @@ interface Props {
     data: TheatreData[];
 }
 
-const CustomBarLabel = (props: any) => {
-    const { x, y, width, value } = props;
-    return (
-        <text
-            x={x + width / 2}
-            y={y - 6}
-            textAnchor="middle"
-            fill="#2D3748"
-            fontSize={20}
-            fontFamily="var(--font-playfair)"
-        >
-            {value}
-        </text>
-    );
+type CustomBarLabelProps = {
+    x?: number | string;
+    y?: number | string;
+    width?: number | string;
+    value?: number | string;
 };
+
+const CustomBarLabel = ({
+    x = 0,
+    y = 0,
+    width = 0,
+    value,
+}: CustomBarLabelProps) => (
+    <text
+        x={Number(x) + Number(width) / 2}
+        y={Number(y) - 6}
+        textAnchor="middle"
+        fill="#2D3748"
+        fontSize={20}
+        fontFamily="var(--font-playfair)"
+    >
+        {value}
+    </text>
+);
 
 export default function TheatreSeatsChart({ data }: Props) {
     return (
@@ -67,7 +76,7 @@ export default function TheatreSeatsChart({ data }: Props) {
                         fill="#3182ce"
                     >
                         <LabelList
-                            content={<CustomBarLabel />}
+                            content={CustomBarLabel}
                         />
                     </Bar>
                 </BarChart>

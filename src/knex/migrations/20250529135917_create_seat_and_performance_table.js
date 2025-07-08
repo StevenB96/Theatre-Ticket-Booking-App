@@ -12,8 +12,7 @@ exports.up = async function (knex) {
       .inTable("theatre")
       .onDelete("CASCADE");
     table.string("code", 10)
-      .notNullable()
-      .unique();
+      .notNullable();
     table.string("zone", 10)
       .nullable();
     table.integer("status")

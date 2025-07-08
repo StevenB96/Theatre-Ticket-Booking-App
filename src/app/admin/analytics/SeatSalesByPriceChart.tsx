@@ -9,8 +9,7 @@ import {
     Legend,
 } from 'recharts';
 
-// components/PieLabel.tsx
-interface PieLabelProps {
+type PieLabelProps = {
     cx: number;
     cy: number;
     midAngle: number;
@@ -19,16 +18,15 @@ interface PieLabelProps {
     percent: number;
     index: number;
     value: number;
-}
+};
 
-export const PieLabel: React.FC<PieLabelProps> = ({
-    cx,
-    cy,
-    midAngle,
-    innerRadius,
-    outerRadius,
-    value,
-}) => {
+export const PieLabel = ({
+    cx = 0,
+    cy = 0,
+    midAngle = 0,
+    outerRadius = 0,
+    value = 0,
+}: Partial<PieLabelProps>) => {
     const RADIAN = Math.PI / 180;
     const radius = outerRadius + 30;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -37,7 +35,7 @@ export const PieLabel: React.FC<PieLabelProps> = ({
     const text = `${value}%`;
     const fontSize = 14;
     const padding = 4;
-    const approxCharWidth = 7; // tweak if needed
+    const approxCharWidth = 7;
     const textWidth = text.length * approxCharWidth;
 
     return (
@@ -131,7 +129,7 @@ const SeatSalesByPriceChart: React.FC<SeatSalesByPriceChartProps> = ({ data }) =
     }
 
     return (
-        <div className="grid grid-cols-1 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 gap-y-30">
+        <div className="seat-sales-outer">
             {data.map(group => (
                 <PieChartCard key={group.performance_id} group={group} />
             ))}

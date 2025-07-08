@@ -71,23 +71,29 @@ export default async function Page() {
     ).sort((a, b) => {
         const aUnsold = a.data.find(d => d.group === 'Unsold')?.percentage ?? 0;
         const bUnsold = b.data.find(d => d.group === 'Unsold')?.percentage ?? 0;
-        return bUnsold - aUnsold;
-    }).slice(0, 5);
+        if (aUnsold === 0) {
+            return 1;
+        }
+        if (bUnsold === 0) {
+            return -1;
+        }
+        return aUnsold - bUnsold;
+    }).slice(0, 8);
 
     return (
         <div className="p-8">
-            <div className="bg-white rounded-md shadow p-6">
-                <h1 className="text-2xl font-playfair mb-4">Top {theatresBySeatsData.length} Theatres By Seats</h1>
+            <div className="analytics-chart-container">
+                <h1 className="analytics-chart-title">Top {theatresBySeatsData.length} Theatres By Seats</h1>
                 <br />
                 <TheatresBySeatsChart data={theatresBySeatsData} />
             </div>
-            <div className="bg-white rounded-md shadow p-6">
-                <h1 className="text-2xl font-playfair mb-4">Top {revenueByTHSData.length} Shows By Revenue</h1>
+            <div className="analytics-chart-container">
+                <h1 className="analytics-chart-title">Top {revenueByTHSData.length} Shows By Revenue</h1>
                 <br />
                 <RevenueByTHS data={revenueByTHSData} />
             </div>
-            <div className="bg-white rounded-md shadow p-6">
-                <h1 className="text-2xl font-playfair mb-4">Top {seatSalesByPriceData.length} Performances That Are Selling Out</h1>
+            <div className="analytics-chart-container">
+                <h1 className="analytics-chart-title">Top {seatSalesByPriceData.length} Performances That Are Selling Out</h1>
                 <br />
                 <SeatSalesByPriceChart data={seatSalesByPriceData} />
             </div>

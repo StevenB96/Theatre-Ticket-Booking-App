@@ -14,7 +14,7 @@ export async function GET(
   try {
     const { id } = await context.params;
     const userIdFromUrl = parseInt(id, 10);
-    const model = await UserModel.find(userIdFromUrl);
+    const model = await UserModel.load(userIdFromUrl);
     if (!model || !model.data) {
       throw new Error('User not found');
     }

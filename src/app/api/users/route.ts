@@ -9,7 +9,7 @@ import {
 // GET /api/users
 export async function GET() {
   try {
-    const users: User[] = await UserModel.list();
+    const users = await UserModel.findAll();
     return NextResponse.json(users);
   } catch (err) {
     console.error('GET users error:', err);

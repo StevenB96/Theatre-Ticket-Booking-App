@@ -4,58 +4,37 @@ const { hashPassword } = require('../../library/auth');
  * @param {import('knex').Knex} knex
  */
 async function seed(knex) {
-  // 1) Clear tables in dependency order
+  // 1) Clear tables
   await knex('ticket').truncate();
   await knex('performance').truncate();
   await knex('seat').truncate();
-  // no theatre_has_show any more!
   await knex('show').truncate();
   await knex('theatre').truncate();
   await knex('user').truncate();
 
-  // 2) Hash passwords
-  const [adminHashed, johndoeHashed, janedoeHashed] = await Promise.all([
+  // 2) Users
+  const [adminH, johnH, janeH] = await Promise.all([
     hashPassword('admin'),
     hashPassword('john'),
     hashPassword('jane'),
   ]);
-
-  // 3) Insert users
   await knex('user').insert([
-    {
-      id: 1,
-      username: 'admin',
-      email: 'admin@example.com',
-      password_hash: adminHashed,
-      role: 1,
-      status: 1,
-    },
-    {
-      id: 2,
-      username: 'johndoe',
-      email: 'john@example.com',
-      password_hash: johndoeHashed,
-      role: 0,
-      status: 1,
-    },
-    {
-      id: 3,
-      username: 'janedoe',
-      email: 'jane@example.com',
-      password_hash: janedoeHashed,
-      role: 0,
-      status: 1,
-    },
+    { id: 1, username: 'admin', email: 'admin@example.com', password_hash: adminH, role: 1, status: 1 },
+    { id: 2, username: 'johndoe', email: 'john@example.com', password_hash: johnH, role: 0, status: 1 },
+    { id: 3, username: 'janedoe', email: 'jane@example.com', password_hash: janeH, role: 0, status: 1 },
   ]);
 
-  // 4) Insert theatres
-  await knex('theatre').insert([
-    { id: 1, name: 'Grand Theatre', address: '123 Main St, London', status: 1 },
-    { id: 2, name: 'City Playhouse', address: '456 Elm St, Manchester', status: 1 },
-    { id: 3, name: 'Open Air Stage', address: '789 Park Ave, Oxford', status: 1 },
-  ]);
+  // 3) Theatres + their seat‑zone profiles
+  const theatres = [
+    { id: 1, name: 'Grand Theatre', address: '123 Main St, London', status: 1, totalSeats: 18, zones: ['Stalls', 'Dress Circle', 'Royal Box'] },
+    { id: 2, name: 'City Playhouse', address: '456 Elm St, Manchester', status: 1, totalSeats: 12, zones: ['Stalls', 'Upper Circle', 'Balcony'] },
+    { id: 3, name: 'Open Air Stage', address: '789 Park Ave, Oxford', status: 1, totalSeats: 8, zones: ['Stalls', 'General'] },
+  ];
+  await knex('theatre').insert(theatres.map(t => ({
+    id: t.id, name: t.name, address: t.address, status: t.status
+  })));
 
-  // 5) Insert shows
+  // 4) Shows
   await knex('show').insert([
     { id: 1, name: 'Hamlet', status: 1 },
     { id: 2, name: 'The Phantom of the Opera', status: 1 },
@@ -63,98 +42,76 @@ async function seed(knex) {
     { id: 4, name: 'A Midsummer Night’s Dream', status: 1 },
   ]);
 
-  // 6) Define seat zones & build seat records
-  const zoneLayouts = [
-    { theatre: 1, zone: 'Stalls', count: 5 },
-    { theatre: 1, zone: 'Dress Circle', count: 3 },
-    { theatre: 2, zone: 'Upper Circle', count: 4 },
-    { theatre: 2, zone: 'Balcony', count: 3 },
-    { theatre: 3, zone: 'General', count: 6 },
-  ];
-
-  const seatRecords = [];
-  let seatId = 1;
-  for (const { theatre, zone, count } of zoneLayouts) {
-    const initial = zone[0].toUpperCase();
-    for (let i = 1; i <= count; i++) {
-      seatRecords.push({
-        id: seatId++,
-        theatre_id: theatre,
-        code: `${initial}${i}`,
-        zone,
-        status: 1,
-      });
-    }
+  // 5) Allocate seats per theatre
+  function allocateSeats(totalSeats, zones) {
+    const stallsCount = Math.ceil(totalSeats * 0.4);
+    const remaining = totalSeats - stallsCount;
+    const others = zones.filter(z => z !== 'Stalls');
+    const perOther = others.length ? Math.floor(remaining / others.length) : 0;
+    return zones.map(zone => ({
+      zone,
+      count: zone === 'Stalls' ? stallsCount : perOther
+    }));
   }
 
-  // 7) Insert seats
+  const seatRecords = [];
+  let sid = 1;
+  for (const t of theatres) {
+    const layout = allocateSeats(t.totalSeats, t.zones);
+    for (const { zone, count } of layout) {
+      const prefix = zone[0].toUpperCase();
+      for (let i = 1; i <= count; i++) {
+        seatRecords.push({
+          id: sid++,
+          theatre_id: t.id,
+          code: `${prefix}${i}`,
+          zone,
+          status: 1
+        });
+      }
+    }
+  }
   await knex('seat').insert(seatRecords);
 
-  // 8) Insert performances (now with theatre_id & show_id directly)
-  await knex('performance').insert([
-    {
-      id: 1,
-      theatre_id: 1,
-      show_id: 1,
-      start_time: '2025-06-05T19:00:00',
-      type: 1,
-      status: 1,
-    },
-    {
-      id: 2,
-      theatre_id: 1,
-      show_id: 1,
-      start_time: '2025-06-06T14:00:00',
-      type: 0,
-      status: 1,
-    },
-    {
-      id: 3,
-      theatre_id: 1,
-      show_id: 2,
-      start_time: '2025-07-10T19:00:00',
-      type: 1,
-      status: 1,
-    },
-    {
-      id: 4,
-      theatre_id: 2,
-      show_id: 2,
-      start_time: '2025-08-15T20:00:00',
-      type: 1,
-      status: 1,
-    },
-    {
-      id: 5,
-      theatre_id: 2,
-      show_id: 3,
-      start_time: '2025-09-10T18:30:00',
-      type: 1,
-      status: 1,
-    },
-    {
-      id: 6,
-      theatre_id: 3,
-      show_id: 4,
-      start_time: '2025-06-20T17:00:00',
-      type: 0,
-      status: 1,
-    },
-  ]);
+  // 6) Performances with a sellRate param
+  const performances = [
+    { id: 1, theatre_id: 1, show_id: 1, start_time: '2025-06-05T19:00:00', type: 1, status: 1, sellRate: 1.0 },
+    { id: 2, theatre_id: 1, show_id: 1, start_time: '2025-06-06T14:00:00', type: 0, status: 1, sellRate: 0.5 },
+    { id: 3, theatre_id: 2, show_id: 2, start_time: '2025-07-10T19:00:00', type: 1, status: 1, sellRate: 0.2 },
+    { id: 4, theatre_id: 2, show_id: 3, start_time: '2025-08-15T20:00:00', type: 1, status: 1, sellRate: 0.6 },
+    { id: 5, theatre_id: 3, show_id: 4, start_time: '2025-09-10T18:30:00', type: 1, status: 1, sellRate: 0.8 },
+    { id: 6, theatre_id: 3, show_id: 2, start_time: '2025-06-20T17:00:00', type: 0, status: 1, sellRate: 0.3 },
+  ];
+  await knex('performance').insert(performances.map(({ sellRate, ...p }) => p));
 
-  // 9) Insert tickets
-  await knex('ticket').insert([
-    { id: 1, user_id: 2, seat_id: 1, performance_id: 1, price: 50.0, status: 1 },
-    { id: 2, user_id: 2, seat_id: 2, performance_id: 2, price: 45.0, status: 1 },
-    { id: 3, user_id: 3, seat_id: 6, performance_id: 3, price: 60.0, status: 1 },
-    { id: 4, user_id: 3, seat_id: 7, performance_id: 4, price: 55.0, status: 1 },
-    { id: 5, user_id: 2, seat_id: 12, performance_id: 5, price: 70.0, status: 1 },
-    { id: 6, user_id: 3, seat_id: 14, performance_id: 6, price: 40.0, status: 1 },
-    { id: 7, user_id: 2, seat_id: 3, performance_id: 1, price: 50.0, status: 1 },
-    { id: 8, user_id: 3, seat_id: 10, performance_id: 2, price: 45.0, status: 1 },
-    { id: 9, user_id: 2, seat_id: 9, performance_id: 3, price: 60.0, status: 1 },
-    { id: 10, user_id: 3, seat_id: 15, performance_id: 5, price: 70.0, status: 1 },
-  ]);
+  // 7) Generate tickets: one per seat, some sold (user_id), some unsold
+  const tickets = [];
+  let tid = 1;
+  const users = [2, 3];
+
+  for (const perf of performances) {
+    const seats = seatRecords.filter(s => s.theatre_id === perf.theatre_id);
+    const soldCount = Math.round(seats.length * perf.sellRate);
+
+    seats.forEach((seat, idx) => {
+      const sold = idx < soldCount;
+      tickets.push({
+        id: tid++,
+        user_id: sold ? users[idx % users.length] : null,
+        seat_id: seat.id,
+        performance_id: perf.id,
+        price:
+          seat.zone === 'Royal Box' ? 120 :
+            seat.zone === 'Dress Circle' ? 75 :
+              seat.zone === 'Upper Circle' ? 65 :
+                seat.zone === 'Balcony' ? 55 :
+                  45,
+        status: 1
+      });
+    });
+  }
+
+  await knex('ticket').insert(tickets);
 }
 
 module.exports = { seed };

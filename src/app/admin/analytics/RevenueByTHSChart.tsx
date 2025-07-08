@@ -19,13 +19,21 @@ interface Props {
     data: RevenueData[];
 }
 
-const RotatedTick: React.FC<RotatedTickProps> = ({
+type RotatedTickProps = {
+    x?: number;
+    y?: number;
+    payload: { value: string };
+    rotateAngle?: number;
+};
+
+export const RotatedTick = ({
     x = 0,
     y = 0,
     payload,
     rotateAngle = -45,
-}) => {
+}: RotatedTickProps) => {
     const [line1, line2] = payload.value.split(' | ');
+
     return (
         <g transform={`translate(${x}, ${y + 10})`}>
             <text
@@ -64,23 +72,39 @@ export default function RevenueByTHSChart({ data }: Props) {
                         dataKey="label"
                         height={90}
                         interval={0}
-                        tick={<RotatedTick />}
+                        tick={RotatedTick}
                     />
                     <Bar dataKey="revenue" fill="#3182ce">
                         <LabelList
                             dataKey="revenue"
-                            content={({ x, y, width, value }) => (
-                                <text
-                                    x={x + width / 2}
-                                    y={y - 10}
-                                    textAnchor="middle"
-                                    className="fill-gray-700"
-                                    fontSize={20}
-                                    fontFamily="var(--font-playfair)"
-                                >
-                                    £{value}
-                                </text>
-                            )}
+                            content={({
+                                x,
+                                y,
+                                width,
+                                value,
+                            }: {
+                                x?: number | string;
+                                y?: number | string;
+                                width?: number | string;
+                                value?: number | string;
+                            }) => {
+                                if (value === undefined || x === undefined || y === undefined || width === undefined) {
+                                    return null;
+                                }
+
+                                return (
+                                    <text
+                                        x={Number(x) + Number(width) / 2}
+                                        y={Number(y) - 10}
+                                        textAnchor="middle"
+                                        className="fill-gray-700"
+                                        fontSize={20}
+                                        fontFamily="var(--font-playfair)"
+                                    >
+                                        £{value}
+                                    </text>
+                                );
+                            }}
                         />
                     </Bar>
                 </BarChart>

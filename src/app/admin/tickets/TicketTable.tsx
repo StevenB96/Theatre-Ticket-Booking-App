@@ -4,11 +4,14 @@
 
 import Link from 'next/link';
 import type { TicketWithRelations } from '@/types/ticket';
+import type { PerformanceWithRelations } from '@/types/performance';
 import { deleteTicketByIdAction } from './actions';
 import type { ReactNode } from 'react';
 
 interface Props {
-  data: TicketWithRelations[];
+  data: (TicketWithRelations & {
+    performance?: PerformanceWithRelations
+  })[];
 }
 
 type Column<T> = {
@@ -18,55 +21,55 @@ type Column<T> = {
 };
 
 export default function TicketTable({ data }: Props) {
-  const columns: Column<TicketWithRelations>[] = [
+  const columns: Column<TicketWithRelations & { performance?: PerformanceWithRelations }>[] = [
     { key: 'id', header: 'ID', render: ({ id }) => id },
-    { key: 'user', header: 'User', render: t => t.user?.username ?? '—' },
-    { key: 'seat', header: 'Seat', render: t => t.seat?.code ?? '—' },
+    { key: 'user', header: 'User', render: tk => tk.user?.username ?? '—' },
+    { key: 'seat', header: 'Seat', render: tk => tk.seat?.code ?? '—' },
     {
       key: 'performance',
       header: 'Show - Theatre',
-      render: t =>
-        t.performance
-          ? `${t.performance.show?.name} – ${t.performance.theatre?.name}`
+      render: tk =>
+        tk.performance
+          ? `${tk.performance?.show?.name} – ${tk.performance?.theatre?.name}`
           : '—',
     },
     { key: 'price', header: 'Price', render: ({ price }) => price },
     {
       key: 'status',
       header: 'Status',
-      render: t =>
-        t.status === 1
+      render: tk =>
+        tk.status === 1
           ? 'Active'
-          : t.status === 0
+          : tk.status === 0
             ? 'Inactive'
             : 'Unknown',
     },
     {
       key: 'created_at',
       header: 'Created At',
-      render: t =>
-        t.created_at
-          ? new Date(t.created_at).toLocaleDateString('en-GB')
+      render: tk =>
+        tk.created_at
+          ? new Date(tk.created_at).toLocaleDateString('en-GB')
           : 'N/A',
     },
     {
       key: 'updated_at',
       header: 'Updated At',
-      render: t =>
-        t.updated_at
-          ? new Date(t.updated_at).toLocaleDateString('en-GB')
+      render: tk =>
+        tk.updated_at
+          ? new Date(tk.updated_at).toLocaleDateString('en-GB')
           : 'N/A',
     },
     {
       key: 'actions',
       header: 'Actions',
-      render: t => (
+      render: tk => (
         <div className="actions">
-          <Link href={`/admin/tickets/${t.id}`}>Edit</Link>{' '}
+          <Link href={`/admin/tickets/${tk.id}`}>Edit</Link>{' '}
           <button
             type="submit"
             name="ticketId"
-            value={t.id}
+            value={tk.id}
             onClick={e => {
               if (!confirm('Delete this ticket?')) e.preventDefault();
             }}

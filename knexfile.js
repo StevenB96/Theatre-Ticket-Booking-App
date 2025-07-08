@@ -26,7 +26,7 @@ const development = {
     filename: path.resolve('./dev.sqlite3'),
   },
   useNullAsDefault: true,
-  debug: true,
+  // debug: true,
   migrations: {
     directory: path.resolve('./src/knex/migrations'),
   },

@@ -22,6 +22,7 @@ const CRUDLinks = [
 
 const additionalLinks = [
   { href: "/admin/analytics", label: "Analytics" },
+  { href: "/admin/graphics", label: "Graphics" },
 ];
 
 export default function LayoutClient({ children }: LayoutClientProps) {
