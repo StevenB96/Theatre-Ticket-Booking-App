@@ -231,7 +231,7 @@ export class PerformanceModel {
 
   async getSeatSalesByPricePercentage(): Promise<{
     percentage: number;
-    price: number;
+    group: string;
   }[]> {
     const totalRow = await db('ticket')
       .where('performance_id', this.data.id)
@@ -247,14 +247,17 @@ export class PerformanceModel {
       .andWhere('user_id', '!=', 0)
       .groupBy('price')
       .select(
-        'price',
-        db.raw('COUNT(*) as sold'),
+        'price as group',
         db.raw('ROUND(COUNT(*) * 100.0 / ?, 2) as percentage', [total])
       );
 
+    const totalSoldPercentage = result.reduce((total, r) => total + r.percentage, 0);
+    const unsoldPercentage = Math.max(0, 100 - totalSoldPercentage);
 
-
-    console.log({ result });
+    result.push({
+      group: 'Unsold',
+      percentage: unsoldPercentage,
+    });
 
     return result;
   }
