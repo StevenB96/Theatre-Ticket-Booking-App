@@ -3,24 +3,39 @@
 import { TicketModel } from '@/models/TicketModel';
 import { TheatreModel } from '@/models/TheatreModel';
 import { PerformanceModel } from '@/models/PerformanceModel';
-import LeftRightNavigator from '@/app/admin/graphics/LeftRightNavigator';
+import { SeatModel } from '@/models/SeatModel';
+import GraphicsClient from '@/app/admin/graphics/page.client';
+
+export const revalidate = 0;
 
 export default async function GraphicsPage() {
-  const ticketModels = await TicketModel.findAll();
-  const ticketData = ticketModels.map(tk => tk.data);
+  // Fetch all data server-side
+  const [
+    seatModels,
+    ticketModels,
+    theatreModels,
+    performanceModels,
+  ] = await Promise.all([
+    SeatModel.findAll(),
+    TicketModel.findAll(),
+    TheatreModel.findAll(),
+    PerformanceModel.findAll(),
+  ]);
 
-  const theatreModels = await TheatreModel.findAll();
-  const theatreData = theatreModels.map(th => th.data);
-
-  const performanceModels = await PerformanceModel.findAll();
-  const performanceData = performanceModels.map(p => p.data);
-
-  console.log({ performanceData });
+  const seatData = seatModels.map((se) => se.data);
+  const ticketData = ticketModels.map((tk) => tk.data);
+  const theatreData = theatreModels.map((th) => th.data);
+  const performanceData = performanceModels.map((p) => p.data);
 
   return (
-    <div className="flex flex-col gap-3">
-      <LeftRightNavigator name={'Theatre'} values={theatreData} />
-      <LeftRightNavigator name={'Performance'} values={performanceData} />
+    <div className="p-6">
+      {/* Client component handles selection state */}
+      <GraphicsClient
+        theatreData={theatreData}
+        performanceData={performanceData}
+        seatData={seatData}
+        ticketData={ticketData}
+      />
     </div>
   );
 }
