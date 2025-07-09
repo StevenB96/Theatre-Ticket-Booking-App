@@ -5,7 +5,7 @@ import { TheatreModel } from '@/models/TheatreModel';
 import { ShowModel } from '@/models/ShowModel';
 import { PerformanceModel } from '@/models/PerformanceModel';
 
-export default async function Page() {
+export default async function AnalyticsPage() {
     // Seats Chart
     const theatreModels = await TheatreModel.findAll();
     let theatresBySeatsData = await Promise.all(

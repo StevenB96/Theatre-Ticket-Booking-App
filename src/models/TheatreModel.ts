@@ -43,15 +43,14 @@ export class TheatreModel {
     await theatreDomainFunctions.deleteTheatreById(id);
   }
 
-  async getSeatCount(): Promise<number> {
-    const result = await db<{
-      count: number;
-    }>('seat')
+  async getSeats(): Promise<any[]> {
+    return db('seat')
       .where('theatre_id', this.data.id)
-      .andWhere('status', 1)
-      .count<{ count: number }>('id as count')
-      .first();
+      .andWhere('status', 1);
+  }
 
-    return Number(result?.count ?? 0);
+  async getSeatCount(): Promise<number> {
+    const seats = await this.getSeats();
+    return seats.length;
   }
 }

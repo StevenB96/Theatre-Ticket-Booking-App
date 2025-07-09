@@ -28,21 +28,21 @@ export default function SeatTable({ data }: Props) {
         status === 1 ? 'Active' : status === 0 ? 'Inactive' : 'Unknown'
     },
     {
-      key: 'created_at', header: 'Created At', render: s =>
-        s.created_at ? new Date(s.created_at).toLocaleDateString('en-GB') : 'N/A'
+      key: 'created_at', header: 'Created At', render: se =>
+        se.created_at ? new Date(se.created_at).toLocaleDateString('en-GB') : 'N/A'
     },
     {
-      key: 'updated_at', header: 'Updated At', render: s =>
-        s.updated_at ? new Date(s.updated_at).toLocaleDateString('en-GB') : 'N/A'
+      key: 'updated_at', header: 'Updated At', render: se =>
+        se.updated_at ? new Date(se.updated_at).toLocaleDateString('en-GB') : 'N/A'
     },
     {
-      key: 'actions', header: 'Actions', render: s => (
+      key: 'actions', header: 'Actions', render: se => (
         <div className="actions">
-          <Link href={`/admin/seats/${s.id}`}>Edit</Link>{' '}
+          <Link href={`/admin/seats/${se.id}`}>Edit</Link>{' '}
           <button
             type="submit"
             name="seatId"
-            value={s.id}
+            value={se.id}
             onClick={e => { if (!confirm('Delete this seat?')) e.preventDefault(); }}
           >
             Delete

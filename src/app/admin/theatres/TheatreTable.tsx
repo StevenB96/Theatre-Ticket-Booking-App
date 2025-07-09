@@ -27,21 +27,21 @@ export default function TheatreTable({ data }: Props) {
         status === 1 ? 'Active' : status === 0 ? 'Inactive' : 'Unknown'
     },
     {
-      key: 'created_at', header: 'Created At', render: t =>
-        t.created_at ? new Date(t.created_at).toLocaleDateString('en-GB') : 'N/A'
+      key: 'created_at', header: 'Created At', render: th =>
+        th.created_at ? new Date(th.created_at).toLocaleDateString('en-GB') : 'N/A'
     },
     {
-      key: 'updated_at', header: 'Updated At', render: t =>
-        t.updated_at ? new Date(t.updated_at).toLocaleDateString('en-GB') : 'N/A'
+      key: 'updated_at', header: 'Updated At', render: th =>
+        th.updated_at ? new Date(th.updated_at).toLocaleDateString('en-GB') : 'N/A'
     },
     {
-      key: 'actions', header: 'Actions', render: t => (
+      key: 'actions', header: 'Actions', render: th => (
         <div className="actions">
-          <Link href={`/admin/theatres/${t.id}`}>Edit</Link>{' '}
+          <Link href={`/admin/theatres/${th.id}`}>Edit</Link>{' '}
           <button
             type="submit"
             name="theatreId"
-            value={t.id}
+            value={th.id}
             onClick={e => { if (!confirm('Delete this theatre?')) e.preventDefault(); }}
           >
             Delete

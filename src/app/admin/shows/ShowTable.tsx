@@ -26,21 +26,21 @@ export default function ShowTable({ data }: Props) {
         status === 1 ? 'Active' : status === 0 ? 'Inactive' : 'Unknown'
     },
     {
-      key: 'created_at', header: 'Created At', render: s =>
-        s.created_at ? new Date(s.created_at).toLocaleDateString('en-GB') : 'N/A'
+      key: 'created_at', header: 'Created At', render: sh =>
+        sh.created_at ? new Date(sh.created_at).toLocaleDateString('en-GB') : 'N/A'
     },
     {
-      key: 'updated_at', header: 'Updated At', render: s =>
-        s.updated_at ? new Date(s.updated_at).toLocaleDateString('en-GB') : 'N/A'
+      key: 'updated_at', header: 'Updated At', render: sh =>
+        sh.updated_at ? new Date(sh.updated_at).toLocaleDateString('en-GB') : 'N/A'
     },
     {
-      key: 'actions', header: 'Actions', render: s => (
+      key: 'actions', header: 'Actions', render: sh => (
         <div className="actions">
-          <Link href={`/admin/shows/${s.id}`}>Edit</Link>{' '}
+          <Link href={`/admin/shows/${sh.id}`}>Edit</Link>{' '}
           <button
             type="submit"
             name="showId"
-            value={s.id}
+            value={sh.id}
             onClick={e => { if (!confirm('Delete this show?')) e.preventDefault(); }}
           >
             Delete
