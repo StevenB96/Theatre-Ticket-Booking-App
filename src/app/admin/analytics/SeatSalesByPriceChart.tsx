@@ -91,7 +91,7 @@ const COLORS = [
 
 const PieChartCard = ({ group: { label, data } }: PieChartCardProps) => (
     <div className="w-full h-80 bg-white p-4 rounded-lg">
-        <h1 className="text-center mb-2 whitespace-pre-wrap text-[20px] fill-gray-700">{label}</h1>
+        <h1 className="seat-sales-pie-chart-card-title">{label}</h1>
         <ResponsiveContainer width="100%" height="100%">
             <PieChart>
                 <Pie

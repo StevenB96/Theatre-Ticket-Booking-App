@@ -40,22 +40,22 @@ export default async function AnalyticsPage() {
         await Promise.all(
             performanceModels.map(async (performance) => {
                 const seatSalesByPrice = await performance.getSeatSalesByPricePercentage();
-
                 const showName = performance?.data?.show?.name ?? '';
                 const theatreName = performance?.data?.theatre?.name ?? '';
                 const time = new Date(performance.data.start_time).toLocaleTimeString('en-GB', {
                     hour: '2-digit',
                     minute: '2-digit',
                 });
-
+                const date = new Date(performance?.data.start_time).toLocaleDateString('en-GB', {
+                    day: '2-digit', month: '2-digit', year: 'numeric'
+                });
                 const typeLabel =
                     performance.data.type === 1
                         ? 'evening'
                         : performance.data.type === 0
                             ? 'matinee'
                             : 'unknown';
-
-                const label = `${showName} - ${theatreName} ${typeLabel} performance at ${time}`;
+                const label = `${showName} (${theatreName}) ${typeLabel} performance at ${time} on the ${date}`;
 
                 return {
                     performance_id: performance.data.id,

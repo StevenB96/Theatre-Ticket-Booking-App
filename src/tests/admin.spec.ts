@@ -124,7 +124,7 @@ test.describe('@admin @crud Operations', () => {
       'seats',
       {
         theatre_id: '1',
-        code: 'A3',
+        code: 'Z14',
         zone: 'Stalls',
         status: '1',
       },

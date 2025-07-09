@@ -3,39 +3,46 @@
 'use client';
 
 import { useState, useCallback, useMemo, useEffect } from 'react';
+import { TicketCheck, Ticket } from 'lucide-react';
 import LeftRightNavigator from './LeftRightNavigator';
+import { PerformanceWithRelations } from '@/types/performance';
+import { TicketWithRelations } from '@/types/ticket';
+import { Theatre } from '@/types/theatre';
+import { Seat } from '@/types/seat';
 
-type Theatre = {
-    id: number;
-    name: string;
-};
-
-type Performance = {
-    id: number;
-    theatre_id: number;
-    show: { name: string } | null;
-    theatre: { name: string } | null;
-};
-
-type Seat = {
-    id: number;
-    theatre_id: number;
-    zone: string;
-    code: string;
-};
-
-type Ticket = {
-    id: number;
-    performance_id: number;
-    seat_id: number;
-    user_id: number;
-};
+type TaggedSeat = Seat & { isBooked: boolean };
 
 interface GraphicsClientProps {
     theatreData: Theatre[];
-    performanceData: Performance[];
-    ticketData: Ticket[];
+    performanceData: PerformanceWithRelations[];
+    ticketData: TicketWithRelations[];
     seatData: Seat[];
+}
+
+function CustomTicket({
+    taggedSeat
+}:
+    {
+        taggedSeat: TaggedSeat,
+    }) {
+    return (
+        <div
+            key={taggedSeat.id}
+            className={`
+        inline-flex flex-none items-center gap-2 px-4 py-2 border rounded-2xl shadow-sm transition
+        ${taggedSeat.isBooked
+                    ? 'bg-gray-700 text-white border-gray-600'
+                    : 'bg-white text-gray-800 border-gray-300'}
+      `}
+        >
+            {taggedSeat.isBooked ? (
+                <TicketCheck className="w-4 h-4" />
+            ) : (
+                <Ticket className="w-4 h-4" />
+            )}
+            <p className="text-sm">{taggedSeat.code}</p>
+        </div>
+    );
 }
 
 export default function GraphicsClient({
@@ -67,12 +74,12 @@ export default function GraphicsClient({
         } else {
             setSelectedPerformanceId(0);
         }
-    }, [selectedTheatreId]);
+    }, [selectedTheatreId, performances]);
 
     // 2. Seats in the selected theatre
     const seatsInTheatre = useMemo(
         () =>
-            seatData.filter((seat) => seat.theatre_id === selectedTheatreId),
+            seatData.filter((s: Seat) => s.theatre_id === selectedTheatreId),
         [seatData, selectedTheatreId]
     );
 
@@ -80,19 +87,19 @@ export default function GraphicsClient({
     const ticketsForPerformance = useMemo(
         () =>
             ticketData.filter(
-                (t) => t.performance_id === selectedPerformanceId
+                (tk: TicketWithRelations) => tk.performance_id === selectedPerformanceId
             ),
         [ticketData, selectedPerformanceId]
     );
 
     // 4. Tag each seat with `isBooked`
-    const ticketTaggedSeats = useMemo(() => {
-        return seatsInTheatre.map((seat) => {
+    const ticketTaggedSeats: (Seat & { isBooked: boolean })[] = useMemo(() => {
+        return seatsInTheatre.map((se: Seat) => {
             const isBooked = ticketsForPerformance.some(
-                (ticket) =>
-                    ticket.user_id !== null && ticket.seat_id === seat.id
+                (tk: TicketWithRelations) =>
+                    tk.user_id !== null && tk.seat_id === se.id
             );
-            return { ...seat, isBooked };
+            return { ...se, isBooked };
         });
     }, [seatsInTheatre, ticketsForPerformance]);
 
@@ -111,9 +118,29 @@ export default function GraphicsClient({
     const handleTheatreChange = useCallback((t: Theatre) => {
         setSelectedTheatreId(t.id);
     }, []);
-    const handlePerformanceChange = useCallback((p: Performance) => {
+    const handlePerformanceChange = useCallback((p: PerformanceWithRelations) => {
         setSelectedPerformanceId(p.id);
     }, []);
+
+    const generatePerformanceLabel = (p: PerformanceWithRelations) => {
+        const showName = p?.show?.name ?? '';
+        const time = new Date(p?.start_time).toLocaleTimeString('en-GB', {
+            hour: '2-digit',
+            minute: '2-digit',
+        });
+        const date = new Date(p.start_time).toLocaleDateString('en-GB', {
+            day: '2-digit', month: '2-digit', year: 'numeric'
+        });
+        const typeLabel =
+            p?.type === 1
+                ? 'evening'
+                : p?.type === 0
+                    ? 'matinee'
+                    : 'unknown';
+        const performancelabel = `${showName} ${typeLabel} performance at ${time} on the ${date}`;
+
+        return performancelabel;
+    };
 
     return (
         <div className="flex flex-col gap-8">
@@ -122,7 +149,7 @@ export default function GraphicsClient({
                 values={theatreData}
                 selectedId={selectedTheatreId}
                 onChange={handleTheatreChange}
-                renderLabel={(t) => t.name}
+                renderLabel={(th) => th.name}
             />
 
             <LeftRightNavigator
@@ -130,22 +157,30 @@ export default function GraphicsClient({
                 values={performances}
                 selectedId={selectedPerformanceId}
                 onChange={handlePerformanceChange}
-                renderLabel={(p) => `${p?.show?.name} – ${p?.theatre?.name}`}
+                renderLabel={generatePerformanceLabel}
             />
 
             <div className="flex flex-col gap-6">
-                {Object.entries(seatsByZone).map(([zone, seats]) => (
-                    <div key={zone} className="flex flex-col gap-2">
-                        <h2 className="text-xl font-medium">{zone}</h2>
-                        <div className="flex flex-row gap-2">
-                            {seats.map((seat) => (
-                                <p
-                                    key={seat.id}
-                                    className={seat.isBooked ? 'font-bold' : undefined}
-                                >
-                                    {seat.code}
-                                </p>
-                            ))}
+                {Object.entries(seatsByZone).map(([
+                    zone,
+                    taggedSeats
+                ]: [
+                        string,
+                        TaggedSeat[]
+                    ]
+                ) => (
+                    <div key={zone} className="flex flex-col gap-3">
+                        <hr />
+                        <div className="graphic-zone-container">
+                            <h1 className="graphic-zone-title">{zone}:
+                            </h1>
+                            <div className="graphic-zone-grid">
+                                {taggedSeats.map((ts: TaggedSeat) => (
+                                    <CustomTicket
+                                        key={ts.id}
+                                        taggedSeat={ts} />
+                                ))}
+                            </div>
                         </div>
                     </div>
                 ))}

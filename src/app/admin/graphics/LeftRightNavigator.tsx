@@ -35,7 +35,7 @@ export default function LeftRightNavigator<T extends { id: string | number }>({
 
     return (
         <div className="flex flex-col items-center gap-2">
-            <h2 className="text-xl font-medium">{name}</h2>
+            <h1 className="left-right-navigator-title">{name}</h1>
             <div className="flex items-center justify-center gap-6 p-4 bg-white rounded-2xl shadow-sm">
                 <button
                     onClick={handleLeft}
@@ -46,9 +46,9 @@ export default function LeftRightNavigator<T extends { id: string | number }>({
                     <ChevronLeft className="w-5 h-5" />
                 </button>
 
-                <span className="text-lg font-semibold">
+                <p className="text-sm">
                     {currentItem ? renderLabel(currentItem) : '—'}
-                </span>
+                </p>
 
                 <button
                     onClick={handleRight}
@@ -59,7 +59,7 @@ export default function LeftRightNavigator<T extends { id: string | number }>({
                     <ChevronRight className="w-5 h-5" />
                 </button>
 
-                <p>{values.length}</p>
+                <p>{index + 1}/{values.length}</p>
             </div>
         </div>
     );
