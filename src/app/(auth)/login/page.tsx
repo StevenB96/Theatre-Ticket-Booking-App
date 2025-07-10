@@ -68,6 +68,7 @@ export default function LoginPage() {
           >
             Sign In
           </button>
+          <p>Test email: admin@example.com<br/>Test password: admin</p>
         </form>
       </div>
     </div>

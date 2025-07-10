@@ -5,10 +5,12 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import type { Seat } from '@/types/seat';
+import type { Theatre } from '@/types/theatre';
 import { createSeatAction, updateSeatByIdAction } from './actions';
 
 interface SeatFormProps {
     seat?: Seat;
+    theatres: Theatre[]
 }
 
 type FormState = {
@@ -24,7 +26,7 @@ type Field = {
     render: (state: FormState, onChange: (k: keyof FormState, v: string) => void) => React.ReactNode;
 };
 
-export default function SeatForm({ seat }: SeatFormProps) {
+export default function SeatForm({ seat, theatres }: SeatFormProps) {
     const router = useRouter();
     const isEdit = Boolean(seat);
 
@@ -41,17 +43,23 @@ export default function SeatForm({ seat }: SeatFormProps) {
     const fields: Field[] = [
         {
             key: 'theatre_id',
-            label: 'Theatre ID',
+            label: 'Theatre',
             render: (s, onChange) => (
-                <input
+                <select
                     id="theatre_id"
                     name="theatre_id"
-                    type="number"
-                    className="form-input"
+                    className="form-select"
                     required
                     value={s.theatre_id}
                     onChange={e => onChange('theatre_id', e.target.value)}
-                />
+                >
+                    <option value="">Select theatre</option>
+                    {theatres.map((theatre: Theatre) => (
+                        <option key={theatre.id} value={theatre.id}>
+                            {theatre.name}
+                        </option>
+                    ))}
+                </select>
             ),
         },
         {

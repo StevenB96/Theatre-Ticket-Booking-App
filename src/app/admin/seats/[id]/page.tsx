@@ -2,6 +2,7 @@
 
 import React from 'react';
 import SeatForm from '../SeatForm';
+import { TheatreModel } from '@/models/TheatreModel';
 import { getSeatById } from '@/library/db/seat';
 
 interface PageProps {
@@ -13,6 +14,8 @@ export default async function EditSeatPage({ params }: PageProps) {
   const { id: idStr } = await params;
   const id = parseInt(idStr, 10);
   const seat = await getSeatById(id);
+
+  const theatresData = (await TheatreModel.findAll()).map(t => t.data);
 
   if (!seat) {
     return (
@@ -28,7 +31,7 @@ export default async function EditSeatPage({ params }: PageProps) {
       <div className="page-header">
         <h1 className="page-title">Edit Seat #{seat.id}</h1>
       </div>
-      <SeatForm seat={seat} />
+      <SeatForm seat={seat} theatres={theatresData} />
     </div>
   );
 }

@@ -5,241 +5,175 @@ const TEST_USER = {
   password: 'admin',
 };
 
-test.describe('@admin @crud Operations', () => {
-  test.beforeEach(async ({ page }) => {
-    // consolidated logging
-    page.on('console', msg => console.log(`🪵 [${msg.type()}]`, msg.text()));
-    // page.on('request', req => console.log('⬆️', req.method(), req.url()));
-    // page.on('response', res => console.log('⬇️', res.status(), res.url()));
-    // page.on('requestfailed', req =>
-    //   console.log(`❌ Request failed: ${req.method()} ${req.url()} — ${req.failure()?.errorText}`)
-    // );
+test('CRUD operations with entity dependencies', async ({ page }) => {
+  test.setTimeout(120_000);
 
-    // Login as admin
-    await page.goto('/login', { waitUntil: 'networkidle' });
-    await page.fill('input[name="email"]', TEST_USER.email);
-    await page.fill('input[name="password"]', TEST_USER.password);
+  // Login as admin
+  await page.goto('/login', { waitUntil: 'networkidle' });
+  await page.fill('input[name="email"]', TEST_USER.email);
+  await page.fill('input[name="password"]', TEST_USER.password);
+  await page.click('button[type="submit"]');
+  await page.waitForURL(/\/admin(\?.*)?$/, { timeout: 20_000 });
+
+  let theatreId: string;
+  let showId: string;
+  let performanceId: string;
+  let userId: string;
+  let seatId: string;
+  let ticketId: string;
+
+  // CREATE Theatre
+  await test.step('Create theatre', async () => {
+    await page.goto('/admin/theatres/create', { waitUntil: 'networkidle' });
+    await page.fill('form [name="name"]', 'Test Theatre');
+    await page.fill('form [name="address"]', '123 Main St');
+    await page.selectOption('form [name="status"]', '1');
     await page.click('button[type="submit"]');
-    await page.waitForURL(/\/admin(\?.*)?$/, { timeout: 20_000 });
+    await page.waitForURL(/\/admin\/theatres\/\d+(\?.*)?$/);
+    theatreId = page.url().match(/\/(\d+)/)![1];
   });
 
-  /**
-   * Generic CRUD helper
-   * @param entity - resource path
-   * @param entities - resources path
-   * @param createFields - input[name] -> value
-   * @param selectors - button selectors for create/update
-   */
-  async function runCrud(
-    page: Page,
-    entity: string,
-    entities: string,
-    createFields: Record<string, string>,
-    updateField: { name: string; value: string },
-    selectors: { create: string; update: string }
-  ) {
-    let id: string;
-
-    // CREATE
-    await test.step(`Create ${entity}`, async () => {
-      const t0 = performance.now();
-      await page.goto(`/admin/${entities}/create`, { waitUntil: 'networkidle' });
-      await page.waitForSelector('form, button');
-
-      for (const [name, value] of Object.entries(createFields)) {
-        const element = await page.$(`form *[name="${name}"]`);
-        if (!element) throw new Error(`No form element with name="${name}" found`);
-
-        const tagName = await element.evaluate(el => el.tagName.toLowerCase());
-
-        if (tagName === 'select') {
-          await page.selectOption(`form *[name="${name}"]`, value);
-        } else {
-          await page.fill(`form *[name="${name}"]`, value);
-        }
-      }
-
-      await page.click(selectors.create);
-      await page.waitForURL(new RegExp(`/admin/${entities}/\\d+(\\?.*)?$`), { timeout: 20_000 });
-
-      const match = page.url().match(new RegExp(`/admin/${entity}s/(\\d+)`));
-      expect(match, `Expected URL to contain created ${entity} ID`).not.toBeNull();
-      id = match![1];
-      console.log(`✅ Created ${entity} id:`, id);
-      console.log(
-        `⏱️ Create ${entity} duration:`,
-        `${(performance.now() - t0).toFixed(2)}ms`
-      );
-    });
-
-    // UPDATE
-    await test.step(`Update ${entity}`, async () => {
-      const t1 = performance.now();
-      await page.goto(`/admin/${entities}/${id}`, { waitUntil: 'networkidle' });
-      await page.waitForSelector('form, button');
-
-      const element = await page.$(`form *[name="${updateField.name}"]`);
-      if (!element) throw new Error(`No form element with name="${updateField.name}" found`);
-
-      const tagName = await element.evaluate(el => el.tagName.toLowerCase());
-
-      if (tagName === 'select') {
-        await page.selectOption(`form *[name="${updateField.name}"]`, updateField.value);
-      } else {
-        await page.fill(`form *[name="${updateField.name}"]`, updateField.value);
-      }
-
-      await page.click(selectors.update);
-      await page.waitForURL(new RegExp(`/admin/${entities}(\\?.*)?$`), { timeout: 20_000 });
-
-      console.log(
-        `⏱️ Update ${entity} duration:`,
-        `${(performance.now() - t1).toFixed(2)}ms`
-      );
-    });
-
-    // DELETE
-    await test.step(`Delete ${entity}`, async () => {
-      // Note: timing includes navigation back to list and DOM check for deletion
-      const t2 = performance.now();
-      await page.goto(`/admin/${entities}`, { waitUntil: 'networkidle' });
-      page.once('dialog', dialog => dialog.accept());
-      await page.click(`button[name="${entity}Id"][value="${id}"]`);
-      await page.waitForURL(new RegExp(`/admin/${entities}(\\?.*)?$`), { timeout: 20_000 });
-
-      const row = page.locator(`tr[data-row-id="${id}"]`, { hasText: updateField.value });
-      await expect(row).toHaveCount(0);
-      console.log(
-        `⏱️ Delete ${entity} duration:`,
-        `${(performance.now() - t2).toFixed(2)}ms`
-      );
-    });
-  }
-
-  test('Seats CRUD', async ({ page }) => {
-    test.setTimeout(60_000);
-    await runCrud(
-      page,
-      'seat',
-      'seats',
-      {
-        theatre_id: '1',
-        code: 'Z14',
-        zone: 'Stalls',
-        status: '1',
-      },
-      { name: 'zone', value: 'Balcony' },
-      {
-        create: 'button[type="submit"]',
-        update: 'button[type="submit"]'
-      }
-    );
+  // CREATE Show
+  await test.step('Create show', async () => {
+    await page.goto('/admin/shows/create', { waitUntil: 'networkidle' });
+    await page.fill('form [name="name"]', 'Test Show');
+    await page.selectOption('form [name="status"]', '1');
+    await page.click('button[type="submit"]');
+    await page.waitForURL(/\/admin\/shows\/\d+(\?.*)?$/);
+    showId = page.url().match(/\/(\d+)/)![1];
   });
 
-  test('Shows CRUD', async ({ page }) => {
-    test.setTimeout(60_000);
-    await runCrud(
-      page,
-      'show',
-      'shows',
-      {
-        name: 'Test Show',
-        status: '1'
-      },
-      { name: 'name', value: 'Updated Show' },
-      {
-        create: 'button[type="submit"]',
-        update: 'button[type="submit"]'
-      }
-    );
+  // CREATE Performance (depends on theatre & show)
+  await test.step('Create performance', async () => {
+    await page.goto('/admin/performances/create', { waitUntil: 'networkidle' });
+    await page.selectOption('form [name="theatre_id"]', theatreId);
+    await page.selectOption('form [name="show_id"]', showId);
+    await page.fill('form [name="date"]', '2025-01-01');
+    await page.fill('form [name="time"]', '18:00');
+    await page.selectOption('form [name="type"]', '1');
+    await page.selectOption('form [name="status"]', '1');
+    await page.click('button[type="submit"]');
+    await page.waitForURL(/\/admin\/performances\/\d+(\?.*)?$/);
+    performanceId = page.url().match(/\/(\d+)/)![1];
   });
 
-  test('Tickets CRUD', async ({ page }) => {
-    test.setTimeout(60_000);
-    await runCrud(
-      page,
-      'ticket',
-      'tickets',
-      {
-        user_id: '1',
-        seat_id: '1',
-        performance_id: '2',
-        price: '50',
-        status: '1',
-      },
-      { name: 'price', value: '75' },
-      {
-        create: 'button[type="submit"]',
-        update: 'button[type="submit"]'
-      }
-    );
+  // CREATE User
+  await test.step('Create user', async () => {
+    await page.goto('/admin/users/create', { waitUntil: 'networkidle' });
+    await page.fill('form [name="username"]', 'Test User');
+    await page.fill('form [name="email"]', 'test@example.com');
+    await page.fill('form [name="password"]', 'password123');
+    await page.selectOption('form [name="role"]', '1');
+    await page.selectOption('form [name="status"]', '1');
+    await page.click('button[type="submit"]');
+    await page.waitForURL(/\/admin\/users\/\d+(\?.*)?$/);
+    userId = page.url().match(/\/(\d+)/)![1];
   });
 
-  test('Users CRUD', async ({ page }) => {
-    test.setTimeout(60_000);
-    await runCrud(
-      page,
-      'user',
-      'users',
-      {
-        username: 'Test User',
-        email: 'test@example.com',
-        password: 'password123',
-        role: '1',
-        status: '1',
-      },
-      { name: 'username', value: 'Updated User' },
-      {
-        create: 'button[type="submit"]',
-        update: 'button[type="submit"]'
-      }
-    );
+  // CREATE Seat (depends on theatre)
+  await test.step('Create seat', async () => {
+    await page.goto('/admin/seats/create', { waitUntil: 'networkidle' });
+    await page.selectOption('form [name="theatre_id"]', theatreId);
+    await page.fill('form [name="code"]', 'A1');
+    await page.fill('form [name="zone"]', 'Orchestra');
+    await page.selectOption('form [name="status"]', '1');
+    await page.click('button[type="submit"]');
+    await page.waitForURL(/\/admin\/seats\/\d+(\?.*)?$/);
+    seatId = page.url().match(/\/(\d+)/)![1];
   });
 
-  test('Performances CRUD', async ({ page }) => {
-    test.setTimeout(60_000);
-    await runCrud(
-      page,
-      'performance',
-      'performances',
-      {
-        theatre_id: '1',
-        show_id: '1',
-        date: '2025-01-01',
-        time: '01:00',
-        type: '1',
-        status: '1',
-      },
-      {
-        name: 'time',
-        value: '02:00',
-      },
-      {
-        create: 'button[type="submit"]',
-        update: 'button[type="submit"]'
-      }
-    );
+  // CREATE Ticket (depends on user, seat, performance)
+  await test.step('Create ticket', async () => {
+    await page.goto('/admin/tickets/create', { waitUntil: 'networkidle' });
+    await page.selectOption('form [name="user_id"]', userId);
+    await page.selectOption('form [name="seat_id"]', seatId);
+    await page.selectOption('form [name="performance_id"]', performanceId);
+    await page.fill('form [name="price"]', '100');
+    await page.selectOption('form [name="status"]', '1');
+    await page.click('button[type="submit"]');
+    await page.waitForURL(/\/admin\/tickets\/\d+(\?.*)?$/);
+    ticketId = page.url().match(/\/(\d+)/)![1];
   });
 
-  test('Theatres CRUD', async ({ page }) => {
-    test.setTimeout(60_000);
-    await runCrud(
-      page,
-      'theatre',
-      'theatres',
-      {
-        name: 'Test',
-        address: 'Test Address',
-        status: '1',
-      },
-      {
-        name: 'address',
-        value: 'Updated Address'
-      },
-      {
-        create: 'button[type="submit"]',
-        update: 'button[type="submit"]'
-      }
-    );
+  // UPDATE each entity
+  await test.step('Update theatre', async () => {
+    await page.goto(`/admin/theatres/${theatreId}`, { waitUntil: 'networkidle' });
+    await page.fill('form [name="address"]', '456 Elm St');
+    await page.click('button[type="submit"]');
+    await page.waitForURL(/\/admin\/theatres(\?.*)?$/);
+  });
+  await test.step('Update show', async () => {
+    await page.goto(`/admin/shows/${showId}`, { waitUntil: 'networkidle' });
+    await page.fill('form [name="name"]', 'Updated Show');
+    await page.click('button[type="submit"]');
+    await page.waitForURL(/\/admin\/shows(\?.*)?$/);
+  });
+  await test.step('Update performance', async () => {
+    await page.goto(`/admin/performances/${performanceId}`, { waitUntil: 'networkidle' });
+    await page.fill('form [name="time"]', '19:00');
+    await page.click('button[type="submit"]');
+    await page.waitForURL(/\/admin\/performances(\?.*)?$/);
+  });
+  await test.step('Update user', async () => {
+    await page.goto(`/admin/users/${userId}`, { waitUntil: 'networkidle' });
+    await page.fill('form [name="username"]', 'Updated User');
+    await page.click('button[type="submit"]');
+    await page.waitForURL(/\/admin\/users(\?.*)?$/);
+  });
+  await test.step('Update seat', async () => {
+    await page.goto(`/admin/seats/${seatId}`, { waitUntil: 'networkidle' });
+    await page.fill('form [name="zone"]', 'Mezzanine');
+    await page.click('button[type="submit"]');
+    await page.waitForURL(/\/admin\/seats(\?.*)?$/);
+  });
+  await test.step('Update ticket', async () => {
+    await page.goto(`/admin/tickets/${ticketId}`, { waitUntil: 'networkidle' });
+    await page.fill('form [name="price"]', '120');
+    await page.click('button[type="submit"]');
+    await page.waitForURL(/\/admin\/tickets(\?.*)?$/);
+  });
+
+  // DELETE in reverse dependency order
+  await test.step('Delete ticket', async () => {
+    await page.goto('/admin/tickets', { waitUntil: 'networkidle' });
+    page.once('dialog', dialog => dialog.accept());
+    await page.click(`button[name="ticketId"][value="${ticketId}"]`);
+    await page.waitForURL(/\/admin\/tickets(\?.*)?$/);
+    await expect(page.locator(`tr[data-row-id="${ticketId}"]`)).toHaveCount(0);
+  });
+  await test.step('Delete seat', async () => {
+    await page.goto('/admin/seats', { waitUntil: 'networkidle' });
+    page.once('dialog', dialog => dialog.accept());
+    await page.click(`button[name="seatId"][value="${seatId}"]`);
+    await page.waitForURL(/\/admin\/seats(\?.*)?$/);
+    await expect(page.locator(`tr[data-row-id="${seatId}"]`)).toHaveCount(0);
+  });
+  await test.step('Delete performance', async () => {
+    await page.goto('/admin/performances', { waitUntil: 'networkidle' });
+    page.once('dialog', dialog => dialog.accept());
+    await page.click(`button[name="performanceId"][value="${performanceId}"]`);
+    await page.waitForURL(/\/admin\/performances(\?.*)?$/);
+    await expect(page.locator(`tr[data-row-id="${performanceId}"]`)).toHaveCount(0);
+  });
+  await test.step('Delete show', async () => {
+    await page.goto('/admin/shows', { waitUntil: 'networkidle' });
+    page.once('dialog', dialog => dialog.accept());
+    await page.click(`button[name="showId"][value="${showId}"]`);
+    await page.waitForURL(/\/admin\/shows(\?.*)?$/);
+    await expect(page.locator(`tr[data-row-id="${showId}"]`)).toHaveCount(0);
+  });
+  await test.step('Delete user', async () => {
+    await page.goto('/admin/users', { waitUntil: 'networkidle' });
+    page.once('dialog', dialog => dialog.accept());
+    await page.click(`button[name="userId"][value="${userId}"]`);
+    await page.waitForURL(/\/admin\/users(\?.*)?$/);
+    await expect(page.locator(`tr[data-row-id="${userId}"]`)).toHaveCount(0);
+  });
+  await test.step('Delete theatre', async () => {
+    await page.goto('/admin/theatres', { waitUntil: 'networkidle' });
+    page.once('dialog', dialog => dialog.accept());
+    await page.click(`button[name="theatreId"][value="${theatreId}"]`);
+    await page.waitForURL(/\/admin\/theatres(\?.*)?$/);
+    await expect(page.locator(`tr[data-row-id="${theatreId}"]`)).toHaveCount(0);
   });
 });
