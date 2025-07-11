@@ -128,6 +128,15 @@ Here are some relevant commands:
 - docker-compose build --no-cache --progress=plain; docker-compose up -d
 - docker build --no-cache -t stevenb1996/theatre-ticket-booking-app:v1.0.1 .
 
+- docker pull stevenb1996/theatre-ticket-booking-app:v1.0.1
+- docker stop affectionate_bhabha
+- docker rm affectionate_bhabha
+- docker run -d \
+  --name affectionate_bhabha \
+  -p 49152:49152 \
+  stevenb1996/theatre-ticket-booking-app:v1.0.1
+- docker rmi stevenb1996/theatre-ticket-booking-app:v1.0.0
+
 ---
 
 ## Next Steps & Improvements
