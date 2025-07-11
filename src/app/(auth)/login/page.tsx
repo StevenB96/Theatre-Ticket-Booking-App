@@ -17,7 +17,7 @@ export default function LoginPage() {
     if (status === 'authenticated') {
       const user = session?.user as any;
       if (user?.role === 1) {
-        router.replace('/admin');
+        router.push('/admin');
       } else {
         setError('You do not have permission to access the dashboard.');
       }
