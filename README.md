@@ -126,6 +126,7 @@ The app can be run using docker compose and the example configuration found in .
 Here are some relevant commands:
 - docker system prune -a --volumes -f; docker builder prune --all -f
 - docker-compose build --no-cache --progress=plain; docker-compose up -d
+- docker build --no-cache -t stevenb1996/theatre-ticket-booking-app:v1.0.1 .
 
 ---
 
