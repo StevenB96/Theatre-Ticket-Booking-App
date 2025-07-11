@@ -44,10 +44,6 @@ export default async function AnalyticsPage() {
                 const seatSalesByPrice = await performance.getSeatSalesByPricePercentage();
                 const showName = performance?.data?.show?.name ?? '';
                 const theatreName = performance?.data?.theatre?.name ?? '';
-                const time = new Date(performance.data.start_time).toLocaleTimeString('en-GB', {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                });
                 const date = new Date(performance?.data.start_time).toLocaleDateString('en-GB', {
                     day: '2-digit', month: '2-digit', year: 'numeric'
                 });
@@ -57,7 +53,7 @@ export default async function AnalyticsPage() {
                         : performance.data.type === 0
                             ? 'matinee'
                             : 'unknown';
-                const label = `${showName} (${theatreName}) ${typeLabel} performance at ${time} on the ${date}`;
+                const label = `${showName} (${theatreName}) ${typeLabel} performance on the ${date}`;
 
                 return {
                     performance_id: performance.data.id,

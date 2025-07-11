@@ -27,11 +27,22 @@ export default function TicketTable({ data }: Props) {
     { key: 'seat', header: 'Seat', render: tk => tk.seat?.code ?? '—' },
     {
       key: 'performance',
-      header: 'Show - Theatre',
-      render: tk =>
-        tk.performance
-          ? `${tk.performance?.show?.name} – ${tk.performance?.theatre?.name}`
-          : '—',
+      header: 'Performance',
+      render: tk => {
+        const showName = tk.performance?.show?.name ?? '';
+        const theatreName = tk.performance?.theatre?.name ?? '';
+        const date = new Date(tk.performance?.start_time).toLocaleDateString('en-GB', {
+          day: '2-digit', month: '2-digit', year: 'numeric'
+        });
+        const typeLabel =
+          tk.performance.type === 1
+            ? 'evening'
+            : tk.performance.type === 0
+              ? 'matinee'
+              : 'unknown';
+        const label = `${showName} (${theatreName}) ${typeLabel} performance on the ${date}`;
+        return label;
+      }
     },
     { key: 'price', header: 'Price', render: ({ price }) => price },
     {

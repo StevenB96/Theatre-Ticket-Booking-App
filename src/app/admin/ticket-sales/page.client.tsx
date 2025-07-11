@@ -124,10 +124,6 @@ export default function GraphicsClient({
 
     const generatePerformanceLabel = (p: PerformanceWithRelations) => {
         const showName = p?.show?.name ?? '';
-        const time = new Date(p?.start_time).toLocaleTimeString('en-GB', {
-            hour: '2-digit',
-            minute: '2-digit',
-        });
         const date = new Date(p.start_time).toLocaleDateString('en-GB', {
             day: '2-digit', month: '2-digit', year: 'numeric'
         });
@@ -137,7 +133,7 @@ export default function GraphicsClient({
                 : p?.type === 0
                     ? 'matinee'
                     : 'unknown';
-        const performancelabel = `${showName} ${typeLabel} performance at ${time} on the ${date}`;
+        const performancelabel = `${showName} ${typeLabel} performance on the ${date}`;
 
         return performancelabel;
     };

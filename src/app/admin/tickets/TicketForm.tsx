@@ -48,12 +48,30 @@ function getFormFields(
     },
     {
       name: 'performance_id',
-      label: 'Show - Theatre',
+      label: 'Performance',
       type: 'select',
-      options: performances.map((p) => ({
-        label: `${p.show?.name} - ${p.theatre?.name}`,
-        value: p.id.toString(),
-      })),
+      options: performances.map((p) => {
+        const showName = p?.show?.name ?? '';
+        const theatreName = p?.theatre?.name ?? '';
+        const date = new Date(p?.start_time).toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+        });
+        const typeLabel =
+          p?.type === 1
+            ? 'evening'
+            : p?.type === 0
+              ? 'matinee'
+              : 'unknown';
+
+        const label = `${showName} (${theatreName}) ${typeLabel} performance on the ${date}`;
+
+        return {
+          label,
+          value: p.id.toString(),
+        };
+      }),
       required: true,
     },
     {
