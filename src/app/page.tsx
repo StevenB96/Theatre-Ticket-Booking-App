@@ -1,33 +1,20 @@
-// src/app/admin/graphics/page.client.tsx or your desired redirect page
-'use client';
+// src/app/page.tsx
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import styles from './page.module.css';
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authOptions";
 
-export default function RedirectPage() {
-  const router = useRouter();
+export default async function HomePage() {
+  const session = await getServerSession(authOptions);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      router.push('/admin');
-    }, 3000);
-
-    return () => clearTimeout(timeout);
-  }, [router]);
+  if (
+    !session ||
+    !session.user
+  ) {
+    redirect("/login");
+  }
 
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <h1 className={styles.title}>{`You're being redirected...`}</h1>
-        <p className={styles.subtitle}>
-          If you’re not taken automatically,{' '}
-          <a href="/admin" className={styles.link}>
-            click here
-          </a>
-          .
-        </p>
-      </main>
-    </div>
+    <p>TBA</p>
   );
 }
