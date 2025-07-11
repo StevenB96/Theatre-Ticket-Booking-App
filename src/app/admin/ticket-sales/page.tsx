@@ -4,7 +4,7 @@ import { TicketModel } from '@/models/TicketModel';
 import { TheatreModel } from '@/models/TheatreModel';
 import { PerformanceModel } from '@/models/PerformanceModel';
 import { SeatModel } from '@/models/SeatModel';
-import GraphicsClient from '@/app/admin/graphics/page.client';
+import GraphicsClient from '@/app/admin/ticket-sales/page.client';
 
 export const revalidate = 0;
 

@@ -1,3 +1,5 @@
+// src/app/admin/analytics/page.tsx
+
 import TheatresBySeatsChart from '@/app/admin/analytics/TheatresBySeatsChart';
 import RevenueByTHS from '@/app/admin/analytics/RevenueByTHSChart';
 import SeatSalesByPriceChart from '@/app/admin/analytics/SeatSalesByPriceChart';
@@ -81,7 +83,7 @@ export default async function AnalyticsPage() {
     }).slice(0, 8);
 
     return (
-        <div className="p-8">
+        <div>
             <div className="analytics-chart-container">
                 <h1 className="analytics-chart-title">Top {theatresBySeatsData.length} Theatres By Seats</h1>
                 <br />

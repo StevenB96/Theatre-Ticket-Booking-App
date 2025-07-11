@@ -21,8 +21,9 @@ const CRUDLinks = [
 ];
 
 const additionalLinks = [
+  { href: "/admin/about", label: "About The Project" },
   { href: "/admin/analytics", label: "Analytics" },
-  { href: "/admin/graphics", label: "Graphics" },
+  { href: "/admin/ticket-sales", label: "Ticket Sales Visualisation" },
 ];
 
 export default function LayoutClient({ children }: LayoutClientProps) {
