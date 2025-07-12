@@ -51,16 +51,16 @@ export default function LayoutClient({ children }: LayoutClientProps) {
 
           <hr />
 
-          {CRUDLinks.map(({ href, label }) => (
-            <Link href={href} className="link">
+          {CRUDLinks.map(({ href, label }, index) => (
+            <Link href={href} key={index} className="link">
               {label}
             </Link>
           ))}
 
           <hr />
 
-          {additionalLinks.map(({ href, label }) => (
-            <Link href={href} className="link">
+          {additionalLinks.map(({ href, label }, index) => (
+            <Link href={href} key={index} className="link">
               {label}
             </Link>
           ))}
