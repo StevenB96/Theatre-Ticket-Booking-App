@@ -11,9 +11,9 @@ exports.up = async function (knex) {
       .references("id")
       .inTable("theatre")
       .onDelete("CASCADE");
-    table.string("code", 10)
+    table.string("code", 50)
       .notNullable();
-    table.string("zone", 10)
+    table.string("zone", 50)
       .nullable();
     table.integer("status")
       .notNullable()
@@ -56,7 +56,7 @@ exports.up = async function (knex) {
       .unsigned()
       .nullable()
       .references("id")
-      .inTable("users")
+      .inTable("user")
       .onDelete("CASCADE");
     table.integer("seat_id")
       .unsigned()

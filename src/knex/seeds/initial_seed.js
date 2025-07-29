@@ -5,12 +5,17 @@ const { hashPassword } = require('../../library/auth');
  */
 async function seed(knex) {
   // 1) Clear tables
+  // Disable foreign key checks
+  await knex.raw('SET FOREIGN_KEY_CHECKS=0');
+  // Clear tables in order, from dependent (child) to parent
   await knex('ticket').truncate();
   await knex('performance').truncate();
   await knex('seat').truncate();
+  await knex('user').truncate();
   await knex('show').truncate();
   await knex('theatre').truncate();
-  await knex('user').truncate();
+  // Re-enable foreign key checks
+  await knex.raw('SET FOREIGN_KEY_CHECKS=1');
 
   // 2) Users
   const [adminH, johnH, janeH] = await Promise.all([
