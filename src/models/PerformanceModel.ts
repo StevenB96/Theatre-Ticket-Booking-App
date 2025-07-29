@@ -251,14 +251,32 @@ export class PerformanceModel {
         db.raw('ROUND(COUNT(*) * 100.0 / ?, 2) as percentage', [total])
       );
 
-    const totalSoldPercentage = result.reduce((total, r) => total + r.percentage, 0);
+    // Calculate total percentage, safely ignoring non-numeric values
+    const totalSoldPercentage = result.reduce((total, r) => {
+      const perc = parseFloat(r.percentage);
+      return total + (isNaN(perc) ? 0 : perc);
+    }, 0);
+
+    // Calculate 'Unsold' percentage
     const unsoldPercentage = Math.max(0, 100 - totalSoldPercentage);
 
-    result.push({
-      group: 'Unsold',
-      percentage: unsoldPercentage,
-    });
+    // Append 'Unsold' group if there's remaining percentage
+    if (unsoldPercentage > 0) {
+      result.push({
+        group: 'Unsold',
+        percentage: unsoldPercentage,
+      });
+    }
 
-    return result;
+    // Convert all 'percentage' fields to float, handling potential invalid values
+    const resultWithFloats = result.map(item => ({
+      ...item,
+      percentage: isNaN(item.percentage) ? 0 : parseFloat(item.percentage),
+    }));
+
+    console.log({resultWithFloats});
+
+    // Return the original result array (if needed), or the processed array
+    return resultWithFloats;
   }
 }
