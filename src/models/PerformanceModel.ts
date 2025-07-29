@@ -274,8 +274,6 @@ export class PerformanceModel {
       percentage: isNaN(item.percentage) ? 0 : parseFloat(item.percentage),
     }));
 
-    console.log({resultWithFloats});
-
     // Return the original result array (if needed), or the processed array
     return resultWithFloats;
   }
