@@ -21,15 +21,12 @@ console.log('Active ENV:', envName);
 
 // Knex configurations
 const development = {
-  client: 'mysql2',
+  client: 'sqlite3',
   connection: {
-    host: process.env.MYSQL_HOST,
-    port: Number(process.env.MYSQL_PORT || 3306),
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE,
+    filename: path.resolve('./dev.sqlite3'),
   },
-  pool: { min: 2, max: 10 },
+  useNullAsDefault: true,
+  // debug: true,
   migrations: {
     directory: path.resolve('./src/knex/migrations'),
   },
