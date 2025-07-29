@@ -1,12 +1,21 @@
 const { hashPassword } = require('../../library/auth');
 
+// Determine current environment
+const isProduction = process.env.NODE_ENV === 'production';
+
 /**
  * @param {import('knex').Knex} knex
  */
 async function seed(knex) {
   // 1) Clear tables
-  // Disable foreign key checks
-  await knex.raw('SET FOREIGN_KEY_CHECKS=0');
+  // Disable foreign key checks based on environment
+  if (isProduction) {
+    // MySQL: disable foreign key checks
+    await knex.raw('SET FOREIGN_KEY_CHECKS=0');
+  } else {
+    // SQLite: disable foreign keys
+    await knex.raw('PRAGMA foreign_keys = OFF');
+  }
   // Clear tables in order, from dependent (child) to parent
   await knex('ticket').truncate();
   await knex('performance').truncate();
@@ -15,7 +24,11 @@ async function seed(knex) {
   await knex('show').truncate();
   await knex('theatre').truncate();
   // Re-enable foreign key checks
-  await knex.raw('SET FOREIGN_KEY_CHECKS=1');
+  if (isProduction) {
+    await knex.raw('SET FOREIGN_KEY_CHECKS=1');
+  } else {
+    await knex.raw('PRAGMA foreign_keys = ON');
+  }
 
   // 2) Users
   const [adminH, johnH, janeH] = await Promise.all([
