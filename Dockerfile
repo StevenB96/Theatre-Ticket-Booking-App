@@ -58,6 +58,6 @@ RUN chmod 664 dev.sqlite3
 # ENV ENV=development
 # ENV NODE_ENV=development
 
-EXPOSE 3000
+EXPOSE 49152
 ENTRYPOINT ["dumb-init", "--"]
 CMD ["npm", "run", "start"]

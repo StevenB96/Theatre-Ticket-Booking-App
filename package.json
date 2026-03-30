@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -p 49152",
+    "start": "next start -p 49152 -H 0.0.0.0",
     "lint": "next lint",
     "migrate": "npx knex migrate:latest --knexfile knexfile.js   --verbose",
     "rollback": "npx knex migrate:rollback --knexfile knexfile.js   --verbose",
