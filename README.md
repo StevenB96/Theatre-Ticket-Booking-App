@@ -8,7 +8,7 @@
 ## 🌟 Overview
 This project is a progressive learning platform built with **Next.js 15**, designed to demonstrate mastery of full-stack web development. It moves beyond standard tutorials by implementing a strictly decoupled architecture, a custom model-wrapping logic, and advanced automated developer tooling.
 
-The application allows administrators to manage theatrical venues, performances, and seating charts, while providing real-time data visualization and an optimized booking logic.
+The application allows administrators to manage theatrical venues, performances, and seating charts, while providing real-time data visualisation and an optimised booking logic.
 
 ---
 
@@ -24,17 +24,17 @@ The codebase follows a strictly decoupled approach to ensure maintainability:
 ### 2. Custom Developer Tooling (The Scaffolding Engine)
 The project features a **custom-built template engine** (`/modelBasedTemplating`) that demonstrates an understanding of "Developer Experience" (DX):
 *   **Code Generation:** Automates the creation of Types, Database logic, API routes, and Admin UI pages for new entities via `npm run generate`.
-*   **Standardization:** Ensures that every new feature follows the same design patterns across all layers of the stack.
+*   **Standardisation:** Ensures that every new feature follows the same design patterns across all layers of the stack.
 
-### 3. Data Visualization & Analytics
+### 3. Data Visualisation & Analytics
 The Admin portal transforms raw relational data into actionable insights using **Recharts**:
-*   **Revenue Tracking:** Complex SQL aggregations visualized as Bar charts.
+*   **Revenue Tracking:** Complex SQL aggregations visualised as Bar charts.
 *   **Sales Performance:** Pie charts that dynamically calculate unsold inventory vs. bookings.
-*   **Seating Visualizer:** A responsive visual map representing theatre zones and real-time seat occupancy.
+*   **Seating Visualiser:** A responsive visual map representing theatre zones and real-time seat occupancy.
 
 ### 4. Enterprise-Grade DevOps & Testing
 *   **Playwright E2E Testing:** A comprehensive suite that tests the entire entity lifecycle, managing strict database dependencies (Theatres → Shows → Performances → Tickets).
-*   **Multi-Stage Docker builds:** Optimized multi-stage `Dockerfile` that handles testing and building in a Playwright-ready environment before deploying to a slim production runner.
+*   **Multi-Stage Docker builds:** Optimised multi-stage `Dockerfile` that handles testing and building in a Playwright-ready environment before deploying to a slim production runner.
 
 ---
 
@@ -76,46 +76,31 @@ The codebase follows a layered approach:
 ## 📂 Folder Structure
 
 ```plaintext
-├── app
-│   ├── favicon.ico
-│   ├── globals.css
-│   ├── layout.tsx
-│   ├── page.module.css
-│   ├── page.tsx
-│   ├── Providers.tsx
-│   ├── auth
-│   │   ├── login/page.tsx
-│   │   └── register/page.tsx
-│   ├── admin
-│   │   ├── layout.client.tsx
-│   │   ├── layout.module.css
-│   │   ├── layout.tsx
-│   │   ├── page.tsx
-│   │   ├── performances
-│   │   │   ├── actions.tsx
-│   │   │   ├── loading.tsx
-│   │   │   ├── page.tsx
-│   │   │   ├── PerformanceTable.tsx
-│   │   │   ├── [id]/
-│   │   │   │   ├── EditPerformanceForm.tsx
-│   │   │   │   └── page.tsx
-│   │   │   └── create/
-│   │   │       ├── CreatePerformanceForm.tsx
-│   │   │       └── page.tsx
-│   │   └── ... (seats, shows, theatres, tickets, users)
-├── api
-│   └── ... (Next.js API routes mirroring admin resources)
-├── knex
-│   ├── migrations
-│   └── seeds
-├── library
-│   ├── auth.js
-│   ├── dbClient.ts
-│   ├── functions.ts
-│   └── db (domain-specific data modules)
-├── models (business models)
-├── tests (Playwright specs)
-└── types (TypeScript interfaces)
+├── src/                        # Source Code Root
+│   ├── app/                    # Next.js App Router (UI & Layouts)
+│   │   ├── (auth)/             # Route Group: Auth (Login/Register)
+│   │   ├── admin/              # Protected Management Dashboard
+│   │   │   ├── analytics/      # Recharts implementation
+│   │   │   ├── ticket-sales/   # Real-time seating visualiser
+│   │   │   └── ...             # Entity CRUD modules
+│   │   ├── layout.tsx          # Root layout with Google Fonts
+│   │   └── page.tsx            # Protected home redirect
+│   ├── api/                    # Backend API Route Handlers
+│   ├── library/                # Core Infrastructure
+│   │   ├── db/                 # DAO Layer (Domain-specific queries)
+│   │   ├── auth.js             # Bcrypt utility logic
+│   │   └── dbClient.ts         # Knex instance with env loading
+│   ├── models/                 # Application/Business Logic Layer
+│   ├── knex/                   # Database Migrations & Seeds
+│   ├── tests/                  # Playwright E2E Specs
+│   └── types/                  # TypeScript Interfaces
+├── modelBasedTemplating/       # Custom Scaffolding Engine (Developer Tooling)
+│   ├── templates/              # EJS-based code templates
+│   └── generateAll.js          # CLI generator script
+├── public/                     # Static Assets (SVGs)
+├── knexfile.js                 # Database Configuration
+├── Dockerfile                  # Multi-stage production build
+└── package.json                # Project dependencies and scripts
 ```
 
 ---
