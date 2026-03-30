@@ -1,19 +1,10 @@
 # 🎭 Theatre Ticket Booking App
-### A Progressive, Full-Stack Next.js Architecture Study
 
-[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
-
-## 🌟 Overview
-This project is a progressive learning platform built with **Next.js 15**, designed to demonstrate mastery of full-stack web development. It moves beyond standard tutorials by implementing a strictly decoupled architecture, a custom model-wrapping logic, and advanced automated developer tooling.
-
-The application allows administrators to manage theatrical venues, performances, and seating charts, while providing real-time data visualisation and an optimised booking logic.
+This project is a progressive learning platform built with Next.js 15, designed to demonstrate mastery of modern full-stack web development. It moves beyond standard frameworks by implementing a strictly decoupled architecture, a custom model-wrapping engine, and advanced automated developer tooling.
 
 ---
 
 ## 🚀 Key Skills Demonstrated
-
 ### 1. Layered "Clean" Architecture
 The codebase follows a strictly decoupled approach to ensure maintainability:
 *   **Data Layer (`/knex`):** Robust schema management and seeding.
@@ -35,6 +26,14 @@ The Admin portal transforms raw relational data into actionable insights using *
 ### 4. Enterprise-Grade DevOps & Testing
 *   **Playwright E2E Testing:** A comprehensive suite that tests the entire entity lifecycle, managing strict database dependencies (Theatres → Shows → Performances → Tickets).
 *   **Multi-Stage Docker builds:** Optimised multi-stage `Dockerfile` that handles testing and building in a Playwright-ready environment before deploying to a slim production runner.
+
+---
+
+## 📌 Functional Overview
+The application functions as a comprehensive management suite for theatre operations, split into three core areas:
+*   **Venue & Event Management:** A full CRUD administrative interface for managing theatrical venues, shows, and individual performance schedules.
+*   **Real-Time Analytics:** An insights dashboard that transforms raw relational data into visual metrics, such as revenue tracking and sell-out percentages.
+*   **Inventory & Booking Logic:** An optimised seating visualiser and booking engine that handles real-time seat occupancy and complex relational joins.
 
 ---
 
