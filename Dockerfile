@@ -10,25 +10,15 @@ RUN set -eux; \
 # 2) Install browsers & Playwright deps
 RUN npx playwright install --with-deps
 
-# 3) Copy app source and environment files
-COPY . . 
-COPY .env .env.development .env.production ./
+# 3) Copy app source
+COPY . .
 
-# 4) Run migrations and seeds for dev environment
+# 4) Build Next.js app
 RUN set -eux; \
-    echo "🔧 Running Migrations..." && \
-    npm run migrate && \
-    echo "🌱 Running Seeds..." && \
-    npm run seed
-
-# 5) Build Next.js app
-RUN echo "🔨 Building Next.js app..." && npm run build
-
-# 6) Optionally run tests (you had `npm run build` twice — assuming one should be `test`)
-# RUN echo "🧪 Testing Next.js app..." && npm run test
+    npm run build
 
 
-# ─── Stage 2: Runner (Debian-slim Node) ────────────────────────────────────────
+# ─── Stage 2: Runner (Debian-slim Node) ───────────────────────────────────────
 FROM node:lts-slim AS runner
 WORKDIR /app
 
@@ -36,28 +26,26 @@ WORKDIR /app
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       dumb-init \
-      sqlite3 \
-      chromium \
-      ca-certificates && \
+      ca-certificates \
+      netcat-openbsd && \
     rm -rf /var/lib/apt/lists/*
 
 # 2) Copy production build and app files
-COPY --from=builder /app/.next           ./.next
-COPY --from=builder /app/public          ./public
-COPY --from=builder /app/node_modules    ./node_modules
-COPY --from=builder /app/package.json    ./package.json
-COPY --from=builder /app/dev.sqlite3     ./dev.sqlite3
-COPY --from=builder /app/.env            ./
-COPY --from=builder /app/.env.development ./ 
-COPY --from=builder /app/.env.production ./ 
+COPY --from=builder /app/.next        ./.next
+COPY --from=builder /app/public       ./public
+COPY --from=builder /app/node_modules  ./node_modules
+COPY --from=builder /app/package.json  ./package.json
+COPY --from=builder /app/knexfile.js ./knexfile.js
+COPY --from=builder /app/src ./src
+COPY --from=builder /app/scripts ./scripts
 
-# 3) Ensure SQLite is writable
-RUN chmod 664 dev.sqlite3
+# 3) Add entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# # 4) Set runtime environment
-# ENV ENV=development
-# ENV NODE_ENV=development
+# 4) Runtime environment
+ENV NODE_ENV=development
+ENV PORT=49152
 
-EXPOSE 49152
-ENTRYPOINT ["dumb-init", "--"]
+ENTRYPOINT ["dumb-init", "--", "/usr/local/bin/docker-entrypoint.sh"]
 CMD ["npm", "run", "start"]

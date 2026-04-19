@@ -1,5 +1,4 @@
 const bcryptjs = require('bcryptjs');
-// const { hashPassword, verifyPassword } = require('./library/auth');
 
 const saltRounds = 10;
 

@@ -1,37 +1,24 @@
-// knexfile.js
 const path = require('path');
 const fs = require('fs');
 const dotenv = require('dotenv');
 
-// Step 1: Load base .env (this contains ENV)
-dotenv.config();
-
-// Step 2: Use the ENV value from .env to load env-specific file
-const envName = process.env.ENV || 'development';
-const envFile = path.resolve(process.cwd(), `.env.${envName}`);
-
-if (fs.existsSync(envFile)) {
-  dotenv.config({ path: envFile });
-  console.log(`Loaded environment variables from: ${envFile}`);
-} else {
-  console.warn(`No ${envFile} file found. Using base .env only`);
+// Load local env for manual CLI use (safe in dev; runtime env still wins)
+const localEnvPath = path.resolve(process.cwd(), '.env.local');
+if (fs.existsSync(localEnvPath)) {
+  dotenv.config({ path: localEnvPath });
 }
 
-console.log('Active ENV:', envName);
-
-// Knex configurations
 const development = {
   client: 'sqlite3',
   connection: {
-    filename: path.resolve('./dev.sqlite3'),
+    filename: path.resolve(process.cwd(), 'dev.sqlite3'),
   },
   useNullAsDefault: true,
-  // debug: true,
   migrations: {
-    directory: path.resolve('./src/knex/migrations'),
+    directory: path.resolve(process.cwd(), 'src/knex/migrations'),
   },
   seeds: {
-    directory: path.resolve('./src/knex/seeds'),
+    directory: path.resolve(process.cwd(), 'src/knex/seeds'),
   },
 };
 
@@ -46,10 +33,10 @@ const production = {
   },
   pool: { min: 2, max: 10 },
   migrations: {
-    directory: path.resolve('./src/knex/migrations'),
+    directory: path.resolve(process.cwd(), 'src/knex/migrations'),
   },
   seeds: {
-    directory: path.resolve('./src/knex/seeds'),
+    directory: path.resolve(process.cwd(), 'src/knex/seeds'),
   },
 };
 

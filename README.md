@@ -128,7 +128,9 @@ The codebase follows a layered approach:
 
 ## 🐳 Docker Support
 
-The app can be run using docker compose and the example configuration found in .env.example.txt and .env.[].example.txt. In development mode (specified in .env), the app requires a .env.development file. Production support is planned but not tested.
+- docker build --build-arg NODE_ENV=production -t stevenb1996/theatre-ticket-booking-app:latest .
+
+<!-- The app can be run using docker compose and the example configuration found in .env.example.txt and .env.[].example.txt. In development mode (specified in .env), the app requires a .env.development file. Production support is planned but not tested.
 
 Here are some relevant commands:
 - `docker system prune -a --volumes -f; docker builder prune --all -f`
@@ -143,4 +145,4 @@ Here are some relevant commands:
 ---
 
 ## 📝 License
-[MIT](./LICENSE)
+[MIT](./LICENSE) -->
